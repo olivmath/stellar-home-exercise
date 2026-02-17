@@ -7,18 +7,22 @@ type Props = {
   steps: string[];
   delay?: number;
   accentColor?: string;
+  direction?: "horizontal" | "vertical";
 };
 
 export const FlowDiagram: React.FC<Props> = ({
   steps,
   delay = 0,
   accentColor = colors.gold,
+  direction = "vertical",
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  const isVertical = direction === "vertical";
+
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
+    <div style={{ display: "flex", flexDirection: isVertical ? "column" : "row", alignItems: "center", gap: 0 }}>
       {steps.map((step, i) => {
         const stepDelay = delay + i * 0.4;
         const opacity = fadeIn(frame, fps, stepDelay);
@@ -36,7 +40,7 @@ export const FlowDiagram: React.FC<Props> = ({
         return (
           <div
             key={i}
-            style={{ display: "flex", alignItems: "center", opacity }}
+            style={{ display: "flex", flexDirection: isVertical ? "column" : "row", alignItems: "center", opacity }}
           >
             {/* Step node */}
             <div
@@ -67,39 +71,73 @@ export const FlowDiagram: React.FC<Props> = ({
 
             {/* Arrow connector */}
             {i < steps.length - 1 && (
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  margin: `0 ${space.sm}px`,
-                  position: "relative",
-                  width: 56,
-                  height: 2,
-                }}
-              >
+              isVertical ? (
                 <div
                   style={{
-                    height: 1.5,
-                    width: `${arrowProgress * 100}%`,
-                    background: `linear-gradient(90deg, ${accentColor}35, ${accentColor})`,
-                    borderRadius: 1,
-                    boxShadow: `0 0 8px ${accentColor}20`,
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                    margin: `${space.sm}px 0`,
+                    height: 40,
+                    width: 2,
                   }}
-                />
+                >
+                  <div
+                    style={{
+                      width: 1.5,
+                      height: `${arrowProgress * 100}%`,
+                      background: `linear-gradient(180deg, ${accentColor}35, ${accentColor})`,
+                      borderRadius: 1,
+                      boxShadow: `0 0 8px ${accentColor}20`,
+                    }}
+                  />
+                  <div
+                    style={{
+                      width: 0,
+                      height: 0,
+                      borderLeft: "4px solid transparent",
+                      borderRight: "4px solid transparent",
+                      borderTop: `7px solid ${accentColor}`,
+                      opacity: arrowProgress,
+                      filter: `drop-shadow(0 0 4px ${accentColor})`,
+                    }}
+                  />
+                </div>
+              ) : (
                 <div
                   style={{
-                    position: "absolute",
-                    right: 0,
-                    width: 0,
-                    height: 0,
-                    borderTop: "4px solid transparent",
-                    borderBottom: "4px solid transparent",
-                    borderLeft: `7px solid ${accentColor}`,
-                    opacity: arrowProgress,
-                    filter: `drop-shadow(0 0 4px ${accentColor})`,
+                    display: "flex",
+                    alignItems: "center",
+                    margin: `0 ${space.sm}px`,
+                    position: "relative",
+                    width: 56,
+                    height: 2,
                   }}
-                />
-              </div>
+                >
+                  <div
+                    style={{
+                      height: 1.5,
+                      width: `${arrowProgress * 100}%`,
+                      background: `linear-gradient(90deg, ${accentColor}35, ${accentColor})`,
+                      borderRadius: 1,
+                      boxShadow: `0 0 8px ${accentColor}20`,
+                    }}
+                  />
+                  <div
+                    style={{
+                      position: "absolute",
+                      right: 0,
+                      width: 0,
+                      height: 0,
+                      borderTop: "4px solid transparent",
+                      borderBottom: "4px solid transparent",
+                      borderLeft: `7px solid ${accentColor}`,
+                      opacity: arrowProgress,
+                      filter: `drop-shadow(0 0 4px ${accentColor})`,
+                    }}
+                  />
+                </div>
+              )
             )}
           </div>
         );
