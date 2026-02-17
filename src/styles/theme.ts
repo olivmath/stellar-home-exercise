@@ -1,74 +1,72 @@
-// ─── Stellar Brand Design System ─────────────────────────────────────
-// Based on Stellar Brand Manual 2025
-// "Helpful design is humble, not invisible"
+// ─── Stellar Design System · Theme ──────────────────────────────────
+// Corporate institutional tone. Clean, restrained, authoritative.
+// References: Bloomberg, McKinsey, Deloitte editorial standards.
 
 export const colors = {
   // ── Backgrounds ──
-  bgPrimary: "#0F0F0F",         // Stellar Black
-  bgDeep: "#080A12",            // Deeper navy-black for contrast
-  bgElevated: "#1A1A22",        // Slightly lifted surface
-  bgGlass: "rgba(15, 15, 15, 0.75)",
-  bgGlassLight: "rgba(253, 218, 36, 0.04)",
+  bgPrimary: "#0B0B0F",
+  bgDeep: "#070709",
+  bgElevated: "#131318",
+  bgSurface: "#18181E",
+  bgGlass: "rgba(11, 11, 15, 0.82)",
 
-  // ── Primary Brand ──
-  gold: "#FDDA24",              // Generous Gold — the signature
-  goldDim: "rgba(253, 218, 36, 0.12)",
-  goldMuted: "rgba(253, 218, 36, 0.25)",
-  black: "#0F0F0F",             // Stellar Black
-  white: "#F6F7F8",             // Stellar White
+  // ── Brand ──
+  gold: "#C9A84C",               // Muted institutional gold
+  goldDim: "rgba(201, 168, 76, 0.08)",
+  goldMuted: "rgba(201, 168, 76, 0.18)",
 
-  // ── Secondary Palette ──
-  lilac: "#B7ACE8",             // Lilac
-  lilacDim: "rgba(183, 172, 232, 0.12)",
-  teal: "#00A7B5",              // Teal
-  tealDim: "rgba(0, 167, 181, 0.12)",
-  warmGrey: "#D6D2C4",          // Warm Grey
-  navy: "#002E5D",              // Navy
+  black: "#0B0B0F",
+  white: "#ECEDEF",
+  offWhite: "#C8C9CC",
+
+  // ── Accents ──
+  slate: "#6B7280",
+  slateLight: "#9CA3AF",
+  steel: "#3B4252",
+  warmGrey: "#A8A4A0",
+  coolGrey: "#6E7179",
 
   // ── Semantic ──
-  success: "#34D399",
-  warning: "#FB7185",
+  positive: "#5CB88A",
+  negative: "#D4696E",
+  info: "#6B9BD2",
 
   // ── Text ──
-  textPrimary: "#F6F7F8",       // Stellar White
-  textSecondary: "#D6D2C4",     // Warm Grey
-  textDim: "#7A7770",           // Muted warm
-  textGold: "#FDDA24",          // Gold highlights
-
-  // ── Glow Effects ──
-  glowGold: "0 0 40px rgba(253, 218, 36, 0.2), 0 0 80px rgba(253, 218, 36, 0.06)",
-  glowTeal: "0 0 40px rgba(0, 167, 181, 0.2), 0 0 80px rgba(0, 167, 181, 0.06)",
-  glowLilac: "0 0 40px rgba(183, 172, 232, 0.2), 0 0 80px rgba(183, 172, 232, 0.06)",
-  glowSuccess: "0 0 30px rgba(52, 211, 153, 0.2)",
-  glowWarning: "0 0 30px rgba(251, 113, 133, 0.2)",
+  textPrimary: "#ECEDEF",
+  textSecondary: "#9DA0A7",
+  textDim: "#5C5F66",
+  textAccent: "#C9A84C",
 
   // ── Borders ──
-  borderSubtle: "rgba(214, 210, 196, 0.08)",
-  borderGold: "rgba(253, 218, 36, 0.2)",
-  borderTeal: "rgba(0, 167, 181, 0.2)",
-  borderLilac: "rgba(183, 172, 232, 0.15)",
+  borderSubtle: "rgba(255, 255, 255, 0.06)",
+  borderMedium: "rgba(255, 255, 255, 0.10)",
+  borderAccent: "rgba(201, 168, 76, 0.15)",
+
+  // ── Shadows ──
+  shadowSm: "0 1px 4px rgba(0, 0, 0, 0.4)",
+  shadowMd: "0 4px 16px rgba(0, 0, 0, 0.5)",
+  shadowLg: "0 8px 32px rgba(0, 0, 0, 0.55)",
+  shadowAccent: "0 0 24px rgba(201, 168, 76, 0.06)",
 } as const;
 
-// ── Typography ──
-// Lora: serif headlines (elegant, enterprise-friendly)
-// Inter: body text and captions (clean, readable)
-// Anton: condensed accent/callouts (impact, ALL CAPS)
+// ── Typography ──────────────────────────────────────────────────────
+// Source Serif 4: editorial credibility without decoration
+// Inter: neutral workhorse — Bloomberg/Stripe standard
+// IBM Plex Mono: institutional code/data font
 export const fonts = {
-  display: "'Lora', Georgia, serif",
-  body: "'Inter', system-ui, sans-serif",
-  accent: "'Anton', Impact, sans-serif",
+  display: "'Source Serif 4', Georgia, serif",
+  body: "'Inter', 'Helvetica Neue', sans-serif",
+  accent: "'Inter', 'Helvetica Neue', sans-serif",
   code: "'IBM Plex Mono', 'Courier New', monospace",
 } as const;
 
-// Google Fonts URLs
 export const fontUrls = [
-  "https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap",
-  "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap",
-  "https://fonts.googleapis.com/css2?family=Anton&display=swap",
-  "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap",
+  "https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;400;500;600;700&display=swap",
+  "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap",
+  "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap",
 ];
 
-// ── Timing (from audioMarks.ts) ──
+// ── Timing ──────────────────────────────────────────────────────────
 export const timing = {
   fps: 30,
   totalDuration: 295.3,
