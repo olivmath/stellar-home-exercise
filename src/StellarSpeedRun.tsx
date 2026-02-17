@@ -42,12 +42,12 @@ const scenes = [
   },
   // ── Step 0: Episodes commented out for incremental redesign ──
   // Uncomment each as redesign is completed
-  // {
-  //   id: "ep1",
-  //   component: Episode1,
-  //   from: episodes.ep1.startFrame,
-  //   duration: episodes.ep1.endFrame - episodes.ep1.startFrame,
-  // },
+  {
+    id: "ep1",
+    component: Episode1,
+    from: episodes.ep1.startFrame,
+    duration: episodes.ep1.endFrame - episodes.ep1.startFrame,
+  },
   // {
   //   id: "ep2",
   //   component: Episode2,
