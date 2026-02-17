@@ -13,7 +13,6 @@ const PARTICLES = Array.from({ length: 80 }, (_, i) => ({
   delay: seededRandom(i * 7 + 4) * 3,
   driftX: (seededRandom(i * 7 + 5) - 0.5) * 60,
   driftY: (seededRandom(i * 7 + 6) - 0.5) * 60,
-  pulse: seededRandom(i * 7 + 7) * 2 + 1,
 }));
 
 const CONNECTIONS: { from: number; to: number; dist: number }[] = [];
@@ -63,7 +62,7 @@ export const NetworkBackground: React.FC<Props> = ({
         overflow: "hidden",
       }}
     >
-      {/* Ambient radial gradients */}
+      {/* Ambient gold glow */}
       <div
         style={{
           position: "absolute",
@@ -72,9 +71,10 @@ export const NetworkBackground: React.FC<Props> = ({
           width: 600,
           height: 600,
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${colors.stellar}08 0%, transparent 70%)`,
+          background: `radial-gradient(circle, ${colors.gold}06 0%, transparent 70%)`,
         }}
       />
+      {/* Teal glow */}
       <div
         style={{
           position: "absolute",
@@ -83,7 +83,7 @@ export const NetworkBackground: React.FC<Props> = ({
           width: 500,
           height: 500,
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${colors.cyan}06 0%, transparent 70%)`,
+          background: `radial-gradient(circle, ${colors.teal}06 0%, transparent 70%)`,
         }}
       />
 
@@ -111,7 +111,7 @@ export const NetworkBackground: React.FC<Props> = ({
               y1={p1.y}
               x2={p2.x}
               y2={p2.y}
-              stroke={colors.cyan}
+              stroke={colors.gold}
               strokeWidth={0.6}
               opacity={lineOpacity}
             />
@@ -119,7 +119,7 @@ export const NetworkBackground: React.FC<Props> = ({
         })}
       </svg>
 
-      {/* Particle dots */}
+      {/* Particles — gold and teal */}
       {PARTICLES.map((p, i) => {
         const pos = getPos(p);
         const particleOpacity = interpolate(
@@ -128,8 +128,8 @@ export const NetworkBackground: React.FC<Props> = ({
           [0, 0.4 + p.size * 0.15],
           { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
         );
-        const isStellar = i % 4 === 0;
-        const color = isStellar ? colors.stellar : colors.cyan;
+        const isGold = i % 3 === 0;
+        const color = isGold ? colors.gold : colors.teal;
 
         return (
           <div

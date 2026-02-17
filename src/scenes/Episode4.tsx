@@ -7,76 +7,49 @@ import {
   interpolate,
   Sequence,
 } from "remotion";
+import { colors, fonts } from "../styles/theme";
 import { fadeIn, slideIn, scaleIn } from "../animations/springs";
 import { EpisodeTitle } from "../components/EpisodeTitle";
 import { GlassPanel } from "../components/GlassPanel";
 import { Badge } from "../components/Badge";
 import { ScientistCard } from "../components/ScientistCard";
+import { LowerThird } from "../components/LowerThird";
+import { episodes, toFrame } from "../config/audioMarks";
+
+// ── Timing: relative to episode start (151.74s) ──
+// ep4 narration: 151.74s → 210.38s
+const EP = episodes.ep4.startSec;
+const rel = (sec: number) => toFrame(sec - EP);
 
 // Episode 4 — Ledgers & Consensus
-// Duration: ~60s at 30fps = 1800 frames
-
-const colors = {
-  bgPrimary: "#050810",
-  bgElevated: "#0A0E1A",
-  bgGlass: "rgba(12, 16, 32, 0.72)",
-  stellar: "#6366F1",
-  stellarLight: "#818CF8",
-  cyan: "#22D3EE",
-  cyanDim: "rgba(34, 211, 238, 0.15)",
-  success: "#34D399",
-  warning: "#FB7185",
-  gold: "#FBBF24",
-  textPrimary: "#F1F5F9",
-  textSecondary: "#94A3B8",
-  textDim: "#475569",
-  glowStellar:
-    "0 0 40px rgba(99, 102, 241, 0.3), 0 0 80px rgba(99, 102, 241, 0.1)",
-  glowCyan:
-    "0 0 40px rgba(34, 211, 238, 0.25), 0 0 80px rgba(34, 211, 238, 0.08)",
-  glowSuccess: "0 0 30px rgba(52, 211, 153, 0.25)",
-  glowWarning: "0 0 30px rgba(251, 113, 133, 0.25)",
-  borderSubtle: "rgba(148, 163, 184, 0.08)",
-  borderAccent: "rgba(99, 102, 241, 0.2)",
-  borderCyan: "rgba(34, 211, 238, 0.15)",
-};
-
-const fonts = {
-  display: "'Outfit', sans-serif",
-  body: "'Plus Jakarta Sans', sans-serif",
-  code: "'IBM Plex Mono', monospace",
-};
 
 export const Episode4: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  // Determine background per shot:
+  // LedgerIntro (0 to rel(177.14)): ANIMATION FULL — solid bg
+  // ConsensusProtocol (rel(177.14) to rel(197.18)): VIDEO + OVERLAY — dim bg to show talking head
+  // QuorumSlices (rel(197.18) to rel(210.38)): ANIMATION FULL — solid bg
+  const consensusStart = rel(177.14);
+  const consensusEnd = rel(197.18);
+  const backgroundColor =
+    frame >= consensusStart && frame < consensusEnd
+      ? "rgba(15, 15, 15, 0.55)"
+      : colors.bgPrimary;
+
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: colors.bgPrimary,
+        backgroundColor,
         fontFamily: fonts.body,
       }}
     >
       {/* ============================================
-          SECTION 1 — Episode Title (frames 0-149)
+          SHOT 12 — Ledgers vs Blocks (LedgerIntro: 151.74s to 177.14s)
+          ANIMATION FULL — Solid bgPrimary
           ============================================ */}
-      <Sequence from={0} durationInFrames={150}>
-        <AbsoluteFill
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <EpisodeTitle number="04" title="Ledgers & Consensus" />
-        </AbsoluteFill>
-      </Sequence>
-
-      {/* ============================================
-          SECTION 2 — Ledgers vs Blocks (frames 150-699)
-          Two-column comparison
-          ============================================ */}
-      <Sequence from={150} durationInFrames={550}>
+      <Sequence from={0} durationInFrames={rel(177.14)}>
         <AbsoluteFill
           style={{
             justifyContent: "center",
@@ -85,25 +58,21 @@ export const Episode4: React.FC = () => {
             gap: 44,
           }}
         >
-          {/* Heading */}
+          {/* Episode title */}
+          <EpisodeTitle number="04" title="Ledgers & Consensus" />
+
+          {/* Two-column comparison */}
           <div
             style={{
-              opacity: fadeIn(frame - 150, fps, 0.2),
-              color: colors.textPrimary,
-              fontSize: 38,
-              fontFamily: fonts.display,
-              fontWeight: 700,
-              letterSpacing: -0.5,
+              display: "flex",
+              gap: 56,
+              alignItems: "stretch",
+              marginTop: 24,
             }}
           >
-            Ledgers vs Blocks
-          </div>
-
-          {/* Two columns */}
-          <div style={{ display: "flex", gap: 56, alignItems: "stretch" }}>
             {/* LEFT — Blocks (crossed out / deprecated) */}
             {(() => {
-              const { opacity, translateY } = slideIn(frame - 150, fps, 0.6);
+              const { opacity, translateY } = slideIn(frame, fps, 0.6);
               return (
                 <div
                   style={{
@@ -160,13 +129,13 @@ export const Episode4: React.FC = () => {
                 width: 1,
                 background: `linear-gradient(180deg, transparent, ${colors.borderSubtle}, transparent)`,
                 alignSelf: "stretch",
-                opacity: fadeIn(frame - 150, fps, 1.0),
+                opacity: fadeIn(frame, fps, 1.0),
               }}
             />
 
-            {/* RIGHT — Ledgers (highlighted) */}
+            {/* RIGHT — Ledgers (highlighted with teal) */}
             {(() => {
-              const { opacity, translateY } = slideIn(frame - 150, fps, 1.0);
+              const { opacity, translateY } = slideIn(frame, fps, 1.0);
               return (
                 <div
                   style={{
@@ -180,8 +149,8 @@ export const Episode4: React.FC = () => {
                 >
                   <GlassPanel
                     padding="40px 48px"
-                    borderColor={colors.borderCyan}
-                    glow={colors.glowCyan}
+                    borderColor={colors.borderTeal}
+                    glow={colors.glowTeal}
                     style={{
                       display: "flex",
                       flexDirection: "column",
@@ -192,7 +161,7 @@ export const Episode4: React.FC = () => {
                   >
                     <div
                       style={{
-                        color: colors.cyan,
+                        color: colors.teal,
                         fontSize: 32,
                         fontFamily: fonts.display,
                         fontWeight: 700,
@@ -202,7 +171,7 @@ export const Episode4: React.FC = () => {
                     </div>
                     <div
                       style={{
-                        color: colors.textSecondary,
+                        color: colors.warmGrey,
                         fontSize: 16,
                         fontFamily: fonts.body,
                         textAlign: "center",
@@ -217,7 +186,7 @@ export const Episode4: React.FC = () => {
                     </div>
                   </GlassPanel>
 
-                  {/* Close time badge below the panel */}
+                  {/* Close time badge */}
                   <Badge
                     label="~5s close time"
                     delay={1.8}
@@ -232,46 +201,31 @@ export const Episode4: React.FC = () => {
       </Sequence>
 
       {/* ============================================
-          SECTION 3 — David Mazieres (frames 700-1149)
-          ScientistCard for the creator of SCP
+          SHOT 13 — David Mazières (ConsensusProtocol: 177.14s to 197.18s)
+          VIDEO + OVERLAY — Dim bg, talking head visible
           ============================================ */}
-      <Sequence from={700} durationInFrames={450}>
+      <Sequence from={rel(177.14)} durationInFrames={rel(197.18) - rel(177.14)}>
         <AbsoluteFill
           style={{
-            justifyContent: "center",
+            justifyContent: "flex-end",
             alignItems: "center",
-            flexDirection: "column",
-            gap: 40,
+            paddingBottom: 80,
           }}
         >
-          {/* Section heading */}
-          <div
-            style={{
-              opacity: fadeIn(frame - 700, fps, 0.2),
-              color: colors.textPrimary,
-              fontSize: 34,
-              fontFamily: fonts.display,
-              fontWeight: 700,
-              letterSpacing: -0.5,
-            }}
-          >
-            Stellar Consensus Protocol
-          </div>
-
           <ScientistCard
-            name="David Mazi\u00e8res"
+            name="David Mazi&egrave;res"
             institution="Stanford University"
-            caption="Creator of SCP \u2014 Federated Byzantine Agreement"
-            delay={0.8}
+            caption="Creator of SCP — Federated Byzantine Agreement"
+            delay={0.5}
           />
         </AbsoluteFill>
       </Sequence>
 
       {/* ============================================
-          SECTION 4 — Quorum Slices (frames 1150-1800)
-          3 overlapping circles that converge toward center
+          SHOT 14 — Quorum Slices (197.18s to 210.38s)
+          ANIMATION FULL — Solid bgPrimary
           ============================================ */}
-      <Sequence from={1150} durationInFrames={650}>
+      <Sequence from={rel(197.18)} durationInFrames={rel(210.38) - rel(197.18)}>
         <AbsoluteFill
           style={{
             justifyContent: "center",
@@ -283,7 +237,7 @@ export const Episode4: React.FC = () => {
           {/* Section heading */}
           <div
             style={{
-              opacity: fadeIn(frame - 1150, fps, 0.2),
+              opacity: fadeIn(frame - rel(197.18), fps, 0.2),
               color: colors.textPrimary,
               fontSize: 34,
               fontFamily: fonts.display,
@@ -303,34 +257,33 @@ export const Episode4: React.FC = () => {
             }}
           >
             {(() => {
-              const localFrame = frame - 1150;
+              const localFrame = frame - rel(197.18);
               const circleSize = 240;
 
-              // Convergence animation: circles start spread out and move together
+              // Convergence: circles start spread out and spring together
               const convergence = spring({
                 frame: localFrame - 0.8 * fps,
                 fps,
                 config: { damping: 20, mass: 1.0, stiffness: 60 },
               });
 
-              // Starting spread amount (pixels from center)
               const spread = interpolate(convergence, [0, 1], [140, 50]);
 
               const circles = [
                 {
-                  color: colors.stellar,
-                  fillColor: "rgba(99, 102, 241, 0.15)",
-                  borderColor: "rgba(99, 102, 241, 0.4)",
+                  color: colors.gold,
+                  fillColor: "rgba(253, 218, 36, 0.15)",
+                  borderColor: "rgba(253, 218, 36, 0.4)",
                   label: "Slice A",
-                  angle: -90, // top
+                  angle: -90,
                   delay: 0.4,
                 },
                 {
-                  color: colors.cyan,
-                  fillColor: "rgba(34, 211, 238, 0.15)",
-                  borderColor: "rgba(34, 211, 238, 0.4)",
+                  color: colors.teal,
+                  fillColor: "rgba(0, 167, 181, 0.15)",
+                  borderColor: "rgba(0, 167, 181, 0.4)",
                   label: "Slice B",
-                  angle: 150, // bottom-left
+                  angle: 150,
                   delay: 0.7,
                 },
                 {
@@ -338,7 +291,7 @@ export const Episode4: React.FC = () => {
                   fillColor: "rgba(52, 211, 153, 0.15)",
                   borderColor: "rgba(52, 211, 153, 0.4)",
                   label: "Slice C",
-                  angle: 30, // bottom-right
+                  angle: 30,
                   delay: 1.0,
                 },
               ];
@@ -376,9 +329,10 @@ export const Episode4: React.FC = () => {
                           style={{
                             color: circle.color,
                             fontSize: 16,
-                            fontFamily: fonts.code,
+                            fontFamily: fonts.accent,
                             fontWeight: 700,
                             letterSpacing: 1,
+                            textTransform: "uppercase" as const,
                           }}
                         >
                           {circle.label}
@@ -391,10 +345,10 @@ export const Episode4: React.FC = () => {
             })()}
           </div>
 
-          {/* Consensus label — fades in ~1s after convergence starts */}
+          {/* Consensus label — fades in after convergence */}
           {(() => {
             const labelProg = spring({
-              frame: frame - 1150 - 3.0 * fps,
+              frame: frame - rel(197.18) - 3.0 * fps,
               fps,
               config: { damping: 16, mass: 0.6, stiffness: 100 },
             });
@@ -417,6 +371,11 @@ export const Episode4: React.FC = () => {
             );
           })()}
         </AbsoluteFill>
+      </Sequence>
+
+      {/* Lower-third across full episode */}
+      <Sequence from={0} durationInFrames={rel(210.38)}>
+        <LowerThird title="Ledgers & Consensus" subtitle="Episode 04" delay={0} />
       </Sequence>
     </AbsoluteFill>
   );

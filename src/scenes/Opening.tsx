@@ -5,6 +5,8 @@ import {
   useVideoConfig,
   interpolate,
   Sequence,
+  Img,
+  staticFile,
 } from "remotion";
 import { colors, fonts } from "../styles/theme";
 import { NetworkBackground } from "../components/NetworkBackground";
@@ -19,7 +21,7 @@ export const Opening: React.FC = () => {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const titleScale = interpolate(titleProgress, [0, 1], [0.9, 1]);
+  const titleScale = interpolate(titleProgress, [0, 1], [0.92, 1]);
 
   // Subtitle
   const subtitleOpacity = interpolate(frame, [85, 115], [0, 1], {
@@ -27,27 +29,35 @@ export const Opening: React.FC = () => {
     extrapolateRight: "clamp",
   });
 
+  // Logo
+  const logoOpacity = interpolate(frame, [20, 50], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
   return (
-    <AbsoluteFill style={{ backgroundColor: colors.bgPrimary }}>
-      {/* Living network background */}
+    <AbsoluteFill style={{ backgroundColor: "rgba(15, 15, 15, 0.5)" }}>
+      {/* Network particle background with gold particles */}
       <NetworkBackground
-        opacity={interpolate(frame, [0, 60], [0, 1], {
+        opacity={interpolate(frame, [0, 60], [0, 0.35], {
+          extrapolateLeft: "clamp",
           extrapolateRight: "clamp",
         })}
       />
 
-      {/* Central glow */}
+      {/* Central gold glow */}
       <div
         style={{
           position: "absolute",
-          top: "45%",
+          top: "42%",
           left: "50%",
           transform: "translate(-50%, -50%)",
           width: 900,
           height: 500,
           borderRadius: "50%",
-          background: `radial-gradient(ellipse, ${colors.stellar}12 0%, ${colors.cyan}04 40%, transparent 70%)`,
+          background: `radial-gradient(ellipse, rgba(253, 218, 36, 0.06) 0%, rgba(0, 167, 181, 0.02) 40%, transparent 70%)`,
           opacity: titleProgress,
+          pointerEvents: "none",
         }}
       />
 
@@ -62,52 +72,61 @@ export const Opening: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 24,
+            gap: 28,
           }}
         >
-          {/* Main title */}
+          {/* Stellar logo */}
+          <div style={{ opacity: logoOpacity }}>
+            <Img
+              src={staticFile("images/branding/stellar-logo.svg")}
+              style={{ width: 72, height: 72, opacity: 0.9 }}
+            />
+          </div>
+
+          {/* Main title — Lora serif with gold gradient */}
           <h1
             style={{
               fontSize: 96,
               fontFamily: fonts.display,
-              fontWeight: 900,
-              background: `linear-gradient(135deg, ${colors.stellarLight}, ${colors.cyan})`,
+              fontWeight: 700,
+              background: `linear-gradient(135deg, ${colors.gold}, ${colors.white})`,
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               margin: 0,
-              letterSpacing: -3,
+              letterSpacing: -2,
               lineHeight: 1,
             }}
           >
             Stellar Speed Run
           </h1>
 
-          {/* Subtitle */}
+          {/* Subtitle — Inter */}
           <div
             style={{
               opacity: subtitleOpacity,
-              fontSize: 22,
+              fontSize: 20,
               fontFamily: fonts.body,
-              color: colors.textSecondary,
-              letterSpacing: 6,
+              color: colors.warmGrey,
+              letterSpacing: 8,
               textTransform: "uppercase",
-              fontWeight: 500,
+              fontWeight: 400,
             }}
           >
             End-to-End in 5 Minutes
           </div>
 
-          {/* Thin accent line */}
+          {/* Gold gradient underline — brand signature */}
           <div
             style={{
-              width: interpolate(frame, [90, 140], [0, 200], {
+              width: interpolate(frame, [90, 140], [0, 240], {
                 extrapolateLeft: "clamp",
                 extrapolateRight: "clamp",
               }),
-              height: 1.5,
-              background: `linear-gradient(90deg, transparent, ${colors.stellar}80, ${colors.cyan}80, transparent)`,
+              height: 2,
+              background: `linear-gradient(90deg, transparent, ${colors.gold}80, ${colors.gold}, ${colors.gold}80, transparent)`,
               borderRadius: 1,
+              boxShadow: `0 0 20px rgba(253, 218, 36, 0.2)`,
             }}
           />
         </div>

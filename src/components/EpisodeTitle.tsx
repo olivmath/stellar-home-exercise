@@ -20,7 +20,15 @@ export const EpisodeTitle: React.FC<Props> = ({
   const lineWidth = interpolate(
     frame,
     [delay * fps + 10, (delay + 1) * fps],
-    [0, 120],
+    [0, 160],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+
+  // Yellow highlight mark — brand signature
+  const highlightWidth = interpolate(
+    frame,
+    [(delay + 0.5) * fps, (delay + 1.2) * fps],
+    [0, 1],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
@@ -31,45 +39,68 @@ export const EpisodeTitle: React.FC<Props> = ({
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 16,
+        gap: 20,
       }}
     >
-      {/* Episode number */}
+      {/* Episode number — Anton condensed accent */}
       <div
         style={{
-          color: colors.stellar,
-          fontSize: 14,
-          fontFamily: fonts.code,
-          fontWeight: 600,
-          letterSpacing: 4,
+          color: colors.gold,
+          fontSize: 16,
+          fontFamily: fonts.accent,
+          letterSpacing: 6,
           textTransform: "uppercase",
+          textShadow: `0 0 24px rgba(253, 218, 36, 0.3)`,
         }}
       >
-        Episode {number}
+        EPISODE {number}
       </div>
 
-      {/* Title */}
+      {/* Title — Lora serif */}
       <div
         style={{
-          color: colors.textPrimary,
-          fontSize: 48,
-          fontFamily: fonts.display,
-          fontWeight: 800,
-          letterSpacing: -1,
-          textAlign: "center",
+          position: "relative",
+          display: "inline-block",
         }}
       >
-        {title}
+        {/* Yellow highlight mark behind text — brand signature */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: 2,
+            left: -8,
+            right: -8,
+            height: 16,
+            background: colors.gold,
+            opacity: highlightWidth * 0.15,
+            borderRadius: 2,
+            transform: `scaleX(${highlightWidth})`,
+            transformOrigin: "left",
+          }}
+        />
+        <div
+          style={{
+            color: colors.textPrimary,
+            fontSize: 52,
+            fontFamily: fonts.display,
+            fontWeight: 700,
+            letterSpacing: -0.5,
+            textAlign: "center",
+            position: "relative",
+          }}
+        >
+          {title}
+        </div>
       </div>
 
-      {/* Gradient underline */}
+      {/* Gold underline */}
       <div
         style={{
-          height: 2.5,
+          height: 2,
           width: lineWidth,
-          background: `linear-gradient(90deg, ${colors.stellar}, ${colors.cyan})`,
+          background: `linear-gradient(90deg, transparent, ${colors.gold}, transparent)`,
           borderRadius: 2,
-          boxShadow: `0 0 16px ${colors.stellar}30`,
+          boxShadow: `0 0 20px rgba(253, 218, 36, 0.2)`,
         }}
       />
     </div>

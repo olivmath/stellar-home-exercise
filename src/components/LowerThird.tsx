@@ -17,11 +17,11 @@ export const LowerThird: React.FC<Props> = ({
   const { fps } = useVideoConfig();
   const opacity = fadeIn(frame, fps, delay);
 
-  // Animated line width
+  // Gold accent line — Stellar signature
   const lineWidth = interpolate(
     frame,
     [delay * fps, (delay + 0.8) * fps],
-    [0, 80],
+    [0, 100],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
@@ -37,18 +37,18 @@ export const LowerThird: React.FC<Props> = ({
         gap: 10,
       }}
     >
-      {/* Accent line — animates width */}
+      {/* Gold accent line */}
       <div
         style={{
           height: 2.5,
           width: lineWidth,
-          background: `linear-gradient(90deg, ${colors.stellar}, ${colors.cyan})`,
+          background: colors.gold,
           borderRadius: 2,
-          boxShadow: `0 0 12px ${colors.stellar}40`,
+          boxShadow: `0 0 16px rgba(253, 218, 36, 0.3)`,
         }}
       />
 
-      {/* Title */}
+      {/* Title — Lora serif */}
       <div
         style={{
           color: colors.textPrimary,
@@ -61,15 +61,16 @@ export const LowerThird: React.FC<Props> = ({
         {title}
       </div>
 
-      {/* Subtitle */}
+      {/* Subtitle — Inter */}
       {subtitle && (
         <div
           style={{
-            color: colors.textSecondary,
+            color: colors.warmGrey,
             fontSize: 16,
             fontFamily: fonts.body,
             fontWeight: 400,
-            letterSpacing: 0.3,
+            letterSpacing: 2,
+            textTransform: "uppercase",
           }}
         >
           {subtitle}

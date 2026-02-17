@@ -25,20 +25,22 @@ export const ScientistCard: React.FC<Props> = ({
         opacity,
         transform: `translateY(${translateY}px)`,
         background: colors.bgGlass,
-        border: `1px solid ${colors.borderCyan}`,
-        borderRadius: 20,
-        padding: "40px 52px",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        border: `1px solid ${colors.borderTeal}`,
+        borderRadius: 16,
+        padding: "44px 56px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 14,
-        boxShadow: colors.glowCyan,
+        gap: 16,
+        boxShadow: colors.glowTeal,
         position: "relative",
         overflow: "hidden",
         maxWidth: 520,
       }}
     >
-      {/* Left accent bar */}
+      {/* Left teal accent bar */}
       <div
         style={{
           position: "absolute",
@@ -46,31 +48,16 @@ export const ScientistCard: React.FC<Props> = ({
           top: "15%",
           bottom: "15%",
           width: 3,
-          background: `linear-gradient(180deg, transparent, ${colors.cyan}, transparent)`,
+          background: `linear-gradient(180deg, transparent, ${colors.teal}, transparent)`,
           borderRadius: 2,
         }}
       />
 
-      {/* Quotation mark decorative */}
-      <div
-        style={{
-          color: colors.cyan,
-          fontSize: 48,
-          fontFamily: fonts.display,
-          fontWeight: 300,
-          lineHeight: 1,
-          opacity: 0.25,
-          marginBottom: -8,
-        }}
-      >
-        "
-      </div>
-
-      {/* Name */}
+      {/* Name — Lora serif */}
       <div
         style={{
           color: colors.textPrimary,
-          fontSize: 32,
+          fontSize: 34,
           fontFamily: fonts.display,
           fontWeight: 700,
           letterSpacing: -0.5,
@@ -79,26 +66,26 @@ export const ScientistCard: React.FC<Props> = ({
         {name}
       </div>
 
-      {/* Institution */}
+      {/* Institution — gold accent */}
       <div
         style={{
-          color: colors.cyan,
-          fontSize: 16,
+          color: colors.gold,
+          fontSize: 15,
           fontFamily: fonts.body,
           fontWeight: 600,
-          letterSpacing: 2,
+          letterSpacing: 2.5,
           textTransform: "uppercase",
         }}
       >
         {institution}
       </div>
 
-      {/* Divider */}
+      {/* Gold divider */}
       <div
         style={{
           width: 40,
-          height: 1,
-          background: colors.borderCyan,
+          height: 1.5,
+          background: `linear-gradient(90deg, transparent, ${colors.gold}, transparent)`,
           marginTop: 4,
           marginBottom: 4,
         }}
@@ -107,12 +94,12 @@ export const ScientistCard: React.FC<Props> = ({
       {/* Caption */}
       <div
         style={{
-          color: colors.textSecondary,
+          color: colors.warmGrey,
           fontSize: 16,
-          fontFamily: fonts.code,
+          fontFamily: fonts.body,
           fontWeight: 400,
           textAlign: "center",
-          lineHeight: 1.6,
+          lineHeight: 1.7,
           maxWidth: 400,
         }}
       >

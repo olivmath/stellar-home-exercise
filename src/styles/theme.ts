@@ -1,69 +1,76 @@
-// Design System — "Observatory" aesthetic
-// Dark space observatory meets keynote tech talk
+// ─── Stellar Brand Design System ─────────────────────────────────────
+// Based on Stellar Brand Manual 2025
+// "Helpful design is humble, not invisible"
 
 export const colors = {
-  // Backgrounds
-  bgPrimary: "#050810",
-  bgElevated: "#0A0E1A",
-  bgGlass: "rgba(12, 16, 32, 0.72)",
-  bgGlassHover: "rgba(18, 24, 48, 0.85)",
+  // ── Backgrounds ──
+  bgPrimary: "#0F0F0F",         // Stellar Black
+  bgDeep: "#080A12",            // Deeper navy-black for contrast
+  bgElevated: "#1A1A22",        // Slightly lifted surface
+  bgGlass: "rgba(15, 15, 15, 0.75)",
+  bgGlassLight: "rgba(253, 218, 36, 0.04)",
 
-  // Brand accents
-  stellar: "#6366F1",       // Indigo — primary brand
-  stellarLight: "#818CF8",
-  cyan: "#22D3EE",          // Cyan — secondary
-  cyanDim: "rgba(34, 211, 238, 0.15)",
+  // ── Primary Brand ──
+  gold: "#FDDA24",              // Generous Gold — the signature
+  goldDim: "rgba(253, 218, 36, 0.12)",
+  goldMuted: "rgba(253, 218, 36, 0.25)",
+  black: "#0F0F0F",             // Stellar Black
+  white: "#F6F7F8",             // Stellar White
 
-  // Semantic
+  // ── Secondary Palette ──
+  lilac: "#B7ACE8",             // Lilac
+  lilacDim: "rgba(183, 172, 232, 0.12)",
+  teal: "#00A7B5",              // Teal
+  tealDim: "rgba(0, 167, 181, 0.12)",
+  warmGrey: "#D6D2C4",          // Warm Grey
+  navy: "#002E5D",              // Navy
+
+  // ── Semantic ──
   success: "#34D399",
   warning: "#FB7185",
-  gold: "#FBBF24",
 
-  // Text
-  textPrimary: "#F1F5F9",
-  textSecondary: "#94A3B8",
-  textDim: "#475569",
+  // ── Text ──
+  textPrimary: "#F6F7F8",       // Stellar White
+  textSecondary: "#D6D2C4",     // Warm Grey
+  textDim: "#7A7770",           // Muted warm
+  textGold: "#FDDA24",          // Gold highlights
 
-  // Glow effects
-  glowStellar: "0 0 40px rgba(99, 102, 241, 0.3), 0 0 80px rgba(99, 102, 241, 0.1)",
-  glowCyan: "0 0 40px rgba(34, 211, 238, 0.25), 0 0 80px rgba(34, 211, 238, 0.08)",
-  glowSuccess: "0 0 30px rgba(52, 211, 153, 0.25)",
-  glowWarning: "0 0 30px rgba(251, 113, 133, 0.25)",
+  // ── Glow Effects ──
+  glowGold: "0 0 40px rgba(253, 218, 36, 0.2), 0 0 80px rgba(253, 218, 36, 0.06)",
+  glowTeal: "0 0 40px rgba(0, 167, 181, 0.2), 0 0 80px rgba(0, 167, 181, 0.06)",
+  glowLilac: "0 0 40px rgba(183, 172, 232, 0.2), 0 0 80px rgba(183, 172, 232, 0.06)",
+  glowSuccess: "0 0 30px rgba(52, 211, 153, 0.2)",
+  glowWarning: "0 0 30px rgba(251, 113, 133, 0.2)",
 
-  // Borders
-  borderSubtle: "rgba(148, 163, 184, 0.08)",
-  borderAccent: "rgba(99, 102, 241, 0.2)",
-  borderCyan: "rgba(34, 211, 238, 0.15)",
+  // ── Borders ──
+  borderSubtle: "rgba(214, 210, 196, 0.08)",
+  borderGold: "rgba(253, 218, 36, 0.2)",
+  borderTeal: "rgba(0, 167, 181, 0.2)",
+  borderLilac: "rgba(183, 172, 232, 0.15)",
 } as const;
 
-// Google Fonts loaded via Remotion — distinctive, not generic
+// ── Typography ──
+// Lora: serif headlines (elegant, enterprise-friendly)
+// Inter: body text and captions (clean, readable)
+// Anton: condensed accent/callouts (impact, ALL CAPS)
 export const fonts = {
-  // Display: geometric, sharp, cinematic
-  display: "'Outfit', sans-serif",
-  // Body: clean humanist, not Inter
-  body: "'Plus Jakarta Sans', sans-serif",
-  // Code: character, not JetBrains default
-  code: "'IBM Plex Mono', monospace",
+  display: "'Lora', Georgia, serif",
+  body: "'Inter', system-ui, sans-serif",
+  accent: "'Anton', Impact, sans-serif",
+  code: "'IBM Plex Mono', 'Courier New', monospace",
 } as const;
 
-// Font loading URLs for Remotion
+// Google Fonts URLs
 export const fontUrls = [
-  "https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap",
-  "https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap",
-  "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap",
+  "https://fonts.googleapis.com/css2?family=Lora:wght@400;500;600;700&display=swap",
+  "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap",
+  "https://fonts.googleapis.com/css2?family=Anton&display=swap",
+  "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&display=swap",
 ];
 
+// ── Timing (from audioMarks.ts) ──
 export const timing = {
   fps: 30,
-  episodes: {
-    opening: { start: 0, duration: 10 },
-    episode1: { start: 10, duration: 50 },
-    episode2: { start: 60, duration: 50 },
-    episode3: { start: 110, duration: 50 },
-    episode4: { start: 160, duration: 60 },
-    episode5: { start: 220, duration: 55 },
-    closing: { start: 275, duration: 20.3 },
-  },
   totalDuration: 295.3,
 } as const;
 

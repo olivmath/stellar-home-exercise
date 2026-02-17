@@ -5,7 +5,6 @@ import { slideIn } from "../animations/springs";
 type Props = {
   name: string;
   subtitle: string;
-  /** Filename in public/images/founders/ e.g. "jed-mccaleb.png" */
   photo?: string;
   logos?: string[];
   delay?: number;
@@ -28,47 +27,49 @@ export const FounderCard: React.FC<Props> = ({
         opacity,
         transform: `translateY(${translateY}px)`,
         background: colors.bgGlass,
-        border: `1px solid ${colors.borderAccent}`,
-        borderRadius: 20,
-        padding: "36px 40px",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
+        border: `1px solid ${colors.borderGold}`,
+        borderRadius: 16,
+        padding: "40px 44px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 16,
+        gap: 18,
         minWidth: 300,
-        boxShadow: colors.glowStellar,
+        boxShadow: colors.glowGold,
         position: "relative",
         overflow: "hidden",
       }}
     >
-      {/* Top accent line */}
+      {/* Top gold accent line — brand signature */}
       <div
         style={{
           position: "absolute",
           top: 0,
-          left: "20%",
-          right: "20%",
+          left: "15%",
+          right: "15%",
           height: 2,
-          background: `linear-gradient(90deg, transparent, ${colors.stellar}, transparent)`,
+          background: `linear-gradient(90deg, transparent, ${colors.gold}, transparent)`,
           borderRadius: 1,
         }}
       />
 
-      {/* Avatar */}
+      {/* Avatar with gold ring */}
       <div
         style={{
-          width: 88,
-          height: 88,
+          width: 96,
+          height: 96,
           borderRadius: "50%",
           overflow: "hidden",
-          border: `2px solid ${colors.stellar}`,
-          boxShadow: `0 0 24px ${colors.stellar}30`,
+          border: `2.5px solid ${colors.gold}`,
+          boxShadow: `0 0 28px rgba(253, 218, 36, 0.2)`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           background: photo
             ? "transparent"
-            : `linear-gradient(135deg, ${colors.stellar}, ${colors.cyan})`,
+            : `linear-gradient(135deg, ${colors.gold}, ${colors.teal})`,
         }}
       >
         {photo ? (
@@ -79,10 +80,10 @@ export const FounderCard: React.FC<Props> = ({
         ) : (
           <span
             style={{
-              fontSize: 38,
+              fontSize: 40,
               fontFamily: fonts.display,
               fontWeight: 700,
-              color: colors.textPrimary,
+              color: colors.black,
             }}
           >
             {name[0]}
@@ -90,11 +91,11 @@ export const FounderCard: React.FC<Props> = ({
         )}
       </div>
 
-      {/* Name */}
+      {/* Name — Lora serif */}
       <div
         style={{
           color: colors.textPrimary,
-          fontSize: 26,
+          fontSize: 28,
           fontFamily: fonts.display,
           fontWeight: 700,
           letterSpacing: -0.5,
@@ -106,32 +107,32 @@ export const FounderCard: React.FC<Props> = ({
       {/* Role */}
       <div
         style={{
-          color: colors.textSecondary,
-          fontSize: 15,
+          color: colors.warmGrey,
+          fontSize: 14,
           fontFamily: fonts.body,
           fontWeight: 500,
-          letterSpacing: 1.5,
+          letterSpacing: 2,
           textTransform: "uppercase",
         }}
       >
         {subtitle}
       </div>
 
-      {/* Logo tags */}
+      {/* Logo tags — teal variant */}
       {logos.length > 0 && (
-        <div style={{ display: "flex", gap: 10, marginTop: 4 }}>
+        <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
           {logos.map((logo) => (
             <div
               key={logo}
               style={{
-                color: colors.cyan,
+                color: colors.teal,
                 fontSize: 12,
                 fontFamily: fonts.code,
                 fontWeight: 500,
-                padding: "5px 12px",
+                padding: "6px 14px",
                 borderRadius: 8,
-                background: colors.cyanDim,
-                border: `1px solid ${colors.borderCyan}`,
+                background: colors.tealDim,
+                border: `1px solid ${colors.borderTeal}`,
                 letterSpacing: 0.5,
               }}
             >

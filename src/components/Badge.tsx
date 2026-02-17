@@ -5,22 +5,28 @@ import { scaleIn } from "../animations/springs";
 type Props = {
   label: string;
   delay?: number;
-  variant?: "stellar" | "cyan" | "success" | "warning" | "gold";
+  variant?: "gold" | "teal" | "lilac" | "success" | "warning";
   size?: "sm" | "md" | "lg";
 };
 
 const variantMap = {
-  stellar: {
-    color: colors.stellar,
-    bg: `${colors.stellar}12`,
-    border: `${colors.stellar}25`,
-    glow: colors.glowStellar,
+  gold: {
+    color: colors.gold,
+    bg: colors.goldDim,
+    border: colors.borderGold,
+    glow: colors.glowGold,
   },
-  cyan: {
-    color: colors.cyan,
-    bg: colors.cyanDim,
-    border: `${colors.cyan}20`,
-    glow: colors.glowCyan,
+  teal: {
+    color: colors.teal,
+    bg: colors.tealDim,
+    border: colors.borderTeal,
+    glow: colors.glowTeal,
+  },
+  lilac: {
+    color: colors.lilac,
+    bg: colors.lilacDim,
+    border: colors.borderLilac,
+    glow: colors.glowLilac,
   },
   success: {
     color: colors.success,
@@ -34,24 +40,18 @@ const variantMap = {
     border: `${colors.warning}20`,
     glow: colors.glowWarning,
   },
-  gold: {
-    color: colors.gold,
-    bg: `${colors.gold}10`,
-    border: `${colors.gold}20`,
-    glow: `0 0 30px ${colors.gold}25`,
-  },
 };
 
 const sizeMap = {
-  sm: { fontSize: 14, padding: "8px 16px", borderRadius: 8 },
-  md: { fontSize: 17, padding: "12px 22px", borderRadius: 12 },
-  lg: { fontSize: 20, padding: "16px 28px", borderRadius: 14 },
+  sm: { fontSize: 14, padding: "8px 18px", borderRadius: 8 },
+  md: { fontSize: 17, padding: "12px 24px", borderRadius: 10 },
+  lg: { fontSize: 20, padding: "16px 30px", borderRadius: 12 },
 };
 
 export const Badge: React.FC<Props> = ({
   label,
   delay = 0,
-  variant = "stellar",
+  variant = "gold",
   size = "md",
 }) => {
   const frame = useCurrentFrame();
@@ -72,9 +72,9 @@ export const Badge: React.FC<Props> = ({
         color: v.color,
         fontSize: s.fontSize,
         fontFamily: fonts.code,
-        fontWeight: 600,
+        fontWeight: 500,
         boxShadow: v.glow,
-        letterSpacing: 0.3,
+        letterSpacing: 0.5,
         position: "relative",
       }}
     >

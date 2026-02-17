@@ -11,7 +11,7 @@ type Props = {
 export const FlowDiagram: React.FC<Props> = ({
   steps,
   delay = 0,
-  accentColor = colors.stellar,
+  accentColor = colors.gold,
 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -22,7 +22,6 @@ export const FlowDiagram: React.FC<Props> = ({
         const stepDelay = delay + i * 0.4;
         const opacity = fadeIn(frame, fps, stepDelay);
 
-        // Animate the arrow connection line drawing in
         const arrowProgress =
           i < steps.length - 1
             ? interpolate(
@@ -43,18 +42,18 @@ export const FlowDiagram: React.FC<Props> = ({
               style={{
                 background: colors.bgGlass,
                 border: `1px solid ${accentColor}30`,
-                borderRadius: 14,
-                padding: "18px 28px",
+                borderRadius: 12,
+                padding: "18px 30px",
                 color: colors.textPrimary,
-                fontSize: 19,
+                fontSize: 18,
                 fontFamily: fonts.code,
-                fontWeight: 600,
+                fontWeight: 500,
                 position: "relative",
-                boxShadow: `0 0 20px ${accentColor}10`,
+                boxShadow: `0 0 24px ${accentColor}08, inset 0 1px 0 rgba(246, 247, 248, 0.04)`,
                 letterSpacing: 0.3,
               }}
             >
-              {/* Glow dot top-left */}
+              {/* Gold accent dot */}
               <div
                 style={{
                   position: "absolute",
@@ -64,8 +63,8 @@ export const FlowDiagram: React.FC<Props> = ({
                   height: 6,
                   borderRadius: "50%",
                   backgroundColor: accentColor,
-                  boxShadow: `0 0 8px ${accentColor}`,
-                  opacity: 0.6,
+                  boxShadow: `0 0 10px ${accentColor}`,
+                  opacity: 0.7,
                 }}
               />
               {step}
@@ -77,34 +76,32 @@ export const FlowDiagram: React.FC<Props> = ({
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  margin: "0 4px",
+                  margin: "0 6px",
                   position: "relative",
-                  width: 48,
+                  width: 52,
                   height: 2,
                 }}
               >
-                {/* Line */}
                 <div
                   style={{
                     height: 1.5,
                     width: `${arrowProgress * 100}%`,
-                    background: `linear-gradient(90deg, ${accentColor}60, ${accentColor})`,
+                    background: `linear-gradient(90deg, ${accentColor}40, ${accentColor})`,
                     borderRadius: 1,
                   }}
                 />
-                {/* Arrow head */}
                 <div
                   style={{
                     position: "absolute",
                     right: 0,
-                    color: accentColor,
-                    fontSize: 18,
-                    fontFamily: fonts.code,
+                    width: 0,
+                    height: 0,
+                    borderTop: "4px solid transparent",
+                    borderBottom: "4px solid transparent",
+                    borderLeft: `6px solid ${accentColor}`,
                     opacity: arrowProgress,
                   }}
-                >
-                  ›
-                </div>
+                />
               </div>
             )}
           </div>

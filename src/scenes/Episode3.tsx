@@ -7,399 +7,406 @@ import {
   interpolate,
   Sequence,
 } from "remotion";
+import { colors, fonts } from "../styles/theme";
 import { fadeIn, slideIn, scaleIn } from "../animations/springs";
 import { EpisodeTitle } from "../components/EpisodeTitle";
 import { FlowDiagram } from "../components/FlowDiagram";
 import { GlassPanel } from "../components/GlassPanel";
 import { Badge } from "../components/Badge";
+import { LowerThird } from "../components/LowerThird";
+import { episodes, toFrame } from "../config/audioMarks";
 
-// Episode 3 — Transactions & Operations
-// Duration: ~50s at 30fps = 1500 frames
+// ── Timing: relative to episode start (108.68s) ──
+// ep3 narration: 108.68s → 148.78s
+const EP = episodes.ep3.startSec;
+const rel = (sec: number) => toFrame(sec - EP);
 
-const colors = {
-  bgPrimary: "#050810",
-  bgElevated: "#0A0E1A",
-  bgGlass: "rgba(12, 16, 32, 0.72)",
-  stellar: "#6366F1",
-  stellarLight: "#818CF8",
-  cyan: "#22D3EE",
-  cyanDim: "rgba(34, 211, 238, 0.15)",
-  success: "#34D399",
-  warning: "#FB7185",
-  gold: "#FBBF24",
-  textPrimary: "#F1F5F9",
-  textSecondary: "#94A3B8",
-  textDim: "#475569",
-  glowStellar:
-    "0 0 40px rgba(99, 102, 241, 0.3), 0 0 80px rgba(99, 102, 241, 0.1)",
-  glowCyan:
-    "0 0 40px rgba(34, 211, 238, 0.25), 0 0 80px rgba(34, 211, 238, 0.08)",
-  glowSuccess: "0 0 30px rgba(52, 211, 153, 0.25)",
-  glowWarning: "0 0 30px rgba(251, 113, 133, 0.25)",
-  borderSubtle: "rgba(148, 163, 184, 0.08)",
-  borderAccent: "rgba(99, 102, 241, 0.2)",
-  borderCyan: "rgba(34, 211, 238, 0.15)",
+// ── Section 1: Episode Title (frames 0-149) ──
+const TitleSection: React.FC = () => {
+  return (
+    <AbsoluteFill
+      style={{
+        backgroundColor: colors.bgPrimary,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {/* Ambient radial glow */}
+      <div
+        style={{
+          position: "absolute",
+          width: 700,
+          height: 500,
+          background: `radial-gradient(ellipse, rgba(253, 218, 36, 0.06) 0%, rgba(0, 167, 181, 0.02) 50%, transparent 70%)`,
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          pointerEvents: "none",
+        }}
+      />
+      <EpisodeTitle number="03" title="Transactions & Operations" />
+    </AbsoluteFill>
+  );
 };
 
-const fonts = {
-  display: "'Outfit', sans-serif",
-  body: "'Plus Jakarta Sans', sans-serif",
-  code: "'IBM Plex Mono', monospace",
-};
-
-export const Episode3: React.FC = () => {
+// ── Section 2: Transaction Lifecycle ──
+const TransactionLifecycle: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+
+  const titleOpacity = fadeIn(frame, fps, 0.2);
+  const subtitleOpacity = fadeIn(frame, fps, 2.0);
 
   return (
     <AbsoluteFill
       style={{
         backgroundColor: colors.bgPrimary,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        gap: 48,
+      }}
+    >
+      {/* Subtle top glow */}
+      <div
+        style={{
+          position: "absolute",
+          width: 600,
+          height: 300,
+          background: `radial-gradient(ellipse, rgba(0, 167, 181, 0.05) 0%, transparent 70%)`,
+          top: "15%",
+          left: "50%",
+          transform: "translateX(-50%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Section heading */}
+      <div
+        style={{
+          opacity: titleOpacity,
+          color: colors.textPrimary,
+          fontSize: 38,
+          fontFamily: fonts.display,
+          fontWeight: 700,
+          letterSpacing: -0.5,
+        }}
+      >
+        Transaction Lifecycle
+      </div>
+
+      {/* Flow diagram */}
+      <FlowDiagram
+        steps={["Wallet", "Horizon", "Core", "Ledger"]}
+        delay={0.5}
+        accentColor={colors.teal}
+      />
+
+      {/* Subtitle */}
+      <div
+        style={{
+          opacity: subtitleOpacity,
+          color: colors.warmGrey,
+          fontSize: 18,
+          fontFamily: fonts.body,
+          letterSpacing: 0.3,
+        }}
+      >
+        Each step validates and forwards
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+// ── Section 3: Atomicity Visual ──
+const AtomicityVisual: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const titleOpacity = fadeIn(frame, fps, 0.2);
+  const subtitleOpacity = fadeIn(frame, fps, 0.5);
+
+  // Operation card spring animations
+  const op1Prog = spring({
+    frame: frame - 1.0 * fps,
+    fps,
+    config: { damping: 14, mass: 0.6, stiffness: 120 },
+  });
+  const op2Prog = spring({
+    frame: frame - 1.5 * fps,
+    fps,
+    config: { damping: 14, mass: 0.6, stiffness: 120 },
+  });
+  const op3Prog = spring({
+    frame: frame - 2.0 * fps,
+    fps,
+    config: { damping: 14, mass: 0.6, stiffness: 120 },
+  });
+  const resultProg = spring({
+    frame: frame - 3.0 * fps,
+    fps,
+    config: { damping: 10, mass: 0.8, stiffness: 100 },
+  });
+
+  const ops = [
+    { label: "Op 1", status: "success" as const, mark: "\u2713", prog: op1Prog },
+    { label: "Op 2", status: "fail" as const, mark: "\u2717", prog: op2Prog },
+    { label: "Op 3", status: "fail" as const, mark: "\u2717", prog: op3Prog },
+  ];
+
+  return (
+    <AbsoluteFill
+      style={{
+        backgroundColor: colors.bgPrimary,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        gap: 36,
+      }}
+    >
+      {/* Ambient warning glow behind cards */}
+      <div
+        style={{
+          position: "absolute",
+          width: 500,
+          height: 400,
+          background: `radial-gradient(ellipse, rgba(251, 113, 133, 0.04) 0%, transparent 70%)`,
+          top: "45%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Section heading */}
+      <div
+        style={{
+          opacity: titleOpacity,
+          color: colors.textPrimary,
+          fontSize: 38,
+          fontFamily: fonts.display,
+          fontWeight: 700,
+          letterSpacing: -0.5,
+        }}
+      >
+        Atomic Transactions
+      </div>
+
+      <div
+        style={{
+          color: colors.warmGrey,
+          fontSize: 18,
+          fontFamily: fonts.body,
+          opacity: subtitleOpacity,
+          marginBottom: 8,
+        }}
+      >
+        All operations succeed, or none do.
+      </div>
+
+      {/* Operation cards row */}
+      <div style={{ display: "flex", gap: 28, alignItems: "center" }}>
+        {ops.map((op, i) => {
+          const borderColor = op.status === "success" ? colors.success : colors.warning;
+          const markColor = op.status === "success" ? colors.success : colors.warning;
+
+          return (
+            <div
+              key={i}
+              style={{
+                opacity: op.prog,
+                transform: `scale(${interpolate(op.prog, [0, 1], [0.6, 1])})`,
+              }}
+            >
+              <GlassPanel
+                padding="24px 32px"
+                borderColor={borderColor}
+                style={{
+                  minWidth: 180,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 12,
+                  position: "relative",
+                  overflow: "hidden",
+                }}
+              >
+                {/* Colored left border accent */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: 3,
+                    height: "100%",
+                    backgroundColor: borderColor,
+                    borderRadius: "3px 0 0 3px",
+                  }}
+                />
+                <div
+                  style={{
+                    color: colors.textPrimary,
+                    fontSize: 18,
+                    fontFamily: fonts.code,
+                    fontWeight: 600,
+                  }}
+                >
+                  {op.label}
+                </div>
+                <div
+                  style={{
+                    color: markColor,
+                    fontSize: 32,
+                    lineHeight: 1,
+                  }}
+                >
+                  {op.mark}
+                </div>
+              </GlassPanel>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Transaction result card — slides up with spring */}
+      <div
+        style={{
+          opacity: resultProg,
+          transform: `translateY(${interpolate(resultProg, [0, 1], [40, 0])}px)`,
+          marginTop: 8,
+        }}
+      >
+        <GlassPanel
+          padding="20px 48px"
+          glow={colors.glowWarning}
+          borderColor={colors.warning}
+        >
+          <div
+            style={{
+              color: colors.warning,
+              fontSize: 28,
+              fontFamily: fonts.display,
+              fontWeight: 800,
+              letterSpacing: 1,
+              textAlign: "center",
+              textShadow: `0 0 20px rgba(251, 113, 133, 0.3)`,
+            }}
+          >
+            Transaction: FAIL
+          </div>
+        </GlassPanel>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+// ── Section 4: Operation Types ──
+const OperationTypes: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const titleOpacity = fadeIn(frame, fps, 0.2);
+  const subtitleOpacity = fadeIn(frame, fps, 0.6);
+
+  return (
+    <AbsoluteFill
+      style={{
+        backgroundColor: colors.bgPrimary,
+        justifyContent: "center",
+        alignItems: "center",
+        flexDirection: "column",
+        gap: 40,
+      }}
+    >
+      {/* Ambient multi-color glow */}
+      <div
+        style={{
+          position: "absolute",
+          width: 600,
+          height: 400,
+          background: `radial-gradient(ellipse, rgba(253, 218, 36, 0.04) 0%, rgba(0, 167, 181, 0.03) 40%, transparent 70%)`,
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          pointerEvents: "none",
+        }}
+      />
+
+      {/* Section label */}
+      <div
+        style={{
+          color: colors.warmGrey,
+          fontSize: 14,
+          fontFamily: fonts.accent,
+          textTransform: "uppercase" as const,
+          letterSpacing: 4,
+          opacity: fadeIn(frame, fps, 0.1),
+        }}
+      >
+        Operation Types
+      </div>
+
+      <div
+        style={{
+          opacity: titleOpacity,
+          color: colors.textPrimary,
+          fontSize: 38,
+          fontFamily: fonts.display,
+          fontWeight: 700,
+          letterSpacing: -0.5,
+        }}
+      >
+        Operation Types
+      </div>
+
+      <div
+        style={{
+          color: colors.warmGrey,
+          fontSize: 17,
+          fontFamily: fonts.body,
+          opacity: subtitleOpacity,
+        }}
+      >
+        A transaction bundles one or more operations
+      </div>
+
+      <div style={{ display: "flex", gap: 32, marginTop: 12 }}>
+        <Badge label="Payment" delay={1.0} variant="teal" size="lg" />
+        <Badge label="Change Trust" delay={1.6} variant="gold" size="lg" />
+        <Badge label="Invoke Contract" delay={2.2} variant="success" size="lg" />
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+// ── Main Episode 3 Composition ──
+// ALL SHOTS: ANIMATION FULL — Solid bgPrimary throughout, no video showing
+export const Episode3: React.FC = () => {
+  return (
+    <AbsoluteFill
+      style={{
         fontFamily: fonts.body,
       }}
     >
-      {/* ============================================
-          SECTION 1 — Episode Title (frames 0-149)
-          ============================================ */}
-      <Sequence from={0} durationInFrames={150}>
-        <AbsoluteFill
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <EpisodeTitle number="03" title="Transactions & Operations" />
-        </AbsoluteFill>
+      {/* Section 1 — TransactionEnvelope/Intro (108.68s to 117.22s) */}
+      <Sequence from={0} durationInFrames={rel(117.22)}>
+        <TitleSection />
       </Sequence>
 
-      {/* ============================================
-          SECTION 2 — Transaction Lifecycle (frames 150-599)
-          FlowDiagram: Wallet -> Horizon -> Core -> Ledger
-          ============================================ */}
-      <Sequence from={150} durationInFrames={450}>
-        <AbsoluteFill
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            gap: 48,
-          }}
-        >
-          {/* Section heading */}
-          <div
-            style={{
-              opacity: fadeIn(frame - 150, fps, 0.2),
-              color: colors.textPrimary,
-              fontSize: 38,
-              fontFamily: fonts.display,
-              fontWeight: 700,
-              letterSpacing: -0.5,
-            }}
-          >
-            Transaction Lifecycle
-          </div>
-
-          {/* Flow diagram */}
-          <FlowDiagram
-            steps={["Wallet", "Horizon", "Core", "Ledger"]}
-            delay={0.5}
-            accentColor={colors.cyan}
-          />
-
-          {/* Subtitle */}
-          <div
-            style={{
-              opacity: fadeIn(frame - 150, fps, 2.0),
-              color: colors.textSecondary,
-              fontSize: 18,
-              fontFamily: fonts.body,
-              letterSpacing: 0.3,
-            }}
-          >
-            Each step validates and forwards
-          </div>
-        </AbsoluteFill>
+      {/* Section 2 — SubmissionFlow (117.22s to 128.74s) */}
+      <Sequence from={rel(117.22)} durationInFrames={rel(128.74) - rel(117.22)}>
+        <TransactionLifecycle />
       </Sequence>
 
-      {/* ============================================
-          SECTION 3 — Atomicity Visual (frames 600-1049)
-          All-or-nothing: one op fails = entire tx fails
-          ============================================ */}
-      <Sequence from={600} durationInFrames={450}>
-        <AbsoluteFill
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            gap: 36,
-          }}
-        >
-          {/* Section heading */}
-          <div
-            style={{
-              opacity: fadeIn(frame - 600, fps, 0.2),
-              color: colors.textPrimary,
-              fontSize: 38,
-              fontFamily: fonts.display,
-              fontWeight: 700,
-              letterSpacing: -0.5,
-            }}
-          >
-            Atomic Transactions
-          </div>
-
-          <div
-            style={{
-              color: colors.textSecondary,
-              fontSize: 18,
-              fontFamily: fonts.body,
-              opacity: fadeIn(frame - 600, fps, 0.5),
-              marginBottom: 8,
-            }}
-          >
-            All operations succeed, or none do.
-          </div>
-
-          {/* Operation cards row */}
-          <div style={{ display: "flex", gap: 28, alignItems: "center" }}>
-            {/* Op 1 — Success */}
-            {(() => {
-              const localFrame = frame - 600;
-              const prog = spring({
-                frame: localFrame - 1.0 * fps,
-                fps,
-                config: { damping: 14, mass: 0.6, stiffness: 120 },
-              });
-              return (
-                <div
-                  style={{
-                    opacity: prog,
-                    transform: `scale(${interpolate(prog, [0, 1], [0.6, 1])})`,
-                  }}
-                >
-                  <GlassPanel
-                    padding="24px 32px"
-                    borderColor={colors.success}
-                    style={{
-                      borderLeft: `4px solid ${colors.success}`,
-                      minWidth: 180,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: 12,
-                    }}
-                  >
-                    <div
-                      style={{
-                        color: colors.textPrimary,
-                        fontSize: 18,
-                        fontFamily: fonts.code,
-                        fontWeight: 600,
-                      }}
-                    >
-                      Op 1
-                    </div>
-                    <div
-                      style={{
-                        color: colors.success,
-                        fontSize: 32,
-                        lineHeight: 1,
-                      }}
-                    >
-                      {"\u2713"}
-                    </div>
-                  </GlassPanel>
-                </div>
-              );
-            })()}
-
-            {/* Op 2 — Fail */}
-            {(() => {
-              const localFrame = frame - 600;
-              const prog = spring({
-                frame: localFrame - 1.5 * fps,
-                fps,
-                config: { damping: 14, mass: 0.6, stiffness: 120 },
-              });
-              return (
-                <div
-                  style={{
-                    opacity: prog,
-                    transform: `scale(${interpolate(prog, [0, 1], [0.6, 1])})`,
-                  }}
-                >
-                  <GlassPanel
-                    padding="24px 32px"
-                    borderColor={colors.warning}
-                    style={{
-                      borderLeft: `4px solid ${colors.warning}`,
-                      minWidth: 180,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: 12,
-                    }}
-                  >
-                    <div
-                      style={{
-                        color: colors.textPrimary,
-                        fontSize: 18,
-                        fontFamily: fonts.code,
-                        fontWeight: 600,
-                      }}
-                    >
-                      Op 2
-                    </div>
-                    <div
-                      style={{
-                        color: colors.warning,
-                        fontSize: 32,
-                        lineHeight: 1,
-                      }}
-                    >
-                      {"\u2717"}
-                    </div>
-                  </GlassPanel>
-                </div>
-              );
-            })()}
-
-            {/* Op 3 — Fail */}
-            {(() => {
-              const localFrame = frame - 600;
-              const prog = spring({
-                frame: localFrame - 2.0 * fps,
-                fps,
-                config: { damping: 14, mass: 0.6, stiffness: 120 },
-              });
-              return (
-                <div
-                  style={{
-                    opacity: prog,
-                    transform: `scale(${interpolate(prog, [0, 1], [0.6, 1])})`,
-                  }}
-                >
-                  <GlassPanel
-                    padding="24px 32px"
-                    borderColor={colors.warning}
-                    style={{
-                      borderLeft: `4px solid ${colors.warning}`,
-                      minWidth: 180,
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: 12,
-                    }}
-                  >
-                    <div
-                      style={{
-                        color: colors.textPrimary,
-                        fontSize: 18,
-                        fontFamily: fonts.code,
-                        fontWeight: 600,
-                      }}
-                    >
-                      Op 3
-                    </div>
-                    <div
-                      style={{
-                        color: colors.warning,
-                        fontSize: 32,
-                        lineHeight: 1,
-                      }}
-                    >
-                      {"\u2717"}
-                    </div>
-                  </GlassPanel>
-                </div>
-              );
-            })()}
-          </div>
-
-          {/* Transaction result card — slides up */}
-          {(() => {
-            const localFrame = frame - 600;
-            const resultProg = spring({
-              frame: localFrame - 3.0 * fps,
-              fps,
-              config: { damping: 10, mass: 0.8, stiffness: 100 },
-            });
-
-            return (
-              <div
-                style={{
-                  opacity: resultProg,
-                  transform: `translateY(${interpolate(resultProg, [0, 1], [40, 0])}px)`,
-                  marginTop: 8,
-                }}
-              >
-                <GlassPanel
-                  padding="20px 48px"
-                  glow={colors.glowWarning}
-                  borderColor={colors.warning}
-                >
-                  <div
-                    style={{
-                      color: colors.warning,
-                      fontSize: 28,
-                      fontFamily: fonts.display,
-                      fontWeight: 800,
-                      letterSpacing: 1,
-                      textAlign: "center",
-                    }}
-                  >
-                    Transaction: FAIL
-                  </div>
-                </GlassPanel>
-              </div>
-            );
-          })()}
-        </AbsoluteFill>
+      {/* Section 3 — OperationTypes (128.74s to 148.78s) */}
+      <Sequence from={rel(128.74)} durationInFrames={rel(148.78) - rel(128.74)}>
+        <AtomicityVisual />
+        <OperationTypes />
       </Sequence>
 
-      {/* ============================================
-          SECTION 4 — Operation Types (frames 1050-1500)
-          Staggered Badges: Payment, Change Trust, Invoke Contract
-          ============================================ */}
-      <Sequence from={1050} durationInFrames={450}>
-        <AbsoluteFill
-          style={{
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            gap: 40,
-          }}
-        >
-          <div
-            style={{
-              opacity: fadeIn(frame - 1050, fps, 0.2),
-              color: colors.textPrimary,
-              fontSize: 38,
-              fontFamily: fonts.display,
-              fontWeight: 700,
-              letterSpacing: -0.5,
-            }}
-          >
-            Operation Types
-          </div>
-
-          <div
-            style={{
-              color: colors.textSecondary,
-              fontSize: 17,
-              fontFamily: fonts.body,
-              opacity: fadeIn(frame - 1050, fps, 0.6),
-            }}
-          >
-            A transaction bundles one or more operations
-          </div>
-
-          <div style={{ display: "flex", gap: 32, marginTop: 12 }}>
-            <Badge label="Payment" delay={1.0} variant="cyan" />
-            <Badge label="Change Trust" delay={1.6} variant="stellar" />
-            <Badge label="Invoke Contract" delay={2.2} variant="success" />
-          </div>
-        </AbsoluteFill>
+      {/* Lower-third across full episode */}
+      <Sequence from={0} durationInFrames={rel(148.78)}>
+        <LowerThird title="Transactions & Operations" subtitle="Episode 03" delay={0} />
       </Sequence>
     </AbsoluteFill>
   );

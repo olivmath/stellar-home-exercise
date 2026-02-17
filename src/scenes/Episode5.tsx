@@ -7,43 +7,22 @@ import {
   interpolate,
   Sequence,
 } from "remotion";
+import { colors, fonts } from "../styles/theme";
 import { fadeIn, slideIn, scaleIn } from "../animations/springs";
 import { EpisodeTitle } from "../components/EpisodeTitle";
 import { ScientistCard } from "../components/ScientistCard";
 import { GlassPanel } from "../components/GlassPanel";
 import { Badge } from "../components/Badge";
+import { LowerThird } from "../components/LowerThird";
+import { episodes, toFrame } from "../config/audioMarks";
 
-// ── Design tokens ───────────────────────────────────────────────────
-const colors = {
-  bgPrimary: "#050810",
-  bgElevated: "#0A0E1A",
-  bgGlass: "rgba(12, 16, 32, 0.72)",
-  stellar: "#6366F1",
-  stellarLight: "#818CF8",
-  cyan: "#22D3EE",
-  cyanDim: "rgba(34, 211, 238, 0.15)",
-  success: "#34D399",
-  warning: "#FB7185",
-  gold: "#FBBF24",
-  textPrimary: "#F1F5F9",
-  textSecondary: "#94A3B8",
-  textDim: "#475569",
-  glowStellar:
-    "0 0 40px rgba(99, 102, 241, 0.3), 0 0 80px rgba(99, 102, 241, 0.1)",
-  glowCyan:
-    "0 0 40px rgba(34, 211, 238, 0.25), 0 0 80px rgba(34, 211, 238, 0.08)",
-  glowSuccess: "0 0 30px rgba(52, 211, 153, 0.25)",
-  glowWarning: "0 0 30px rgba(251, 113, 133, 0.25)",
-  borderSubtle: "rgba(148, 163, 184, 0.08)",
-  borderAccent: "rgba(99, 102, 241, 0.2)",
-  borderCyan: "rgba(34, 211, 238, 0.15)",
-};
+// ── Timing: relative to episode start (212.1s) ──
+// ep5 narration: 212.1s → 275.28s
+const EP = episodes.ep5.startSec;
+const rel = (sec: number) => toFrame(sec - EP);
 
-const fonts = {
-  display: "'Outfit', sans-serif",
-  body: "'Plus Jakarta Sans', sans-serif",
-  code: "'IBM Plex Mono', monospace",
-};
+// Episode 5 — Soroban, WASM & zk-Proofs
+// ALL SHOTS ARE ANIMATION FULL — Solid bgPrimary throughout
 
 // ── Stack Layer ─────────────────────────────────────────────────────
 const StackLayer: React.FC<{
@@ -161,9 +140,9 @@ const TTLConcept: React.FC = () => {
         >
           <span
             style={{
-              color: colors.textSecondary,
+              color: colors.warmGrey,
               fontSize: 14,
-              fontFamily: fonts.code,
+              fontFamily: fonts.accent,
               textTransform: "uppercase" as const,
               letterSpacing: 3,
             }}
@@ -292,8 +271,8 @@ const CryptoBurst: React.FC = () => {
   const { fps } = useVideoConfig();
 
   const badges = [
-    { label: "zk-SNARK Verify", variant: "stellar" as const, angle: 0 },
-    { label: "Passkeys", variant: "cyan" as const, angle: 1 },
+    { label: "zk-SNARK Verify", variant: "gold" as const, angle: 0 },
+    { label: "Passkeys", variant: "teal" as const, angle: 1 },
     { label: "Native L1 Crypto", variant: "success" as const, angle: 2 },
   ];
 
@@ -310,9 +289,9 @@ const CryptoBurst: React.FC = () => {
       {/* Section label */}
       <div
         style={{
-          color: colors.textSecondary,
+          color: colors.warmGrey,
           fontSize: 14,
-          fontFamily: fonts.code,
+          fontFamily: fonts.accent,
           textTransform: "uppercase" as const,
           letterSpacing: 4,
           opacity: fadeIn(frame, fps, 0.2),
@@ -321,7 +300,7 @@ const CryptoBurst: React.FC = () => {
         Crypto Primitives
       </div>
 
-      {/* Fan-out badges */}
+      {/* Fan-out badges with staggered 0.5s */}
       <div
         style={{
           position: "relative",
@@ -375,8 +354,8 @@ export const Episode5: React.FC = () => {
         fontFamily: fonts.body,
       }}
     >
-      {/* ── Section 1: Title + Stack Architecture (0-539) ──────────── */}
-      <Sequence from={0} durationInFrames={540}>
+      {/* ── Section 1: SorobanIntro — Title + Stack Architecture (212.1s to 225.82s) ── */}
+      <Sequence from={0} durationInFrames={rel(225.82)}>
         <AbsoluteFill
           style={{
             display: "flex",
@@ -399,15 +378,15 @@ export const Episode5: React.FC = () => {
               marginTop: 24,
             }}
           >
-            <StackLayer label="Soroban" index={0} accentColor={colors.stellar} />
-            <StackLayer label="WASM VM" index={1} accentColor={colors.cyan} />
+            <StackLayer label="Soroban" index={0} accentColor={colors.gold} />
+            <StackLayer label="WASM VM" index={1} accentColor={colors.teal} />
             <StackLayer label="Rust" index={2} accentColor={colors.success} />
           </div>
         </AbsoluteFill>
       </Sequence>
 
-      {/* ── Section 2: Scientist Card (540-899) ────────────────────── */}
-      <Sequence from={540} durationInFrames={360}>
+      {/* ── Section 2: StateModel — Scientist Card + TTL (225.82s to 247.58s) ── */}
+      <Sequence from={rel(225.82)} durationInFrames={rel(247.58) - rel(225.82)}>
         <AbsoluteFill
           style={{
             display: "flex",
@@ -420,9 +399,45 @@ export const Episode5: React.FC = () => {
         >
           <div
             style={{
-              color: colors.textSecondary,
+              color: colors.warmGrey,
               fontSize: 14,
-              fontFamily: fonts.code,
+              fontFamily: fonts.accent,
+              textTransform: "uppercase" as const,
+              letterSpacing: 4,
+              opacity: 0.7,
+            }}
+          >
+            State Rent & TTL Model
+          </div>
+
+          <ScientistCard
+            name="Graydon Hoare"
+            institution="Rust Creator"
+            caption="Shaped Soroban's architecture philosophy"
+            delay={0.5}
+          />
+
+          <TTLConcept />
+        </AbsoluteFill>
+      </Sequence>
+
+      {/* ── Section 3: FlipperExample (247.58s to 256.9s) ── */}
+      <Sequence from={rel(247.58)} durationInFrames={rel(256.9) - rel(247.58)}>
+        <AbsoluteFill
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 32,
+            padding: 80,
+          }}
+        >
+          <div
+            style={{
+              color: colors.warmGrey,
+              fontSize: 14,
+              fontFamily: fonts.accent,
               textTransform: "uppercase" as const,
               letterSpacing: 4,
               opacity: 0.7,
@@ -440,37 +455,8 @@ export const Episode5: React.FC = () => {
         </AbsoluteFill>
       </Sequence>
 
-      {/* ── Section 3: TTL Concept (900-1379) ──────────────────────── */}
-      <Sequence from={900} durationInFrames={480}>
-        <AbsoluteFill
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 32,
-            padding: 80,
-          }}
-        >
-          <div
-            style={{
-              color: colors.textSecondary,
-              fontSize: 14,
-              fontFamily: fonts.code,
-              textTransform: "uppercase" as const,
-              letterSpacing: 4,
-              opacity: 0.7,
-            }}
-          >
-            State Rent & TTL Model
-          </div>
-
-          <TTLConcept />
-        </AbsoluteFill>
-      </Sequence>
-
-      {/* ── Section 4: Crypto Primitives (1380-1800) ───────────────── */}
-      <Sequence from={1380} durationInFrames={420}>
+      {/* ── Section 4: CryptoPrimitives (256.9s to 275.28s) ── */}
+      <Sequence from={rel(256.9)} durationInFrames={rel(275.28) - rel(256.9)}>
         <AbsoluteFill
           style={{
             display: "flex",
@@ -482,6 +468,11 @@ export const Episode5: React.FC = () => {
         >
           <CryptoBurst />
         </AbsoluteFill>
+      </Sequence>
+
+      {/* Lower-third across full episode */}
+      <Sequence from={0} durationInFrames={rel(275.28)}>
+        <LowerThird title="Soroban, WASM & zk-Proofs" subtitle="Episode 05" delay={0} />
       </Sequence>
     </AbsoluteFill>
   );
