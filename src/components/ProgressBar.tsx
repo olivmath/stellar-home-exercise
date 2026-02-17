@@ -1,6 +1,7 @@
 import { useCurrentFrame, useVideoConfig, interpolate } from "remotion";
-import { colors, fonts } from "../styles/theme";
+import { colors } from "../styles/theme";
 import { toFrame } from "../config/audioMarks";
+import { text, shadows, gradients, space } from "../styles/designSystem";
 
 const SEGMENTS = [
   { label: "Intro", startSec: 0, endSec: 9 },
@@ -12,9 +13,9 @@ const SEGMENTS = [
 ];
 
 const TOTAL_DURATION_SEC = 295;
-const BAR_HEIGHT = 6;
+const BAR_HEIGHT = 5;
 const BAR_BOTTOM = 24;
-const BAR_MARGIN_X = 48;
+const BAR_MARGIN_X = space.xxl;
 const SEGMENT_GAP = 3;
 
 export const ProgressBar: React.FC = () => {
@@ -24,7 +25,6 @@ export const ProgressBar: React.FC = () => {
 
   const totalWidth = 1920 - BAR_MARGIN_X * 2;
 
-  // Fade in the bar after 2s, stays visible
   const barOpacity = interpolate(frame, [toFrame(1.5), toFrame(2.5)], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -48,7 +48,6 @@ export const ProgressBar: React.FC = () => {
         const segWidthRatio = segDuration / TOTAL_DURATION_SEC;
         const segWidth = segWidthRatio * totalWidth - SEGMENT_GAP;
 
-        // Fill percentage within this segment
         let fillPct = 0;
         if (currentSec >= seg.endSec) {
           fillPct = 100;
@@ -67,24 +66,21 @@ export const ProgressBar: React.FC = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "flex-start",
-              gap: 4,
+              gap: space.xs,
             }}
           >
-            {/* Label — only show for active or completed segments */}
+            {/* Segment label */}
             <div
               style={{
-                fontFamily: fonts.body,
+                ...text.label,
                 fontSize: 11,
-                fontWeight: 600,
-                letterSpacing: "0.05em",
-                textTransform: "uppercase",
+                letterSpacing: 1.5,
                 color: isActive
                   ? colors.gold
                   : isComplete
                     ? colors.teal
                     : colors.textDim,
                 opacity: isActive ? 1 : isComplete ? 0.7 : 0.3,
-                transition: "color 0.3s",
               }}
             >
               {seg.label}
@@ -96,7 +92,7 @@ export const ProgressBar: React.FC = () => {
                 width: "100%",
                 height: BAR_HEIGHT,
                 borderRadius: BAR_HEIGHT / 2,
-                background: "rgba(255, 255, 255, 0.08)",
+                background: "rgba(255, 255, 255, 0.06)",
                 overflow: "hidden",
               }}
             >
@@ -112,7 +108,7 @@ export const ProgressBar: React.FC = () => {
                       ? colors.teal
                       : "transparent",
                   boxShadow: isActive
-                    ? `0 0 8px rgba(253, 218, 36, 0.4)`
+                    ? `0 0 10px rgba(253, 218, 36, 0.35)`
                     : "none",
                 }}
               />

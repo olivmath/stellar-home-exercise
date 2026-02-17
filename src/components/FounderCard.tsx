@@ -1,6 +1,7 @@
 import { useCurrentFrame, useVideoConfig, Img, staticFile } from "remotion";
-import { colors, fonts } from "../styles/theme";
+import { colors } from "../styles/theme";
 import { slideIn } from "../animations/springs";
+import { text, glass, accentLine, gradients, shadows, radius, space, variants } from "../styles/designSystem";
 
 type Props = {
   name: string;
@@ -26,50 +27,33 @@ export const FounderCard: React.FC<Props> = ({
       style={{
         opacity,
         transform: `translateY(${translateY}px)`,
-        background: colors.bgGlass,
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
-        border: `1px solid ${colors.borderGold}`,
-        borderRadius: 16,
-        padding: "48px 56px",
+        ...glass.gold,
+        padding: `${space.xxl}px ${space.xxxl - 8}px`,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 22,
+        gap: space.lg - 2,
         width: 380,
-        boxShadow: colors.glowGold,
-        position: "relative",
-        overflow: "hidden",
       }}
     >
-      {/* Top gold accent line — brand signature */}
-      <div
-        style={{
-          position: "absolute",
-          top: 0,
-          left: "15%",
-          right: "15%",
-          height: 2,
-          background: `linear-gradient(90deg, transparent, ${colors.gold}, transparent)`,
-          borderRadius: 1,
-        }}
-      />
+      {/* Top gold accent line */}
+      <div style={accentLine.topGlow("gold")} />
 
       {/* Avatar with gold ring */}
       <div
         style={{
           width: 240,
           height: 240,
-          borderRadius: "50%",
+          borderRadius: radius.circle,
           overflow: "hidden",
           border: `2.5px solid ${colors.gold}`,
-          boxShadow: `0 0 28px rgba(253, 218, 36, 0.2)`,
+          boxShadow: `${shadows.goldMedium}, ${shadows.lg}`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           background: photo
             ? "transparent"
-            : `linear-gradient(135deg, ${colors.gold}, ${colors.teal})`,
+            : gradients.goldToTeal,
         }}
       >
         {photo ? (
@@ -80,9 +64,7 @@ export const FounderCard: React.FC<Props> = ({
         ) : (
           <span
             style={{
-              fontSize: 40,
-              fontFamily: fonts.display,
-              fontWeight: 700,
+              ...text.displayMD,
               color: colors.black,
             }}
           >
@@ -91,49 +73,35 @@ export const FounderCard: React.FC<Props> = ({
         )}
       </div>
 
-      {/* Name — Lora serif */}
-      <div
-        style={{
-          color: colors.textPrimary,
-          fontSize: 28,
-          fontFamily: fonts.display,
-          fontWeight: 700,
-          letterSpacing: -0.5,
-        }}
-      >
+      {/* Name */}
+      <div style={{ ...text.h2 }}>
         {name}
       </div>
 
       {/* Role */}
       <div
         style={{
+          ...text.label,
           color: colors.warmGrey,
-          fontSize: 14,
-          fontFamily: fonts.body,
-          fontWeight: 500,
           letterSpacing: 2,
-          textTransform: "uppercase",
         }}
       >
         {subtitle}
       </div>
 
-      {/* Logo tags — teal variant */}
+      {/* Logo tags */}
       {logos.length > 0 && (
-        <div style={{ display: "flex", gap: 10, marginTop: 6 }}>
+        <div style={{ display: "flex", gap: space.sm + 2, marginTop: space.sm }}>
           {logos.map((logo) => (
             <div
               key={logo}
               style={{
+                ...text.codeSM,
                 color: colors.teal,
-                fontSize: 12,
-                fontFamily: fonts.code,
-                fontWeight: 500,
-                padding: "6px 14px",
-                borderRadius: 8,
-                background: colors.tealDim,
-                border: `1px solid ${colors.borderTeal}`,
-                letterSpacing: 0.5,
+                padding: `${space.sm - 2}px ${space.md - 2}px`,
+                borderRadius: radius.sm,
+                background: variants.teal.bg,
+                border: `1px solid ${variants.teal.border}`,
               }}
             >
               {logo}

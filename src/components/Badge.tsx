@@ -1,52 +1,19 @@
 import { useCurrentFrame, useVideoConfig } from "remotion";
-import { colors, fonts } from "../styles/theme";
 import { scaleIn } from "../animations/springs";
+import { text, variants, radius, shadows, type ColorVariant } from "../styles/designSystem";
 
 type Props = {
   label: string;
   delay?: number;
-  variant?: "gold" | "teal" | "lilac" | "success" | "warning";
+  variant?: ColorVariant;
   size?: "sm" | "md" | "lg";
 };
 
-const variantMap = {
-  gold: {
-    color: colors.gold,
-    bg: colors.goldDim,
-    border: colors.borderGold,
-    glow: colors.glowGold,
-  },
-  teal: {
-    color: colors.teal,
-    bg: colors.tealDim,
-    border: colors.borderTeal,
-    glow: colors.glowTeal,
-  },
-  lilac: {
-    color: colors.lilac,
-    bg: colors.lilacDim,
-    border: colors.borderLilac,
-    glow: colors.glowLilac,
-  },
-  success: {
-    color: colors.success,
-    bg: `${colors.success}12`,
-    border: `${colors.success}20`,
-    glow: colors.glowSuccess,
-  },
-  warning: {
-    color: colors.warning,
-    bg: `${colors.warning}10`,
-    border: `${colors.warning}20`,
-    glow: colors.glowWarning,
-  },
-};
-
 const sizeMap = {
-  sm: { fontSize: 14, padding: "8px 18px", borderRadius: 8 },
-  md: { fontSize: 17, padding: "12px 24px", borderRadius: 10 },
-  lg: { fontSize: 20, padding: "16px 30px", borderRadius: 12 },
-};
+  sm: { ...text.codeSM, padding: "8px 20px", borderRadius: radius.sm },
+  md: { ...text.codeMD, padding: "12px 26px", borderRadius: radius.md },
+  lg: { ...text.codeLG, padding: "16px 32px", borderRadius: radius.md },
+} as const;
 
 export const Badge: React.FC<Props> = ({
   label,
@@ -57,7 +24,7 @@ export const Badge: React.FC<Props> = ({
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const { opacity, scale } = scaleIn(frame, fps, delay);
-  const v = variantMap[variant];
+  const v = variants[variant];
   const s = sizeMap[size];
 
   return (
@@ -70,11 +37,11 @@ export const Badge: React.FC<Props> = ({
         borderRadius: s.borderRadius,
         padding: s.padding,
         color: v.color,
+        fontFamily: s.fontFamily,
         fontSize: s.fontSize,
-        fontFamily: fonts.code,
-        fontWeight: 500,
-        boxShadow: v.glow,
-        letterSpacing: 0.5,
+        fontWeight: s.fontWeight,
+        letterSpacing: s.letterSpacing,
+        boxShadow: `${v.glowSoft}, ${shadows.innerLight}`,
         position: "relative",
       }}
     >

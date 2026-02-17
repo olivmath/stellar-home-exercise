@@ -1,6 +1,7 @@
 import { useCurrentFrame, useVideoConfig } from "remotion";
-import { colors, fonts } from "../styles/theme";
+import { colors } from "../styles/theme";
 import { slideIn } from "../animations/springs";
+import { text, glass, accentLine, gradients, space } from "../styles/designSystem";
 
 type Props = {
   name: string;
@@ -24,57 +25,29 @@ export const ScientistCard: React.FC<Props> = ({
       style={{
         opacity,
         transform: `translateY(${translateY}px)`,
-        background: colors.bgGlass,
-        backdropFilter: "blur(20px)",
-        WebkitBackdropFilter: "blur(20px)",
-        border: `1px solid ${colors.borderTeal}`,
-        borderRadius: 16,
-        padding: "44px 56px",
+        ...glass.teal,
+        padding: `${space.xxl}px ${space.xxxl - 8}px`,
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 16,
-        boxShadow: colors.glowTeal,
-        position: "relative",
-        overflow: "hidden",
+        gap: space.md,
         maxWidth: 520,
       }}
     >
       {/* Left teal accent bar */}
-      <div
-        style={{
-          position: "absolute",
-          left: 0,
-          top: "15%",
-          bottom: "15%",
-          width: 3,
-          background: `linear-gradient(180deg, transparent, ${colors.teal}, transparent)`,
-          borderRadius: 2,
-        }}
-      />
+      <div style={accentLine.sideBar("teal")} />
 
-      {/* Name — Lora serif */}
-      <div
-        style={{
-          color: colors.textPrimary,
-          fontSize: 34,
-          fontFamily: fonts.display,
-          fontWeight: 700,
-          letterSpacing: -0.5,
-        }}
-      >
+      {/* Name */}
+      <div style={{ ...text.h1 }}>
         {name}
       </div>
 
-      {/* Institution — gold accent */}
+      {/* Institution */}
       <div
         style={{
+          ...text.label,
           color: colors.gold,
-          fontSize: 15,
-          fontFamily: fonts.body,
-          fontWeight: 600,
           letterSpacing: 2.5,
-          textTransform: "uppercase",
         }}
       >
         {institution}
@@ -83,21 +56,18 @@ export const ScientistCard: React.FC<Props> = ({
       {/* Gold divider */}
       <div
         style={{
-          width: 40,
+          width: 44,
           height: 1.5,
-          background: `linear-gradient(90deg, transparent, ${colors.gold}, transparent)`,
-          marginTop: 4,
-          marginBottom: 4,
+          background: gradients.goldLineSoft,
+          marginTop: space.xs,
+          marginBottom: space.xs,
         }}
       />
 
       {/* Caption */}
       <div
         style={{
-          color: colors.warmGrey,
-          fontSize: 16,
-          fontFamily: fonts.body,
-          fontWeight: 400,
+          ...text.bodySM,
           textAlign: "center",
           lineHeight: 1.7,
           maxWidth: 400,

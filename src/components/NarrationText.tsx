@@ -1,25 +1,20 @@
 import React from "react";
 import { useCurrentFrame, useVideoConfig } from "remotion";
-import { colors, fonts } from "../styles/theme";
+import { colors } from "../styles/theme";
 import { fadeIn } from "../animations/springs";
+import { text } from "../styles/designSystem";
 
 type Word = {
   text: string;
-  /** Absolute second when this word starts in the video */
   atSec: number;
 };
 
 type Props = {
   words: Word[];
-  /** Absolute second when this scene starts (to compute relative frames) */
   sceneStartSec: number;
   delay?: number;
 };
 
-/**
- * Displays narration text word-by-word synced to audio timestamps.
- * Each word appears when its timestamp is reached.
- */
 export const NarrationText: React.FC<Props> = ({ words, sceneStartSec, delay = 0 }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -27,10 +22,8 @@ export const NarrationText: React.FC<Props> = ({ words, sceneStartSec, delay = 0
   return (
     <div
       style={{
-        fontFamily: fonts.display,
-        fontSize: 28,
+        ...text.h2,
         fontWeight: 500,
-        color: colors.textPrimary,
         lineHeight: 1.7,
         maxWidth: 480,
         opacity: fadeIn(frame, fps, delay),
@@ -46,7 +39,6 @@ export const NarrationText: React.FC<Props> = ({ words, sceneStartSec, delay = 0
             style={{
               opacity: visible ? 1 : 0,
               color: visible ? colors.textPrimary : "transparent",
-              transition: "opacity 0.1s",
             }}
           >
             {word.text}{" "}

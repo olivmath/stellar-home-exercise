@@ -1,6 +1,7 @@
 import { useCurrentFrame, useVideoConfig, interpolate } from "remotion";
-import { colors, fonts } from "../styles/theme";
+import { colors } from "../styles/theme";
 import { fadeIn } from "../animations/springs";
+import { text, space, shadows } from "../styles/designSystem";
 
 type Props = {
   title: string;
@@ -17,7 +18,6 @@ export const LowerThird: React.FC<Props> = ({
   const { fps } = useVideoConfig();
   const opacity = fadeIn(frame, fps, delay);
 
-  // Gold accent line — Stellar signature
   const lineWidth = interpolate(
     frame,
     [delay * fps, (delay + 0.8) * fps],
@@ -34,7 +34,7 @@ export const LowerThird: React.FC<Props> = ({
         opacity,
         display: "flex",
         flexDirection: "column",
-        gap: 10,
+        gap: space.sm + 2,
       }}
     >
       {/* Gold accent line */}
@@ -44,35 +44,18 @@ export const LowerThird: React.FC<Props> = ({
           width: lineWidth,
           background: colors.gold,
           borderRadius: 2,
-          boxShadow: `0 0 16px rgba(253, 218, 36, 0.3)`,
+          boxShadow: "0 0 16px rgba(253, 218, 36, 0.25)",
         }}
       />
 
-      {/* Title — Lora serif */}
-      <div
-        style={{
-          color: colors.textPrimary,
-          fontSize: 30,
-          fontFamily: fonts.display,
-          fontWeight: 700,
-          letterSpacing: -0.3,
-        }}
-      >
+      {/* Title */}
+      <div style={{ ...text.h1 }}>
         {title}
       </div>
 
-      {/* Subtitle — Inter */}
+      {/* Subtitle */}
       {subtitle && (
-        <div
-          style={{
-            color: colors.warmGrey,
-            fontSize: 16,
-            fontFamily: fonts.body,
-            fontWeight: 400,
-            letterSpacing: 2,
-            textTransform: "uppercase",
-          }}
-        >
+        <div style={{ ...text.caption, color: colors.warmGrey }}>
           {subtitle}
         </div>
       )}

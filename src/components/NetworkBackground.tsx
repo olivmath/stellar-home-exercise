@@ -1,5 +1,6 @@
 import { useCurrentFrame, useVideoConfig, interpolate } from "remotion";
 import { colors } from "../styles/theme";
+import { gradients } from "../styles/designSystem";
 
 const seededRandom = (seed: number) => {
   const x = Math.sin(seed * 9301 + 49297) * 49297;
@@ -62,7 +63,7 @@ export const NetworkBackground: React.FC<Props> = ({
         overflow: "hidden",
       }}
     >
-      {/* Ambient gold glow */}
+      {/* Ambient gold orb */}
       <div
         style={{
           position: "absolute",
@@ -71,10 +72,10 @@ export const NetworkBackground: React.FC<Props> = ({
           width: 600,
           height: 600,
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${colors.gold}06 0%, transparent 70%)`,
+          background: gradients.goldOrb,
         }}
       />
-      {/* Teal glow */}
+      {/* Ambient teal orb */}
       <div
         style={{
           position: "absolute",
@@ -83,7 +84,7 @@ export const NetworkBackground: React.FC<Props> = ({
           width: 500,
           height: 500,
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${colors.teal}06 0%, transparent 70%)`,
+          background: gradients.tealOrb,
         }}
       />
 
@@ -119,7 +120,7 @@ export const NetworkBackground: React.FC<Props> = ({
         })}
       </svg>
 
-      {/* Particles — gold and teal */}
+      {/* Particles */}
       {PARTICLES.map((p, i) => {
         const pos = getPos(p);
         const particleOpacity = interpolate(

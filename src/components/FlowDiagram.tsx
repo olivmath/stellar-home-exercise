@@ -1,6 +1,7 @@
 import { useCurrentFrame, useVideoConfig, interpolate } from "remotion";
-import { colors, fonts } from "../styles/theme";
+import { colors } from "../styles/theme";
 import { fadeIn } from "../animations/springs";
+import { text, glass, glowDot, shadows, radius, space } from "../styles/designSystem";
 
 type Props = {
   steps: string[];
@@ -40,34 +41,25 @@ export const FlowDiagram: React.FC<Props> = ({
             {/* Step node */}
             <div
               style={{
-                background: colors.bgGlass,
-                border: `1px solid ${accentColor}30`,
-                borderRadius: 12,
-                padding: "18px 30px",
-                color: colors.textPrimary,
-                fontSize: 18,
-                fontFamily: fonts.code,
-                fontWeight: 500,
-                position: "relative",
-                boxShadow: `0 0 24px ${accentColor}08, inset 0 1px 0 rgba(246, 247, 248, 0.04)`,
-                letterSpacing: 0.3,
+                ...glass.neutral,
+                padding: `${space.md + 2}px ${space.xl}px`,
+                borderRadius: radius.md,
+                border: `1px solid ${accentColor}25`,
+                boxShadow: `0 0 20px ${accentColor}06, ${shadows.innerLight}`,
               }}
             >
-              {/* Gold accent dot */}
+              {/* Accent dot */}
               <div
                 style={{
+                  ...glowDot(accentColor, 6),
                   position: "absolute",
                   top: -3,
                   left: -3,
-                  width: 6,
-                  height: 6,
-                  borderRadius: "50%",
-                  backgroundColor: accentColor,
-                  boxShadow: `0 0 10px ${accentColor}`,
-                  opacity: 0.7,
                 }}
               />
-              {step}
+              <span style={{ ...text.codeMD, color: colors.textPrimary }}>
+                {step}
+              </span>
             </div>
 
             {/* Arrow connector */}
@@ -76,9 +68,9 @@ export const FlowDiagram: React.FC<Props> = ({
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  margin: "0 6px",
+                  margin: `0 ${space.sm}px`,
                   position: "relative",
-                  width: 52,
+                  width: 56,
                   height: 2,
                 }}
               >
@@ -86,8 +78,9 @@ export const FlowDiagram: React.FC<Props> = ({
                   style={{
                     height: 1.5,
                     width: `${arrowProgress * 100}%`,
-                    background: `linear-gradient(90deg, ${accentColor}40, ${accentColor})`,
+                    background: `linear-gradient(90deg, ${accentColor}35, ${accentColor})`,
                     borderRadius: 1,
+                    boxShadow: `0 0 8px ${accentColor}20`,
                   }}
                 />
                 <div
@@ -98,8 +91,9 @@ export const FlowDiagram: React.FC<Props> = ({
                     height: 0,
                     borderTop: "4px solid transparent",
                     borderBottom: "4px solid transparent",
-                    borderLeft: `6px solid ${accentColor}`,
+                    borderLeft: `7px solid ${accentColor}`,
                     opacity: arrowProgress,
+                    filter: `drop-shadow(0 0 4px ${accentColor})`,
                   }}
                 />
               </div>

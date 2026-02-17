@@ -1,6 +1,7 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate } from "remotion";
-import { colors, fonts } from "../styles/theme";
+import { colors } from "../styles/theme";
+import { text, accentLine, gradients, noiseOverlay, space, layout } from "../styles/designSystem";
 
 type Props = {
   episode: number;
@@ -12,8 +13,7 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
   const frame = useCurrentFrame();
   const { fps, durationInFrames } = useVideoConfig();
 
-  // Fade in: first 10 frames
-  // Fade out: last 10 frames
+  // Fade in/out envelope
   const opacity = interpolate(
     frame,
     [0, 10, durationInFrames - 10, durationInFrames],
@@ -23,6 +23,10 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
 
   // Episode number scale-in
   const numberScale = interpolate(frame, [8, 22], [0.8, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const numberOpacity = interpolate(frame, [5, 18], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -37,7 +41,7 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
     extrapolateRight: "clamp",
   });
 
-  // Subtitle slide-up (after title)
+  // Subtitle slide-up
   const subtitleY = interpolate(frame, [22, 36], [15, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -48,7 +52,7 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
   });
 
   // Gold underline expand
-  const lineWidth = interpolate(frame, [28, 44], [0, 180], {
+  const lineWidth = interpolate(frame, [28, 44], [0, 200], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
@@ -56,29 +60,60 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: colors.bgPrimary,
+        backgroundColor: colors.bgDeep,
         opacity,
         justifyContent: "center",
         alignItems: "center",
       }}
     >
+      {/* Ambient gold orb */}
+      <div
+        style={{
+          position: "absolute",
+          top: "25%",
+          left: "30%",
+          width: 500,
+          height: 500,
+          borderRadius: "50%",
+          background: gradients.goldOrb,
+          opacity: 0.6,
+        }}
+      />
+      {/* Ambient teal orb */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "20%",
+          right: "25%",
+          width: 400,
+          height: 400,
+          borderRadius: "50%",
+          background: gradients.tealOrb,
+          opacity: 0.5,
+        }}
+      />
+
+      {/* Film grain */}
+      <div style={noiseOverlay} />
+
+      {/* Content */}
       <div
         style={{
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 16,
+          gap: space.md,
+          zIndex: 1,
         }}
       >
         {/* EP number */}
         <div
           style={{
-            fontFamily: fonts.accent,
-            fontSize: 28,
+            ...text.accentLG,
             color: colors.gold,
-            letterSpacing: 6,
-            textTransform: "uppercase",
             transform: `scale(${numberScale})`,
+            opacity: numberOpacity,
+            textShadow: "0 0 30px rgba(253, 218, 36, 0.2)",
           }}
         >
           Episode {String(episode).padStart(2, "0")}
@@ -87,12 +122,8 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
         {/* Title */}
         <h1
           style={{
-            fontFamily: fonts.display,
-            fontSize: 64,
-            fontWeight: 700,
-            color: colors.white,
+            ...text.displayXL,
             margin: 0,
-            letterSpacing: -1,
             opacity: titleOpacity,
             transform: `translateY(${titleY}px)`,
           }}
@@ -103,12 +134,7 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
         {/* Subtitle */}
         <div
           style={{
-            fontFamily: fonts.body,
-            fontSize: 24,
-            fontWeight: 400,
-            color: colors.warmGrey,
-            letterSpacing: 4,
-            textTransform: "uppercase",
+            ...text.caption,
             opacity: subtitleOpacity,
             transform: `translateY(${subtitleY}px)`,
           }}
@@ -117,15 +143,7 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
         </div>
 
         {/* Gold underline */}
-        <div
-          style={{
-            width: lineWidth,
-            height: 2,
-            background: `linear-gradient(90deg, transparent, ${colors.gold}80, ${colors.gold}, ${colors.gold}80, transparent)`,
-            borderRadius: 1,
-            boxShadow: `0 0 20px rgba(253, 218, 36, 0.2)`,
-          }}
-        />
+        <div style={accentLine.gold(lineWidth)} />
       </div>
     </AbsoluteFill>
   );
