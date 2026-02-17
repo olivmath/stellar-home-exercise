@@ -452,7 +452,7 @@ const ClosingQuestion: React.FC = () => {
           }}
         >
           {closingWords.map((word, i) => {
-            const wordFrame = Math.round((word.atSec - 51.00) * fps);
+            const wordFrame = Math.round((word.atSec - 51.89) * fps);
             const visible = frame >= wordFrame;
             return (
               <span
@@ -506,8 +506,8 @@ export const Episode1: React.FC = () => {
         <CAPs />
       </Sequence>
 
-      {/* Scene 1.7: Closing question — fullscreen — 51.0s to 55.52s */}
-      <Sequence from={rel(51.00)} durationInFrames={rel(55.52) - rel(51.00)}>
+      {/* Scene 1.7: Closing question — fullscreen — 51.89s to 55.52s */}
+      <Sequence from={rel(51.89)} durationInFrames={rel(55.52) - rel(51.89)}>
         <ClosingQuestion />
       </Sequence>
 
