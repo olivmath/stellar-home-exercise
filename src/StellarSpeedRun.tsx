@@ -14,6 +14,7 @@ import { Episode5 } from "./scenes/Episode5";
 import { Closing } from "./scenes/Closing";
 import { colors } from "./styles/theme";
 import { episodes, toFrame } from "./config/audioMarks";
+import { ProgressBar } from "./components/ProgressBar";
 
 // ─── Scene definitions synced to Whisper timestamps ─────────────────
 // Opening overlaps with ep1 — it's the title card over the first 10s
@@ -26,42 +27,44 @@ const scenes = [
     from: 0,
     duration: OPENING_DURATION,
   },
-  {
-    id: "ep1",
-    component: Episode1,
-    from: episodes.ep1.startFrame,
-    duration: episodes.ep1.endFrame - episodes.ep1.startFrame,
-  },
-  {
-    id: "ep2",
-    component: Episode2,
-    from: episodes.ep2.startFrame,
-    duration: episodes.ep2.endFrame - episodes.ep2.startFrame,
-  },
-  {
-    id: "ep3",
-    component: Episode3,
-    from: episodes.ep3.startFrame,
-    duration: episodes.ep3.endFrame - episodes.ep3.startFrame,
-  },
-  {
-    id: "ep4",
-    component: Episode4,
-    from: episodes.ep4.startFrame,
-    duration: episodes.ep4.endFrame - episodes.ep4.startFrame,
-  },
-  {
-    id: "ep5",
-    component: Episode5,
-    from: episodes.ep5.startFrame,
-    duration: episodes.ep5.endFrame - episodes.ep5.startFrame,
-  },
-  {
-    id: "closing",
-    component: Closing,
-    from: episodes.closing.startFrame,
-    duration: episodes.closing.endFrame - episodes.closing.startFrame,
-  },
+  // ── Step 0: Episodes commented out for incremental redesign ──
+  // Uncomment each as redesign is completed
+  // {
+  //   id: "ep1",
+  //   component: Episode1,
+  //   from: episodes.ep1.startFrame,
+  //   duration: episodes.ep1.endFrame - episodes.ep1.startFrame,
+  // },
+  // {
+  //   id: "ep2",
+  //   component: Episode2,
+  //   from: episodes.ep2.startFrame,
+  //   duration: episodes.ep2.endFrame - episodes.ep2.startFrame,
+  // },
+  // {
+  //   id: "ep3",
+  //   component: Episode3,
+  //   from: episodes.ep3.startFrame,
+  //   duration: episodes.ep3.endFrame - episodes.ep3.startFrame,
+  // },
+  // {
+  //   id: "ep4",
+  //   component: Episode4,
+  //   from: episodes.ep4.startFrame,
+  //   duration: episodes.ep4.endFrame - episodes.ep4.startFrame,
+  // },
+  // {
+  //   id: "ep5",
+  //   component: Episode5,
+  //   from: episodes.ep5.startFrame,
+  //   duration: episodes.ep5.endFrame - episodes.ep5.startFrame,
+  // },
+  // {
+  //   id: "closing",
+  //   component: Closing,
+  //   from: episodes.closing.startFrame,
+  //   duration: episodes.closing.endFrame - episodes.closing.startFrame,
+  // },
 ];
 
 export const StellarSpeedRun: React.FC = () => {
@@ -87,6 +90,9 @@ export const StellarSpeedRun: React.FC = () => {
           <Component />
         </Sequence>
       ))}
+
+      {/* Progress bar — always on top */}
+      <ProgressBar />
     </AbsoluteFill>
   );
 };

@@ -9,7 +9,7 @@ import {
   staticFile,
 } from "remotion";
 import { colors, fonts } from "../styles/theme";
-import { NetworkBackground } from "../components/NetworkBackground";
+
 import { LowerThird } from "../components/LowerThird";
 
 export const Opening: React.FC = () => {
@@ -36,13 +36,12 @@ export const Opening: React.FC = () => {
   });
 
   return (
-    <AbsoluteFill style={{ backgroundColor: "rgba(15, 15, 15, 0.5)" }}>
-      {/* Network particle background with gold particles */}
-      <NetworkBackground
-        opacity={interpolate(frame, [0, 60], [0, 0.35], {
-          extrapolateLeft: "clamp",
-          extrapolateRight: "clamp",
-        })}
+    <AbsoluteFill style={{ backgroundColor: "transparent" }}>
+      {/* Dark overlay — fades in with title */}
+      <AbsoluteFill
+        style={{
+          backgroundColor: `rgba(15, 15, 15, ${titleProgress * 0.5})`,
+        }}
       />
 
       {/* Central gold glow */}
