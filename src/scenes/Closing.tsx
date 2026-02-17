@@ -7,8 +7,40 @@ import {
   interpolate,
   Sequence,
 } from "remotion";
-import { colors, fonts } from "../styles/theme";
 import { fadeIn, slideIn } from "../animations/springs";
+import { NetworkBackground } from "../components/NetworkBackground";
+
+// ── Design tokens ───────────────────────────────────────────────────
+const colors = {
+  bgPrimary: "#050810",
+  bgElevated: "#0A0E1A",
+  bgGlass: "rgba(12, 16, 32, 0.72)",
+  stellar: "#6366F1",
+  stellarLight: "#818CF8",
+  cyan: "#22D3EE",
+  cyanDim: "rgba(34, 211, 238, 0.15)",
+  success: "#34D399",
+  warning: "#FB7185",
+  gold: "#FBBF24",
+  textPrimary: "#F1F5F9",
+  textSecondary: "#94A3B8",
+  textDim: "#475569",
+  glowStellar:
+    "0 0 40px rgba(99, 102, 241, 0.3), 0 0 80px rgba(99, 102, 241, 0.1)",
+  glowCyan:
+    "0 0 40px rgba(34, 211, 238, 0.25), 0 0 80px rgba(34, 211, 238, 0.08)",
+  glowSuccess: "0 0 30px rgba(52, 211, 153, 0.25)",
+  glowWarning: "0 0 30px rgba(251, 113, 133, 0.25)",
+  borderSubtle: "rgba(148, 163, 184, 0.08)",
+  borderAccent: "rgba(99, 102, 241, 0.2)",
+  borderCyan: "rgba(34, 211, 238, 0.15)",
+};
+
+const fonts = {
+  display: "'Outfit', sans-serif",
+  body: "'Plus Jakarta Sans', sans-serif",
+  code: "'IBM Plex Mono', monospace",
+};
 
 // ── Checklist Item ──────────────────────────────────────────────────
 const ChecklistItem: React.FC<{
@@ -19,37 +51,42 @@ const ChecklistItem: React.FC<{
   const { fps } = useVideoConfig();
 
   const delay = 0.4 + index * 0.4;
-  const progress = spring({
-    frame: frame - delay * fps,
-    fps,
-    config: { damping: 16, mass: 0.5, stiffness: 100 },
-  });
-
-  const translateX = (1 - progress) * 40;
+  const anim = slideIn(frame, fps, delay);
 
   return (
     <div
       style={{
-        opacity: progress,
-        transform: `translateX(${translateX}px)`,
+        opacity: anim.opacity,
+        transform: `translateY(${anim.translateY}px)`,
         display: "flex",
         alignItems: "center",
-        gap: 16,
+        gap: 18,
         fontSize: 28,
-        fontFamily: fonts.body,
+        fontFamily: fonts.display,
         fontWeight: 500,
         color: colors.textPrimary,
       }}
     >
+      {/* Checkmark */}
       <span
         style={{
-          fontSize: 24,
-          opacity: progress,
-          transform: `scale(${progress})`,
-          display: "inline-block",
+          color: colors.success,
+          fontSize: 22,
+          fontFamily: fonts.code,
+          fontWeight: 700,
+          opacity: anim.opacity,
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          width: 28,
+          height: 28,
+          borderRadius: 8,
+          background: `${colors.success}12`,
+          border: `1px solid ${colors.success}30`,
+          boxShadow: colors.glowSuccess,
         }}
       >
-        {"\u2705"}
+        &#10003;
       </span>
       {label}
     </div>
@@ -62,19 +99,19 @@ const FinalStatement: React.FC = () => {
   const { fps } = useVideoConfig();
 
   const line1 = slideIn(frame, fps, 0.3);
-  const line2 = slideIn(frame, fps, 0.9);
-  const line3 = slideIn(frame, fps, 1.5);
+  const line2 = slideIn(frame, fps, 0.8);
+  const line3 = slideIn(frame, fps, 1.3);
 
-  // Gradient accent line under the name
-  const accentLineOpacity = fadeIn(frame, fps, 0.6);
+  // Gradient accent line expanding under the name
+  const accentLineOpacity = fadeIn(frame, fps, 0.5);
   const accentLineWidth = interpolate(
     spring({
-      frame: frame - fps * 0.6,
+      frame: frame - fps * 0.5,
       fps,
-      config: { damping: 20, mass: 0.5, stiffness: 80 },
+      config: { damping: 22, mass: 0.5, stiffness: 70 },
     }),
     [0, 1],
-    [0, 320]
+    [0, 180]
   );
 
   return (
@@ -84,10 +121,10 @@ const FinalStatement: React.FC = () => {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
-        gap: 20,
+        gap: 24,
       }}
     >
-      {/* Name line */}
+      {/* Name */}
       <div
         style={{
           opacity: line1.opacity,
@@ -95,16 +132,16 @@ const FinalStatement: React.FC = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          gap: 8,
+          gap: 12,
         }}
       >
         <span
           style={{
             color: colors.textPrimary,
             fontSize: 44,
-            fontFamily: fonts.title,
+            fontFamily: fonts.display,
             fontWeight: 800,
-            letterSpacing: -1,
+            letterSpacing: -0.5,
           }}
         >
           I am Lucas Bispo de Oliveira.
@@ -117,7 +154,8 @@ const FinalStatement: React.FC = () => {
             width: accentLineWidth,
             height: 3,
             borderRadius: 2,
-            background: `linear-gradient(90deg, ${colors.accent1}, ${colors.accent2}, ${colors.success})`,
+            background: `linear-gradient(90deg, ${colors.stellar}, ${colors.cyan})`,
+            boxShadow: `0 0 20px ${colors.stellar}40, 0 0 40px ${colors.cyan}20`,
           }}
         />
       </div>
@@ -128,24 +166,26 @@ const FinalStatement: React.FC = () => {
           opacity: line2.opacity,
           transform: `translateY(${line2.translateY}px)`,
           color: colors.textSecondary,
-          fontSize: 30,
+          fontSize: 22,
           fontFamily: fonts.body,
-          fontWeight: 400,
+          fontWeight: 500,
+          marginTop: 4,
         }}
       >
         I build developer experiences.
       </span>
 
-      {/* Closing */}
+      {/* Closing line */}
       <span
         style={{
           opacity: line3.opacity,
           transform: `translateY(${line3.translateY}px)`,
-          color: colors.accent2,
-          fontSize: 28,
+          color: colors.cyan,
+          fontSize: 18,
           fontFamily: fonts.code,
-          fontWeight: 600,
-          marginTop: 16,
+          fontWeight: 500,
+          marginTop: 12,
+          letterSpacing: 0.5,
         }}
       >
         See you on the network.
@@ -160,29 +200,23 @@ export const Closing: React.FC = () => {
   const { fps } = useVideoConfig();
 
   const checklistItems = [
-    "Identity",
-    "Transactions",
-    "Consensus",
+    "Cryptographic Identity",
+    "Atomic Transactions",
+    "Federated Consensus",
     "Smart Contracts",
-    "Storage Model",
-    "Privacy",
+    "Efficient Storage",
+    "Privacy & zk-Proofs",
   ];
 
-  // Cross-fade: checklist fades out, final statement fades in
-  const transitionStart = fps * 12;
-  const transitionEnd = fps * 14;
-  const checklistOpacity = interpolate(
-    frame,
-    [transitionStart, transitionEnd],
-    [1, 0],
-    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-  );
-  const finalOpacity = interpolate(
-    frame,
-    [transitionStart, transitionEnd],
-    [0, 1],
-    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-  );
+  // Cross-fade: checklist fades out from frame 360-420
+  const checklistOpacity = interpolate(frame, [360, 420], [1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const finalOpacity = interpolate(frame, [360, 420], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
 
   return (
     <AbsoluteFill
@@ -191,8 +225,8 @@ export const Closing: React.FC = () => {
         fontFamily: fonts.body,
       }}
     >
-      {/* ── Checklist Phase (0s–14s) ─────────────────────────────── */}
-      <Sequence from={0} durationInFrames={transitionEnd}>
+      {/* ── Checklist Phase (0-420) ────────────────────────────────── */}
+      <Sequence from={0} durationInFrames={420}>
         <AbsoluteFill
           style={{
             display: "flex",
@@ -204,15 +238,15 @@ export const Closing: React.FC = () => {
             opacity: checklistOpacity,
           }}
         >
-          {/* Section label */}
+          {/* Section title */}
           <div
             style={{
               color: colors.textSecondary,
-              fontSize: 16,
+              fontSize: 14,
               fontFamily: fonts.code,
               textTransform: "uppercase" as const,
-              letterSpacing: 3,
-              marginBottom: 16,
+              letterSpacing: 4,
+              marginBottom: 20,
               opacity: fadeIn(frame, fps, 0.1),
             }}
           >
@@ -225,18 +259,26 @@ export const Closing: React.FC = () => {
         </AbsoluteFill>
       </Sequence>
 
-      {/* ── Final Statement Phase (12s–20s) ──────────────────────── */}
-      <Sequence from={transitionStart} durationInFrames={fps * 20 - transitionStart}>
+      {/* ── Final Statement Phase (360-609) ────────────────────────── */}
+      <Sequence from={360} durationInFrames={249}>
         <AbsoluteFill
           style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 80,
             opacity: finalOpacity,
           }}
         >
-          <FinalStatement />
+          {/* Network background for depth */}
+          <NetworkBackground opacity={0.3} speed={0.4} />
+
+          <AbsoluteFill
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 80,
+            }}
+          >
+            <FinalStatement />
+          </AbsoluteFill>
         </AbsoluteFill>
       </Sequence>
     </AbsoluteFill>

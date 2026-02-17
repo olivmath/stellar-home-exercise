@@ -7,31 +7,49 @@ import {
   interpolate,
   Sequence,
 } from "remotion";
-import { colors, fonts } from "../styles/theme";
 import { fadeIn, slideIn, scaleIn } from "../animations/springs";
+import { EpisodeTitle } from "../components/EpisodeTitle";
 import { FlowDiagram } from "../components/FlowDiagram";
+import { GlassPanel } from "../components/GlassPanel";
 import { Badge } from "../components/Badge";
-import { LowerThird } from "../components/LowerThird";
 
 // Episode 3 — Transactions & Operations
 // Duration: ~50s at 30fps = 1500 frames
 
+const colors = {
+  bgPrimary: "#050810",
+  bgElevated: "#0A0E1A",
+  bgGlass: "rgba(12, 16, 32, 0.72)",
+  stellar: "#6366F1",
+  stellarLight: "#818CF8",
+  cyan: "#22D3EE",
+  cyanDim: "rgba(34, 211, 238, 0.15)",
+  success: "#34D399",
+  warning: "#FB7185",
+  gold: "#FBBF24",
+  textPrimary: "#F1F5F9",
+  textSecondary: "#94A3B8",
+  textDim: "#475569",
+  glowStellar:
+    "0 0 40px rgba(99, 102, 241, 0.3), 0 0 80px rgba(99, 102, 241, 0.1)",
+  glowCyan:
+    "0 0 40px rgba(34, 211, 238, 0.25), 0 0 80px rgba(34, 211, 238, 0.08)",
+  glowSuccess: "0 0 30px rgba(52, 211, 153, 0.25)",
+  glowWarning: "0 0 30px rgba(251, 113, 133, 0.25)",
+  borderSubtle: "rgba(148, 163, 184, 0.08)",
+  borderAccent: "rgba(99, 102, 241, 0.2)",
+  borderCyan: "rgba(34, 211, 238, 0.15)",
+};
+
+const fonts = {
+  display: "'Outfit', sans-serif",
+  body: "'Plus Jakarta Sans', sans-serif",
+  code: "'IBM Plex Mono', monospace",
+};
+
 export const Episode3: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
-
-  // --- Atomicity demo helpers ---
-  const operations = [
-    { label: "Op1: Payment", status: "success" as const },
-    { label: "Op2: ChangeTrust", status: "fail" as const },
-    { label: "Op3: ManageOffer", status: "fail" as const },
-  ];
-
-  const statusColor = (s: "success" | "fail") =>
-    s === "success" ? colors.success : colors.warning;
-
-  const statusIcon = (s: "success" | "fail") =>
-    s === "success" ? " \u2705" : " \u274C";
 
   return (
     <AbsoluteFill
@@ -50,49 +68,7 @@ export const Episode3: React.FC = () => {
             alignItems: "center",
           }}
         >
-          <div
-            style={{
-              opacity: fadeIn(frame, fps, 0.3),
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 16,
-            }}
-          >
-            <div
-              style={{
-                color: colors.accent2,
-                fontSize: 18,
-                fontFamily: fonts.code,
-                letterSpacing: 4,
-                textTransform: "uppercase",
-              }}
-            >
-              Episode 03
-            </div>
-            <div
-              style={{
-                color: colors.textPrimary,
-                fontSize: 56,
-                fontFamily: fonts.title,
-                fontWeight: 800,
-                background: `linear-gradient(135deg, ${colors.accent1}, ${colors.accent2})`,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              Transactions & Operations
-            </div>
-            <div
-              style={{
-                width: 80,
-                height: 3,
-                borderRadius: 2,
-                background: `linear-gradient(90deg, ${colors.accent1}, ${colors.accent2})`,
-                marginTop: 8,
-              }}
-            />
-          </div>
+          <EpisodeTitle number="03" title="Transactions & Operations" />
         </AbsoluteFill>
       </Sequence>
 
@@ -106,7 +82,7 @@ export const Episode3: React.FC = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            gap: 40,
+            gap: 48,
           }}
         >
           {/* Section heading */}
@@ -114,9 +90,10 @@ export const Episode3: React.FC = () => {
             style={{
               opacity: fadeIn(frame - 150, fps, 0.2),
               color: colors.textPrimary,
-              fontSize: 36,
-              fontFamily: fonts.title,
+              fontSize: 38,
+              fontFamily: fonts.display,
               fontWeight: 700,
+              letterSpacing: -0.5,
             }}
           >
             Transaction Lifecycle
@@ -126,14 +103,21 @@ export const Episode3: React.FC = () => {
           <FlowDiagram
             steps={["Wallet", "Horizon", "Core", "Ledger"]}
             delay={0.5}
-            accentColor={colors.accent2}
+            accentColor={colors.cyan}
           />
 
-          <LowerThird
-            title="From submission to finality"
-            subtitle="Each step validates and forwards the transaction"
-            delay={2}
-          />
+          {/* Subtitle */}
+          <div
+            style={{
+              opacity: fadeIn(frame - 150, fps, 2.0),
+              color: colors.textSecondary,
+              fontSize: 18,
+              fontFamily: fonts.body,
+              letterSpacing: 0.3,
+            }}
+          >
+            Each step validates and forwards
+          </div>
         </AbsoluteFill>
       </Sequence>
 
@@ -147,7 +131,7 @@ export const Episode3: React.FC = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            gap: 32,
+            gap: 36,
           }}
         >
           {/* Section heading */}
@@ -155,9 +139,10 @@ export const Episode3: React.FC = () => {
             style={{
               opacity: fadeIn(frame - 600, fps, 0.2),
               color: colors.textPrimary,
-              fontSize: 36,
-              fontFamily: fonts.title,
+              fontSize: 38,
+              fontFamily: fonts.display,
               fontWeight: 700,
+              letterSpacing: -0.5,
             }}
           >
             Atomic Transactions
@@ -175,66 +160,167 @@ export const Episode3: React.FC = () => {
             All operations succeed, or none do.
           </div>
 
-          {/* Operations row */}
-          <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
-            {operations.map((op, i) => {
-              const delay = 1.0 + i * 0.5;
+          {/* Operation cards row */}
+          <div style={{ display: "flex", gap: 28, alignItems: "center" }}>
+            {/* Op 1 — Success */}
+            {(() => {
               const localFrame = frame - 600;
               const prog = spring({
-                frame: localFrame - delay * fps,
+                frame: localFrame - 1.0 * fps,
                 fps,
                 config: { damping: 14, mass: 0.6, stiffness: 120 },
               });
-
               return (
                 <div
-                  key={i}
                   style={{
                     opacity: prog,
-                    transform: `scale(${0.6 + prog * 0.4})`,
-                    background: `${statusColor(op.status)}10`,
-                    border: `2px solid ${statusColor(op.status)}50`,
-                    borderRadius: 14,
-                    padding: "20px 28px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 10,
-                    minWidth: 180,
+                    transform: `scale(${interpolate(prog, [0, 1], [0.6, 1])})`,
                   }}
                 >
-                  <div
+                  <GlassPanel
+                    padding="24px 32px"
+                    borderColor={colors.success}
                     style={{
-                      color: colors.textPrimary,
-                      fontSize: 18,
-                      fontFamily: fonts.code,
-                      fontWeight: 600,
+                      borderLeft: `4px solid ${colors.success}`,
+                      minWidth: 180,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 12,
                     }}
                   >
-                    {op.label}
-                  </div>
-                  <div
-                    style={{
-                      color: statusColor(op.status),
-                      fontSize: 22,
-                      fontFamily: fonts.code,
-                      fontWeight: 700,
-                    }}
-                  >
-                    {op.status === "success" ? "SUCCESS" : "FAIL"}
-                    {statusIcon(op.status)}
-                  </div>
+                    <div
+                      style={{
+                        color: colors.textPrimary,
+                        fontSize: 18,
+                        fontFamily: fonts.code,
+                        fontWeight: 600,
+                      }}
+                    >
+                      Op 1
+                    </div>
+                    <div
+                      style={{
+                        color: colors.success,
+                        fontSize: 32,
+                        lineHeight: 1,
+                      }}
+                    >
+                      {"\u2713"}
+                    </div>
+                  </GlassPanel>
                 </div>
               );
-            })}
+            })()}
+
+            {/* Op 2 — Fail */}
+            {(() => {
+              const localFrame = frame - 600;
+              const prog = spring({
+                frame: localFrame - 1.5 * fps,
+                fps,
+                config: { damping: 14, mass: 0.6, stiffness: 120 },
+              });
+              return (
+                <div
+                  style={{
+                    opacity: prog,
+                    transform: `scale(${interpolate(prog, [0, 1], [0.6, 1])})`,
+                  }}
+                >
+                  <GlassPanel
+                    padding="24px 32px"
+                    borderColor={colors.warning}
+                    style={{
+                      borderLeft: `4px solid ${colors.warning}`,
+                      minWidth: 180,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 12,
+                    }}
+                  >
+                    <div
+                      style={{
+                        color: colors.textPrimary,
+                        fontSize: 18,
+                        fontFamily: fonts.code,
+                        fontWeight: 600,
+                      }}
+                    >
+                      Op 2
+                    </div>
+                    <div
+                      style={{
+                        color: colors.warning,
+                        fontSize: 32,
+                        lineHeight: 1,
+                      }}
+                    >
+                      {"\u2717"}
+                    </div>
+                  </GlassPanel>
+                </div>
+              );
+            })()}
+
+            {/* Op 3 — Fail */}
+            {(() => {
+              const localFrame = frame - 600;
+              const prog = spring({
+                frame: localFrame - 2.0 * fps,
+                fps,
+                config: { damping: 14, mass: 0.6, stiffness: 120 },
+              });
+              return (
+                <div
+                  style={{
+                    opacity: prog,
+                    transform: `scale(${interpolate(prog, [0, 1], [0.6, 1])})`,
+                  }}
+                >
+                  <GlassPanel
+                    padding="24px 32px"
+                    borderColor={colors.warning}
+                    style={{
+                      borderLeft: `4px solid ${colors.warning}`,
+                      minWidth: 180,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 12,
+                    }}
+                  >
+                    <div
+                      style={{
+                        color: colors.textPrimary,
+                        fontSize: 18,
+                        fontFamily: fonts.code,
+                        fontWeight: 600,
+                      }}
+                    >
+                      Op 3
+                    </div>
+                    <div
+                      style={{
+                        color: colors.warning,
+                        fontSize: 32,
+                        lineHeight: 1,
+                      }}
+                    >
+                      {"\u2717"}
+                    </div>
+                  </GlassPanel>
+                </div>
+              );
+            })()}
           </div>
 
-          {/* Transaction result */}
+          {/* Transaction result card — slides up */}
           {(() => {
-            const resultDelay = 3.0;
             const localFrame = frame - 600;
             const resultProg = spring({
-              frame: localFrame - resultDelay * fps,
+              frame: localFrame - 3.0 * fps,
               fps,
               config: { damping: 10, mass: 0.8, stiffness: 100 },
             });
@@ -243,25 +329,28 @@ export const Episode3: React.FC = () => {
               <div
                 style={{
                   opacity: resultProg,
-                  transform: `translateY(${(1 - resultProg) * 30}px)`,
-                  marginTop: 16,
-                  padding: "18px 40px",
-                  borderRadius: 14,
-                  background: `${colors.warning}15`,
-                  border: `2px solid ${colors.warning}60`,
+                  transform: `translateY(${interpolate(resultProg, [0, 1], [40, 0])}px)`,
+                  marginTop: 8,
                 }}
               >
-                <div
-                  style={{
-                    color: colors.warning,
-                    fontSize: 28,
-                    fontFamily: fonts.title,
-                    fontWeight: 800,
-                    letterSpacing: 1,
-                  }}
+                <GlassPanel
+                  padding="20px 48px"
+                  glow={colors.glowWarning}
+                  borderColor={colors.warning}
                 >
-                  Transaction: FAIL {"\u274C"}
-                </div>
+                  <div
+                    style={{
+                      color: colors.warning,
+                      fontSize: 28,
+                      fontFamily: fonts.display,
+                      fontWeight: 800,
+                      letterSpacing: 1,
+                      textAlign: "center",
+                    }}
+                  >
+                    Transaction: FAIL
+                  </div>
+                </GlassPanel>
               </div>
             );
           })()}
@@ -269,7 +358,7 @@ export const Episode3: React.FC = () => {
       </Sequence>
 
       {/* ============================================
-          SECTION 4 — Operation Types Grid (frames 1050-1500)
+          SECTION 4 — Operation Types (frames 1050-1500)
           Staggered Badges: Payment, Change Trust, Invoke Contract
           ============================================ */}
       <Sequence from={1050} durationInFrames={450}>
@@ -278,16 +367,17 @@ export const Episode3: React.FC = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            gap: 36,
+            gap: 40,
           }}
         >
           <div
             style={{
               opacity: fadeIn(frame - 1050, fps, 0.2),
               color: colors.textPrimary,
-              fontSize: 36,
-              fontFamily: fonts.title,
+              fontSize: 38,
+              fontFamily: fonts.display,
               fontWeight: 700,
+              letterSpacing: -0.5,
             }}
           >
             Operation Types
@@ -304,17 +394,11 @@ export const Episode3: React.FC = () => {
             A transaction bundles one or more operations
           </div>
 
-          <div style={{ display: "flex", gap: 28, marginTop: 12 }}>
-            <Badge label="Payment" delay={1.0} variant="accent2" />
-            <Badge label="Change Trust" delay={1.6} variant="accent1" />
+          <div style={{ display: "flex", gap: 32, marginTop: 12 }}>
+            <Badge label="Payment" delay={1.0} variant="cyan" />
+            <Badge label="Change Trust" delay={1.6} variant="stellar" />
             <Badge label="Invoke Contract" delay={2.2} variant="success" />
           </div>
-
-          <LowerThird
-            title="20+ operation types available"
-            subtitle="Compose complex logic in a single atomic unit"
-            delay={3.0}
-          />
         </AbsoluteFill>
       </Sequence>
     </AbsoluteFill>

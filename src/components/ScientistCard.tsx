@@ -24,45 +24,96 @@ export const ScientistCard: React.FC<Props> = ({
       style={{
         opacity,
         transform: `translateY(${translateY}px)`,
-        background: "rgba(0, 212, 255, 0.06)",
-        border: "1px solid rgba(0, 212, 255, 0.2)",
-        borderRadius: 16,
-        padding: "32px 40px",
+        background: colors.bgGlass,
+        border: `1px solid ${colors.borderCyan}`,
+        borderRadius: 20,
+        padding: "40px 52px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 12,
-        backdropFilter: "blur(12px)",
+        gap: 14,
+        boxShadow: colors.glowCyan,
+        position: "relative",
+        overflow: "hidden",
+        maxWidth: 520,
       }}
     >
+      {/* Left accent bar */}
+      <div
+        style={{
+          position: "absolute",
+          left: 0,
+          top: "15%",
+          bottom: "15%",
+          width: 3,
+          background: `linear-gradient(180deg, transparent, ${colors.cyan}, transparent)`,
+          borderRadius: 2,
+        }}
+      />
+
+      {/* Quotation mark decorative */}
+      <div
+        style={{
+          color: colors.cyan,
+          fontSize: 48,
+          fontFamily: fonts.display,
+          fontWeight: 300,
+          lineHeight: 1,
+          opacity: 0.25,
+          marginBottom: -8,
+        }}
+      >
+        "
+      </div>
+
+      {/* Name */}
       <div
         style={{
           color: colors.textPrimary,
-          fontSize: 28,
-          fontFamily: fonts.title,
+          fontSize: 32,
+          fontFamily: fonts.display,
           fontWeight: 700,
+          letterSpacing: -0.5,
         }}
       >
         {name}
       </div>
+
+      {/* Institution */}
       <div
         style={{
-          color: colors.accent2,
-          fontSize: 18,
+          color: colors.cyan,
+          fontSize: 16,
           fontFamily: fonts.body,
+          fontWeight: 600,
+          letterSpacing: 2,
+          textTransform: "uppercase",
         }}
       >
         {institution}
       </div>
+
+      {/* Divider */}
+      <div
+        style={{
+          width: 40,
+          height: 1,
+          background: colors.borderCyan,
+          marginTop: 4,
+          marginBottom: 4,
+        }}
+      />
+
+      {/* Caption */}
       <div
         style={{
           color: colors.textSecondary,
-          fontSize: 15,
+          fontSize: 16,
           fontFamily: fonts.code,
-          marginTop: 8,
-          padding: "6px 14px",
-          borderRadius: 8,
-          background: "rgba(255,255,255,0.04)",
+          fontWeight: 400,
+          textAlign: "center",
+          lineHeight: 1.6,
+          maxWidth: 400,
         }}
       >
         {caption}

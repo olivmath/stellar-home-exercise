@@ -7,13 +7,45 @@ import {
   interpolate,
   Sequence,
 } from "remotion";
-import { colors, fonts } from "../styles/theme";
 import { fadeIn, slideIn, scaleIn } from "../animations/springs";
+import { EpisodeTitle } from "../components/EpisodeTitle";
+import { GlassPanel } from "../components/GlassPanel";
+import { Badge } from "../components/Badge";
 import { ScientistCard } from "../components/ScientistCard";
-import { LowerThird } from "../components/LowerThird";
 
 // Episode 4 — Ledgers & Consensus
 // Duration: ~60s at 30fps = 1800 frames
+
+const colors = {
+  bgPrimary: "#050810",
+  bgElevated: "#0A0E1A",
+  bgGlass: "rgba(12, 16, 32, 0.72)",
+  stellar: "#6366F1",
+  stellarLight: "#818CF8",
+  cyan: "#22D3EE",
+  cyanDim: "rgba(34, 211, 238, 0.15)",
+  success: "#34D399",
+  warning: "#FB7185",
+  gold: "#FBBF24",
+  textPrimary: "#F1F5F9",
+  textSecondary: "#94A3B8",
+  textDim: "#475569",
+  glowStellar:
+    "0 0 40px rgba(99, 102, 241, 0.3), 0 0 80px rgba(99, 102, 241, 0.1)",
+  glowCyan:
+    "0 0 40px rgba(34, 211, 238, 0.25), 0 0 80px rgba(34, 211, 238, 0.08)",
+  glowSuccess: "0 0 30px rgba(52, 211, 153, 0.25)",
+  glowWarning: "0 0 30px rgba(251, 113, 133, 0.25)",
+  borderSubtle: "rgba(148, 163, 184, 0.08)",
+  borderAccent: "rgba(99, 102, 241, 0.2)",
+  borderCyan: "rgba(34, 211, 238, 0.15)",
+};
+
+const fonts = {
+  display: "'Outfit', sans-serif",
+  body: "'Plus Jakarta Sans', sans-serif",
+  code: "'IBM Plex Mono', monospace",
+};
 
 export const Episode4: React.FC = () => {
   const frame = useCurrentFrame();
@@ -36,49 +68,7 @@ export const Episode4: React.FC = () => {
             alignItems: "center",
           }}
         >
-          <div
-            style={{
-              opacity: fadeIn(frame, fps, 0.3),
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 16,
-            }}
-          >
-            <div
-              style={{
-                color: colors.accent2,
-                fontSize: 18,
-                fontFamily: fonts.code,
-                letterSpacing: 4,
-                textTransform: "uppercase",
-              }}
-            >
-              Episode 04
-            </div>
-            <div
-              style={{
-                color: colors.textPrimary,
-                fontSize: 56,
-                fontFamily: fonts.title,
-                fontWeight: 800,
-                background: `linear-gradient(135deg, ${colors.accent1}, ${colors.accent2})`,
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
-            >
-              Ledgers & Consensus
-            </div>
-            <div
-              style={{
-                width: 80,
-                height: 3,
-                borderRadius: 2,
-                background: `linear-gradient(90deg, ${colors.accent1}, ${colors.accent2})`,
-                marginTop: 8,
-              }}
-            />
-          </div>
+          <EpisodeTitle number="04" title="Ledgers & Consensus" />
         </AbsoluteFill>
       </Sequence>
 
@@ -92,7 +82,7 @@ export const Episode4: React.FC = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            gap: 40,
+            gap: 44,
           }}
         >
           {/* Heading */}
@@ -100,17 +90,18 @@ export const Episode4: React.FC = () => {
             style={{
               opacity: fadeIn(frame - 150, fps, 0.2),
               color: colors.textPrimary,
-              fontSize: 36,
-              fontFamily: fonts.title,
+              fontSize: 38,
+              fontFamily: fonts.display,
               fontWeight: 700,
+              letterSpacing: -0.5,
             }}
           >
             Ledgers vs Blocks
           </div>
 
           {/* Two columns */}
-          <div style={{ display: "flex", gap: 60, alignItems: "stretch" }}>
-            {/* LEFT — Blocks (crossed out) */}
+          <div style={{ display: "flex", gap: 56, alignItems: "stretch" }}>
+            {/* LEFT — Blocks (crossed out / deprecated) */}
             {(() => {
               const { opacity, translateY } = slideIn(frame - 150, fps, 0.6);
               return (
@@ -118,45 +109,47 @@ export const Episode4: React.FC = () => {
                   style={{
                     opacity,
                     transform: `translateY(${translateY}px)`,
-                    background: `${colors.warning}08`,
-                    border: `2px solid ${colors.warning}35`,
-                    borderRadius: 18,
-                    padding: "36px 48px",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 16,
-                    minWidth: 280,
-                    position: "relative",
                   }}
                 >
-                  <div
+                  <GlassPanel
+                    padding="40px 48px"
+                    borderColor={colors.borderSubtle}
                     style={{
-                      color: colors.warning,
-                      fontSize: 32,
-                      fontFamily: fonts.title,
-                      fontWeight: 700,
-                      textDecoration: "line-through",
-                      textDecorationThickness: 3,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 20,
+                      minWidth: 300,
                     }}
                   >
-                    Blocks {"\u274C"}
-                  </div>
-                  <div
-                    style={{
-                      color: colors.textSecondary,
-                      fontSize: 16,
-                      fontFamily: fonts.body,
-                      textAlign: "center",
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    Mining required
-                    <br />
-                    Variable block times
-                    <br />
-                    Energy intensive
-                  </div>
+                    <div
+                      style={{
+                        color: colors.textDim,
+                        fontSize: 32,
+                        fontFamily: fonts.display,
+                        fontWeight: 700,
+                        textDecoration: "line-through",
+                        textDecorationThickness: 3,
+                      }}
+                    >
+                      Blocks
+                    </div>
+                    <div
+                      style={{
+                        color: colors.textDim,
+                        fontSize: 16,
+                        fontFamily: fonts.body,
+                        textAlign: "center",
+                        lineHeight: 1.8,
+                      }}
+                    >
+                      Mining required
+                      <br />
+                      Variable block times
+                      <br />
+                      Energy intensive
+                    </div>
+                  </GlassPanel>
                 </div>
               );
             })()}
@@ -164,14 +157,14 @@ export const Episode4: React.FC = () => {
             {/* Divider */}
             <div
               style={{
-                width: 2,
-                background: `linear-gradient(180deg, transparent, ${colors.textSecondary}40, transparent)`,
+                width: 1,
+                background: `linear-gradient(180deg, transparent, ${colors.borderSubtle}, transparent)`,
                 alignSelf: "stretch",
                 opacity: fadeIn(frame - 150, fps, 1.0),
               }}
             />
 
-            {/* RIGHT — Ledgers (approved) */}
+            {/* RIGHT — Ledgers (highlighted) */}
             {(() => {
               const { opacity, translateY } = slideIn(frame - 150, fps, 1.0);
               return (
@@ -179,79 +172,62 @@ export const Episode4: React.FC = () => {
                   style={{
                     opacity,
                     transform: `translateY(${translateY}px)`,
-                    background: `${colors.success}08`,
-                    border: `2px solid ${colors.success}35`,
-                    borderRadius: 18,
-                    padding: "36px 48px",
                     display: "flex",
                     flexDirection: "column",
                     alignItems: "center",
-                    gap: 16,
-                    minWidth: 280,
+                    gap: 20,
                   }}
                 >
-                  <div
+                  <GlassPanel
+                    padding="40px 48px"
+                    borderColor={colors.borderCyan}
+                    glow={colors.glowCyan}
                     style={{
-                      color: colors.success,
-                      fontSize: 32,
-                      fontFamily: fonts.title,
-                      fontWeight: 700,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                      gap: 20,
+                      minWidth: 300,
                     }}
                   >
-                    Ledgers {"\u2705"}
-                  </div>
-                  <div
-                    style={{
-                      color: colors.textSecondary,
-                      fontSize: 16,
-                      fontFamily: fonts.body,
-                      textAlign: "center",
-                      lineHeight: 1.5,
-                    }}
-                  >
-                    No mining
-                    <br />
-                    Deterministic timing
-                    <br />
-                    Energy efficient
-                  </div>
-                  {/* Close time badge */}
-                  {(() => {
-                    const { opacity: badgeOp, scale } = scaleIn(
-                      frame - 150,
-                      fps,
-                      1.8
-                    );
-                    return (
-                      <div
-                        style={{
-                          opacity: badgeOp,
-                          transform: `scale(${scale})`,
-                          marginTop: 8,
-                          padding: "8px 20px",
-                          borderRadius: 10,
-                          background: `${colors.success}18`,
-                          border: `1px solid ${colors.success}40`,
-                          color: colors.success,
-                          fontSize: 16,
-                          fontFamily: fonts.code,
-                          fontWeight: 700,
-                        }}
-                      >
-                        ~5s close time
-                      </div>
-                    );
-                  })()}
+                    <div
+                      style={{
+                        color: colors.cyan,
+                        fontSize: 32,
+                        fontFamily: fonts.display,
+                        fontWeight: 700,
+                      }}
+                    >
+                      Ledgers
+                    </div>
+                    <div
+                      style={{
+                        color: colors.textSecondary,
+                        fontSize: 16,
+                        fontFamily: fonts.body,
+                        textAlign: "center",
+                        lineHeight: 1.8,
+                      }}
+                    >
+                      No mining
+                      <br />
+                      Deterministic timing
+                      <br />
+                      Energy efficient
+                    </div>
+                  </GlassPanel>
+
+                  {/* Close time badge below the panel */}
+                  <Badge
+                    label="~5s close time"
+                    delay={1.8}
+                    variant="success"
+                    size="lg"
+                  />
                 </div>
               );
             })()}
           </div>
-
-          <LowerThird
-            title="Stellar uses ledgers, not blocks"
-            subtitle="Predictable finality every ~5 seconds"
-            delay={2.5}
-          />
         </AbsoluteFill>
       </Sequence>
 
@@ -265,7 +241,7 @@ export const Episode4: React.FC = () => {
             justifyContent: "center",
             alignItems: "center",
             flexDirection: "column",
-            gap: 36,
+            gap: 40,
           }}
         >
           {/* Section heading */}
@@ -273,32 +249,27 @@ export const Episode4: React.FC = () => {
             style={{
               opacity: fadeIn(frame - 700, fps, 0.2),
               color: colors.textPrimary,
-              fontSize: 32,
-              fontFamily: fonts.title,
+              fontSize: 34,
+              fontFamily: fonts.display,
               fontWeight: 700,
+              letterSpacing: -0.5,
             }}
           >
             Stellar Consensus Protocol
           </div>
 
           <ScientistCard
-            name="David Mazieres"
+            name="David Mazi\u00e8res"
             institution="Stanford University"
-            caption='Creator of SCP -- Federated Byzantine Agreement'
+            caption="Creator of SCP \u2014 Federated Byzantine Agreement"
             delay={0.8}
-          />
-
-          <LowerThird
-            title="Federated Byzantine Agreement"
-            subtitle="Consensus without centralized coordination"
-            delay={2.0}
           />
         </AbsoluteFill>
       </Sequence>
 
       {/* ============================================
           SECTION 4 — Quorum Slices (frames 1150-1800)
-          3 overlapping circles that converge
+          3 overlapping circles that converge toward center
           ============================================ */}
       <Sequence from={1150} durationInFrames={650}>
         <AbsoluteFill
@@ -314,9 +285,10 @@ export const Episode4: React.FC = () => {
             style={{
               opacity: fadeIn(frame - 1150, fps, 0.2),
               color: colors.textPrimary,
-              fontSize: 32,
-              fontFamily: fonts.title,
+              fontSize: 34,
+              fontFamily: fonts.display,
               fontWeight: 700,
+              letterSpacing: -0.5,
             }}
           >
             Quorum Slices
@@ -326,12 +298,13 @@ export const Episode4: React.FC = () => {
           <div
             style={{
               position: "relative",
-              width: 500,
-              height: 340,
+              width: 540,
+              height: 380,
             }}
           >
             {(() => {
               const localFrame = frame - 1150;
+              const circleSize = 240;
 
               // Convergence animation: circles start spread out and move together
               const convergence = spring({
@@ -341,23 +314,29 @@ export const Episode4: React.FC = () => {
               });
 
               // Starting spread amount (pixels from center)
-              const spread = interpolate(convergence, [0, 1], [120, 45]);
+              const spread = interpolate(convergence, [0, 1], [140, 50]);
 
               const circles = [
                 {
-                  color: colors.accent1,
+                  color: colors.stellar,
+                  fillColor: "rgba(99, 102, 241, 0.15)",
+                  borderColor: "rgba(99, 102, 241, 0.4)",
                   label: "Slice A",
                   angle: -90, // top
                   delay: 0.4,
                 },
                 {
-                  color: colors.accent2,
+                  color: colors.cyan,
+                  fillColor: "rgba(34, 211, 238, 0.15)",
+                  borderColor: "rgba(34, 211, 238, 0.4)",
                   label: "Slice B",
                   angle: 150, // bottom-left
                   delay: 0.7,
                 },
                 {
                   color: colors.success,
+                  fillColor: "rgba(52, 211, 153, 0.15)",
+                  borderColor: "rgba(52, 211, 153, 0.4)",
                   label: "Slice C",
                   angle: 30, // bottom-right
                   delay: 1.0,
@@ -369,8 +348,10 @@ export const Episode4: React.FC = () => {
                   {circles.map((circle, i) => {
                     const circleOpacity = fadeIn(localFrame, fps, circle.delay);
                     const rad = (circle.angle * Math.PI) / 180;
-                    const cx = 250 + Math.cos(rad) * spread - 100;
-                    const cy = 170 + Math.sin(rad) * spread - 100;
+                    const cx =
+                      540 / 2 + Math.cos(rad) * spread - circleSize / 2;
+                    const cy =
+                      380 / 2 + Math.sin(rad) * spread - circleSize / 2;
 
                     return (
                       <div
@@ -379,11 +360,12 @@ export const Episode4: React.FC = () => {
                           position: "absolute",
                           left: cx,
                           top: cy,
-                          width: 200,
-                          height: 200,
+                          width: circleSize,
+                          height: circleSize,
                           borderRadius: "50%",
-                          background: `${circle.color}20`,
-                          border: `2px solid ${circle.color}60`,
+                          background: circle.fillColor,
+                          border: `2px solid ${circle.borderColor}`,
+                          backdropFilter: "blur(8px)",
                           opacity: circleOpacity,
                           display: "flex",
                           justifyContent: "center",
@@ -396,6 +378,7 @@ export const Episode4: React.FC = () => {
                             fontSize: 16,
                             fontFamily: fonts.code,
                             fontWeight: 700,
+                            letterSpacing: 1,
                           }}
                         >
                           {circle.label}
@@ -408,7 +391,7 @@ export const Episode4: React.FC = () => {
             })()}
           </div>
 
-          {/* Consensus label */}
+          {/* Consensus label — fades in ~1s after convergence starts */}
           {(() => {
             const labelProg = spring({
               frame: frame - 1150 - 3.0 * fps,
@@ -420,33 +403,19 @@ export const Episode4: React.FC = () => {
               <div
                 style={{
                   opacity: labelProg,
-                  transform: `translateY(${(1 - labelProg) * 20}px)`,
-                  padding: "14px 32px",
-                  borderRadius: 12,
-                  background: `linear-gradient(135deg, ${colors.accent1}18, ${colors.accent2}18)`,
-                  border: `1px solid ${colors.accent1}40`,
+                  transform: `translateY(${interpolate(labelProg, [0, 1], [20, 0])}px)`,
+                  color: colors.textPrimary,
+                  fontSize: 24,
+                  fontFamily: fonts.display,
+                  fontWeight: 600,
+                  letterSpacing: 0.5,
+                  textAlign: "center",
                 }}
               >
-                <div
-                  style={{
-                    color: colors.textPrimary,
-                    fontSize: 22,
-                    fontFamily: fonts.code,
-                    fontWeight: 700,
-                    textAlign: "center",
-                  }}
-                >
-                  Consensus when overlap {">"} 2/3
-                </div>
+                Consensus when overlap {"> "}2/3
               </div>
             );
           })()}
-
-          <LowerThird
-            title="Quorum intersection"
-            subtitle="Safety guaranteed when slices sufficiently overlap"
-            delay={4.0}
-          />
         </AbsoluteFill>
       </Sequence>
     </AbsoluteFill>

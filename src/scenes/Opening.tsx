@@ -7,228 +7,115 @@ import {
   Sequence,
 } from "remotion";
 import { colors, fonts } from "../styles/theme";
-import { fadeIn } from "../animations/springs";
+import { NetworkBackground } from "../components/NetworkBackground";
 import { LowerThird } from "../components/LowerThird";
-
-// Deterministic pseudo-random based on seed
-const seededRandom = (seed: number) => {
-  const x = Math.sin(seed * 9301 + 49297) * 49297;
-  return x - Math.floor(x);
-};
-
-// Generate static particle positions once
-const PARTICLES = Array.from({ length: 60 }, (_, i) => ({
-  x: seededRandom(i * 3 + 1) * 1920,
-  y: seededRandom(i * 3 + 2) * 1080,
-  size: seededRandom(i * 3 + 3) * 3 + 1,
-  delay: seededRandom(i * 3 + 4) * 2, // 0-2 seconds stagger
-  driftX: (seededRandom(i * 3 + 5) - 0.5) * 40,
-  driftY: (seededRandom(i * 3 + 6) - 0.5) * 40,
-}));
-
-// Generate connections between nearby particles
-const CONNECTIONS: { from: number; to: number }[] = [];
-for (let i = 0; i < PARTICLES.length; i++) {
-  for (let j = i + 1; j < PARTICLES.length; j++) {
-    const dx = PARTICLES[i].x - PARTICLES[j].x;
-    const dy = PARTICLES[i].y - PARTICLES[j].y;
-    if (Math.sqrt(dx * dx + dy * dy) < 200) {
-      CONNECTIONS.push({ from: i, to: j });
-    }
-  }
-}
 
 export const Opening: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Global fade in for the whole scene (frames 0-30)
-  const globalOpacity = interpolate(frame, [0, 30], [0, 1], {
-    extrapolateRight: "clamp",
-  });
-
-  // Title animation: appears at ~1.5s (frame 45), scales up
-  const titleProgress = interpolate(frame, [45, 75], [0, 1], {
+  // Title fade + scale
+  const titleProgress = interpolate(frame, [40, 80], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
+  const titleScale = interpolate(titleProgress, [0, 1], [0.9, 1]);
 
-  const titleScale = interpolate(titleProgress, [0, 1], [0.85, 1]);
-  const titleOpacity = titleProgress;
-
-  // Subtitle fades in after title
-  const subtitleOpacity = interpolate(frame, [90, 120], [0, 1], {
+  // Subtitle
+  const subtitleOpacity = interpolate(frame, [85, 115], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: colors.bgPrimary,
-        overflow: "hidden",
-      }}
-    >
-      {/* ── Network Particles ── */}
-      <AbsoluteFill style={{ opacity: globalOpacity }}>
-        {/* Connection lines */}
-        <svg
-          style={{ position: "absolute", width: "100%", height: "100%" }}
-          viewBox="0 0 1920 1080"
-        >
-          {CONNECTIONS.map(({ from, to }, idx) => {
-            const p1 = PARTICLES[from];
-            const p2 = PARTICLES[to];
-            const lineDelay = Math.max(p1.delay, p2.delay) + 0.5;
-            const lineOpacity = interpolate(
-              frame,
-              [lineDelay * fps, (lineDelay + 1) * fps],
-              [0, 0.12],
-              { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-            );
-            const x1 =
-              p1.x +
-              interpolate(frame, [0, 300], [0, p1.driftX], {
-                extrapolateRight: "clamp",
-              });
-            const y1 =
-              p1.y +
-              interpolate(frame, [0, 300], [0, p1.driftY], {
-                extrapolateRight: "clamp",
-              });
-            const x2 =
-              p2.x +
-              interpolate(frame, [0, 300], [0, p2.driftX], {
-                extrapolateRight: "clamp",
-              });
-            const y2 =
-              p2.y +
-              interpolate(frame, [0, 300], [0, p2.driftY], {
-                extrapolateRight: "clamp",
-              });
-
-            return (
-              <line
-                key={idx}
-                x1={x1}
-                y1={y1}
-                x2={x2}
-                y2={y2}
-                stroke={colors.accent2}
-                strokeWidth={0.8}
-                opacity={lineOpacity}
-              />
-            );
-          })}
-        </svg>
-
-        {/* Particle dots */}
-        {PARTICLES.map((p, i) => {
-          const particleOpacity = interpolate(
-            frame,
-            [p.delay * fps, (p.delay + 1) * fps],
-            [0, 0.6 + p.size * 0.1],
-            { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-          );
-          const x =
-            p.x +
-            interpolate(frame, [0, 300], [0, p.driftX], {
-              extrapolateRight: "clamp",
-            });
-          const y =
-            p.y +
-            interpolate(frame, [0, 300], [0, p.driftY], {
-              extrapolateRight: "clamp",
-            });
-
-          return (
-            <div
-              key={i}
-              style={{
-                position: "absolute",
-                left: x,
-                top: y,
-                width: p.size * 2,
-                height: p.size * 2,
-                borderRadius: "50%",
-                backgroundColor: i % 3 === 0 ? colors.accent1 : colors.accent2,
-                opacity: particleOpacity,
-                boxShadow: `0 0 ${p.size * 4}px ${i % 3 === 0 ? colors.accent1 : colors.accent2}`,
-              }}
-            />
-          );
+    <AbsoluteFill style={{ backgroundColor: colors.bgPrimary }}>
+      {/* Living network background */}
+      <NetworkBackground
+        opacity={interpolate(frame, [0, 60], [0, 1], {
+          extrapolateRight: "clamp",
         })}
-      </AbsoluteFill>
+      />
 
-      {/* ── Radial glow behind title ── */}
+      {/* Central glow */}
       <div
         style={{
           position: "absolute",
-          top: "50%",
+          top: "45%",
           left: "50%",
           transform: "translate(-50%, -50%)",
-          width: 800,
-          height: 400,
+          width: 900,
+          height: 500,
           borderRadius: "50%",
-          background: `radial-gradient(ellipse, ${colors.accent1}18 0%, transparent 70%)`,
-          opacity: titleOpacity,
+          background: `radial-gradient(ellipse, ${colors.stellar}12 0%, ${colors.cyan}04 40%, transparent 70%)`,
+          opacity: titleProgress,
         }}
       />
 
-      {/* ── Title ── */}
+      {/* Title block */}
       <AbsoluteFill
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        style={{ justifyContent: "center", alignItems: "center" }}
       >
         <div
           style={{
-            opacity: titleOpacity,
+            opacity: titleProgress,
             transform: `scale(${titleScale})`,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 20,
+            gap: 24,
           }}
         >
+          {/* Main title */}
           <h1
             style={{
-              fontSize: 88,
-              fontFamily: fonts.title,
-              fontWeight: 800,
-              background: `linear-gradient(135deg, ${colors.accent1}, ${colors.accent2})`,
+              fontSize: 96,
+              fontFamily: fonts.display,
+              fontWeight: 900,
+              background: `linear-gradient(135deg, ${colors.stellarLight}, ${colors.cyan})`,
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               margin: 0,
-              letterSpacing: -2,
+              letterSpacing: -3,
+              lineHeight: 1,
             }}
           >
             Stellar Speed Run
           </h1>
+
+          {/* Subtitle */}
           <div
             style={{
               opacity: subtitleOpacity,
-              fontSize: 28,
+              fontSize: 22,
               fontFamily: fonts.body,
               color: colors.textSecondary,
-              letterSpacing: 4,
+              letterSpacing: 6,
               textTransform: "uppercase",
+              fontWeight: 500,
             }}
           >
-            The Blockchain for Payments
+            End-to-End in 5 Minutes
           </div>
+
+          {/* Thin accent line */}
+          <div
+            style={{
+              width: interpolate(frame, [90, 140], [0, 200], {
+                extrapolateLeft: "clamp",
+                extrapolateRight: "clamp",
+              }),
+              height: 1.5,
+              background: `linear-gradient(90deg, transparent, ${colors.stellar}80, ${colors.cyan}80, transparent)`,
+              borderRadius: 1,
+            }}
+          />
         </div>
       </AbsoluteFill>
 
-      {/* ── Lower Third ── */}
-      <Sequence from={120} durationInFrames={180}>
-        <LowerThird
-          title="End-to-End in 5 Minutes"
-          subtitle="A complete overview of the Stellar network"
-          delay={0}
-        />
+      {/* Lower third */}
+      <Sequence from={140} durationInFrames={160}>
+        <LowerThird title="A complete overview of the Stellar network" />
       </Sequence>
     </AbsoluteFill>
   );

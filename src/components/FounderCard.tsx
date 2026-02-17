@@ -1,10 +1,12 @@
-import { useCurrentFrame, useVideoConfig, Img } from "remotion";
+import { useCurrentFrame, useVideoConfig, Img, staticFile } from "remotion";
 import { colors, fonts } from "../styles/theme";
 import { slideIn } from "../animations/springs";
 
 type Props = {
   name: string;
   subtitle: string;
+  /** Filename in public/images/founders/ e.g. "jed-mccaleb.png" */
+  photo?: string;
   logos?: string[];
   delay?: number;
 };
@@ -12,6 +14,7 @@ type Props = {
 export const FounderCard: React.FC<Props> = ({
   name,
   subtitle,
+  photo,
   logos = [],
   delay = 0,
 }) => {
@@ -24,67 +27,112 @@ export const FounderCard: React.FC<Props> = ({
       style={{
         opacity,
         transform: `translateY(${translateY}px)`,
-        background: "rgba(124, 92, 255, 0.08)",
-        border: "1px solid rgba(124, 92, 255, 0.25)",
-        borderRadius: 16,
-        padding: "28px 32px",
+        background: colors.bgGlass,
+        border: `1px solid ${colors.borderAccent}`,
+        borderRadius: 20,
+        padding: "36px 40px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 12,
-        minWidth: 260,
-        backdropFilter: "blur(12px)",
+        gap: 16,
+        minWidth: 300,
+        boxShadow: colors.glowStellar,
+        position: "relative",
+        overflow: "hidden",
       }}
     >
+      {/* Top accent line */}
       <div
         style={{
-          width: 72,
-          height: 72,
+          position: "absolute",
+          top: 0,
+          left: "20%",
+          right: "20%",
+          height: 2,
+          background: `linear-gradient(90deg, transparent, ${colors.stellar}, transparent)`,
+          borderRadius: 1,
+        }}
+      />
+
+      {/* Avatar */}
+      <div
+        style={{
+          width: 88,
+          height: 88,
           borderRadius: "50%",
-          background: `linear-gradient(135deg, ${colors.accent1}, ${colors.accent2})`,
+          overflow: "hidden",
+          border: `2px solid ${colors.stellar}`,
+          boxShadow: `0 0 24px ${colors.stellar}30`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 32,
-          color: colors.textPrimary,
-          fontFamily: fonts.title,
-          fontWeight: 700,
+          background: photo
+            ? "transparent"
+            : `linear-gradient(135deg, ${colors.stellar}, ${colors.cyan})`,
         }}
       >
-        {name[0]}
+        {photo ? (
+          <Img
+            src={staticFile(`images/founders/${photo}`)}
+            style={{ width: "100%", height: "100%", objectFit: "cover" }}
+          />
+        ) : (
+          <span
+            style={{
+              fontSize: 38,
+              fontFamily: fonts.display,
+              fontWeight: 700,
+              color: colors.textPrimary,
+            }}
+          >
+            {name[0]}
+          </span>
+        )}
       </div>
+
+      {/* Name */}
       <div
         style={{
           color: colors.textPrimary,
-          fontSize: 24,
-          fontFamily: fonts.title,
+          fontSize: 26,
+          fontFamily: fonts.display,
           fontWeight: 700,
+          letterSpacing: -0.5,
         }}
       >
         {name}
       </div>
+
+      {/* Role */}
       <div
         style={{
           color: colors.textSecondary,
-          fontSize: 16,
+          fontSize: 15,
           fontFamily: fonts.body,
+          fontWeight: 500,
+          letterSpacing: 1.5,
+          textTransform: "uppercase",
         }}
       >
         {subtitle}
       </div>
+
+      {/* Logo tags */}
       {logos.length > 0 && (
-        <div style={{ display: "flex", gap: 12, marginTop: 4 }}>
+        <div style={{ display: "flex", gap: 10, marginTop: 4 }}>
           {logos.map((logo) => (
             <div
               key={logo}
               style={{
-                color: colors.accent2,
-                fontSize: 13,
+                color: colors.cyan,
+                fontSize: 12,
                 fontFamily: fonts.code,
-                padding: "4px 10px",
-                borderRadius: 6,
-                background: "rgba(0, 212, 255, 0.1)",
-                border: "1px solid rgba(0, 212, 255, 0.2)",
+                fontWeight: 500,
+                padding: "5px 12px",
+                borderRadius: 8,
+                background: colors.cyanDim,
+                border: `1px solid ${colors.borderCyan}`,
+                letterSpacing: 0.5,
               }}
             >
               {logo}

@@ -7,72 +7,12 @@ import {
   Sequence,
 } from "remotion";
 import { colors, fonts } from "../styles/theme";
-import { fadeIn, slideIn } from "../animations/springs";
+import { fadeIn, slideIn, scaleIn } from "../animations/springs";
+import { EpisodeTitle } from "../components/EpisodeTitle";
 import { FlowDiagram } from "../components/FlowDiagram";
 import { Badge } from "../components/Badge";
 import { LowerThird } from "../components/LowerThird";
-
-// ── Section: Episode Title ──
-const EpisodeTitle: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-
-  const opacity = fadeIn(frame, fps, 0.3);
-  const lineWidth = interpolate(frame, [15, 60], [0, 320], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-
-  return (
-    <AbsoluteFill
-      style={{
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 16,
-          opacity,
-        }}
-      >
-        <div
-          style={{
-            fontSize: 18,
-            fontFamily: fonts.code,
-            color: colors.accent2,
-            letterSpacing: 6,
-            textTransform: "uppercase",
-          }}
-        >
-          Episode 02
-        </div>
-        <h2
-          style={{
-            fontSize: 64,
-            fontFamily: fonts.title,
-            fontWeight: 800,
-            color: colors.textPrimary,
-            margin: 0,
-          }}
-        >
-          Wallet: Cryptographic Identity
-        </h2>
-        <div
-          style={{
-            height: 3,
-            width: lineWidth,
-            background: `linear-gradient(90deg, ${colors.accent1}, ${colors.accent2})`,
-            borderRadius: 2,
-          }}
-        />
-      </div>
-    </AbsoluteFill>
-  );
-};
+import { GlassPanel } from "../components/GlassPanel";
 
 // ── Section: Seed Generation Pipeline ──
 const SeedGeneration: React.FC = () => {
@@ -80,6 +20,8 @@ const SeedGeneration: React.FC = () => {
   const { fps } = useVideoConfig();
 
   const titleOpacity = fadeIn(frame, fps, 0.2);
+  const annotationOpacity1 = fadeIn(frame, fps, 2.0);
+  const annotationOpacity2 = fadeIn(frame, fps, 2.5);
 
   return (
     <AbsoluteFill
@@ -87,172 +29,126 @@ const SeedGeneration: React.FC = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        gap: 48,
+        gap: 40,
+        padding: "80px 120px",
       }}
     >
+      {/* Ambient glow */}
+      <div
+        style={{
+          position: "absolute",
+          width: 600,
+          height: 400,
+          background: `radial-gradient(ellipse, rgba(99, 102, 241, 0.06) 0%, transparent 70%)`,
+          top: "30%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+          pointerEvents: "none",
+        }}
+      />
+
       <div
         style={{
           opacity: titleOpacity,
           fontSize: 36,
-          fontFamily: fonts.title,
+          fontFamily: fonts.display,
           fontWeight: 700,
           color: colors.textPrimary,
+          letterSpacing: 1,
         }}
       >
         Key Derivation Pipeline
       </div>
 
-      <FlowDiagram
-        steps={["Entropy", "Seed", "Secret (S...)", "Public (G...)"]}
-        delay={0.5}
-        accentColor={colors.accent1}
-      />
-
-      {/* Annotation labels below the flow */}
-      <div
+      <GlassPanel
+        padding="48px"
+        borderColor={colors.borderAccent}
+        glow={colors.glowStellar}
         style={{
-          display: "flex",
-          gap: 80,
-          marginTop: 24,
-        }}
-      >
-        <div
-          style={{
-            opacity: fadeIn(frame, fps, 2.0),
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 6,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 14,
-              fontFamily: fonts.code,
-              color: colors.textSecondary,
-            }}
-          >
-            256-bit random
-          </div>
-        </div>
-        <div
-          style={{
-            opacity: fadeIn(frame, fps, 2.5),
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 6,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 14,
-              fontFamily: fonts.code,
-              color: colors.textSecondary,
-            }}
-          >
-            Ed25519 derivation
-          </div>
-        </div>
-        <div
-          style={{
-            opacity: fadeIn(frame, fps, 3.0),
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 6,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 14,
-              fontFamily: fonts.code,
-              color: colors.warning,
-            }}
-          >
-            Never share
-          </div>
-        </div>
-        <div
-          style={{
-            opacity: fadeIn(frame, fps, 3.5),
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 6,
-          }}
-        >
-          <div
-            style={{
-              fontSize: 14,
-              fontFamily: fonts.code,
-              color: colors.success,
-            }}
-          >
-            Your address
-          </div>
-        </div>
-      </div>
-
-      {/* Example keys */}
-      <div
-        style={{
-          opacity: fadeIn(frame, fps, 4.0),
           display: "flex",
           flexDirection: "column",
-          gap: 12,
-          marginTop: 16,
-          padding: "20px 32px",
-          borderRadius: 12,
-          background: `rgba(124, 92, 255, 0.06)`,
-          border: `1px solid ${colors.accent1}25`,
+          alignItems: "center",
+          gap: 36,
+          width: "100%",
+          maxWidth: 900,
         }}
       >
-        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+        <FlowDiagram
+          steps={["Entropy", "Seed", "Secret (S...)", "Public (G...)"]}
+          delay={0.5}
+          accentColor={colors.stellar}
+        />
+
+        {/* Annotation labels in code font */}
+        <div
+          style={{
+            display: "flex",
+            gap: 100,
+            justifyContent: "center",
+            width: "100%",
+          }}
+        >
           <div
             style={{
-              fontSize: 14,
-              fontFamily: fonts.code,
-              color: colors.warning,
-              minWidth: 60,
+              opacity: annotationOpacity1,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 8,
             }}
           >
-            Secret
+            <div
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                backgroundColor: colors.stellarLight,
+                boxShadow: `0 0 8px rgba(99, 102, 241, 0.4)`,
+              }}
+            />
+            <div
+              style={{
+                fontSize: 14,
+                fontFamily: fonts.code,
+                color: colors.textSecondary,
+                letterSpacing: 0.5,
+              }}
+            >
+              256-bit random
+            </div>
           </div>
+
           <div
             style={{
-              fontSize: 16,
-              fontFamily: fonts.code,
-              color: colors.textSecondary,
-              letterSpacing: 1,
+              opacity: annotationOpacity2,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 8,
             }}
           >
-            S...XXXXXXXXXXXXXXXXXXXXXXXXXXXX
+            <div
+              style={{
+                width: 6,
+                height: 6,
+                borderRadius: "50%",
+                backgroundColor: colors.cyan,
+                boxShadow: `0 0 8px rgba(34, 211, 238, 0.4)`,
+              }}
+            />
+            <div
+              style={{
+                fontSize: 14,
+                fontFamily: fonts.code,
+                color: colors.textSecondary,
+                letterSpacing: 0.5,
+              }}
+            >
+              Ed25519 derivation
+            </div>
           </div>
         </div>
-        <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-          <div
-            style={{
-              fontSize: 14,
-              fontFamily: fonts.code,
-              color: colors.success,
-              minWidth: 60,
-            }}
-          >
-            Public
-          </div>
-          <div
-            style={{
-              fontSize: 16,
-              fontFamily: fonts.code,
-              color: colors.textSecondary,
-              letterSpacing: 1,
-            }}
-          >
-            G...XXXXXXXXXXXXXXXXXXXXXXXXXXXX
-          </div>
-        </div>
-      </div>
+      </GlassPanel>
     </AbsoluteFill>
   );
 };
@@ -263,7 +159,7 @@ const SignatureFlow: React.FC = () => {
   const { fps } = useVideoConfig();
 
   const titleOpacity = fadeIn(frame, fps, 0.2);
-  const dividerOpacity = fadeIn(frame, fps, 2.5);
+  const dividerOpacity = fadeIn(frame, fps, 2.2);
 
   return (
     <AbsoluteFill
@@ -271,16 +167,18 @@ const SignatureFlow: React.FC = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        gap: 40,
+        gap: 44,
+        padding: "60px 120px",
       }}
     >
       <div
         style={{
           opacity: titleOpacity,
           fontSize: 36,
-          fontFamily: fonts.title,
+          fontFamily: fonts.display,
           fontWeight: 700,
           color: colors.textPrimary,
+          letterSpacing: 1,
         }}
       >
         Digital Signature Flow
@@ -298,11 +196,12 @@ const SignatureFlow: React.FC = () => {
         <div
           style={{
             opacity: fadeIn(frame, fps, 0.5),
-            fontSize: 16,
+            fontSize: 14,
             fontFamily: fonts.code,
             color: colors.warning,
-            letterSpacing: 3,
+            letterSpacing: 5,
             textTransform: "uppercase",
+            textShadow: `0 0 20px rgba(251, 113, 133, 0.3)`,
           }}
         >
           Signing
@@ -314,12 +213,12 @@ const SignatureFlow: React.FC = () => {
         />
       </div>
 
-      {/* Divider */}
+      {/* Gradient divider line */}
       <div
         style={{
-          width: 600,
+          width: 640,
           height: 1,
-          background: `linear-gradient(90deg, transparent, ${colors.textSecondary}40, transparent)`,
+          background: `linear-gradient(90deg, transparent, ${colors.borderCyan}, ${colors.borderAccent}, transparent)`,
           opacity: dividerOpacity,
         }}
       />
@@ -335,19 +234,20 @@ const SignatureFlow: React.FC = () => {
       >
         <div
           style={{
-            opacity: fadeIn(frame, fps, 2.8),
-            fontSize: 16,
+            opacity: fadeIn(frame, fps, 2.5),
+            fontSize: 14,
             fontFamily: fonts.code,
             color: colors.success,
-            letterSpacing: 3,
+            letterSpacing: 5,
             textTransform: "uppercase",
+            textShadow: `0 0 20px rgba(52, 211, 153, 0.3)`,
           }}
         >
           Verification
         </div>
         <FlowDiagram
-          steps={["Public Key", "Verify", "Network Accept"]}
-          delay={3.0}
+          steps={["Public Key", "Verify", "Network"]}
+          delay={2.8}
           accentColor={colors.success}
         />
       </div>
@@ -361,10 +261,9 @@ const CurveComparison: React.FC = () => {
   const { fps } = useVideoConfig();
 
   const titleOpacity = fadeIn(frame, fps, 0.2);
-  const vsOpacity = fadeIn(frame, fps, 1.5);
-
+  const vsOpacity = fadeIn(frame, fps, 1.2);
   const leftSlide = slideIn(frame, fps, 0.5);
-  const rightSlide = slideIn(frame, fps, 1.0);
+  const rightSlide = slideIn(frame, fps, 0.9);
 
   return (
     <AbsoluteFill
@@ -373,15 +272,17 @@ const CurveComparison: React.FC = () => {
         alignItems: "center",
         flexDirection: "column",
         gap: 48,
+        padding: "60px 120px",
       }}
     >
       <div
         style={{
           opacity: titleOpacity,
           fontSize: 36,
-          fontFamily: fonts.title,
+          fontFamily: fonts.display,
           fontWeight: 700,
           color: colors.textPrimary,
+          letterSpacing: 1,
         }}
       >
         Elliptic Curve Comparison
@@ -391,7 +292,7 @@ const CurveComparison: React.FC = () => {
         style={{
           display: "flex",
           alignItems: "center",
-          gap: 60,
+          gap: 56,
         }}
       >
         {/* Bitcoin side */}
@@ -402,58 +303,40 @@ const CurveComparison: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 20,
-            padding: "40px 48px",
-            borderRadius: 20,
-            background: `rgba(255, 77, 109, 0.06)`,
-            border: `1px solid ${colors.warning}30`,
-            minWidth: 300,
+            gap: 24,
+            padding: "48px 56px",
+            borderRadius: 24,
+            background: colors.bgGlass,
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            border: `1px solid rgba(251, 113, 133, 0.12)`,
+            minWidth: 320,
           }}
         >
           <div
             style={{
-              fontSize: 48,
-              fontFamily: fonts.title,
+              fontSize: 52,
+              fontFamily: fonts.display,
               fontWeight: 800,
               color: colors.warning,
-            }}
-          >
-            BTC
-          </div>
-          <div
-            style={{
-              fontSize: 18,
-              fontFamily: fonts.body,
-              color: colors.textSecondary,
+              textShadow: `0 0 30px rgba(251, 113, 133, 0.25)`,
             }}
           >
             Bitcoin
           </div>
           <Badge label="secp256k1" delay={1.5} variant="warning" />
-          <div
-            style={{
-              opacity: fadeIn(frame, fps, 3.0),
-              fontSize: 14,
-              fontFamily: fonts.code,
-              color: colors.textSecondary,
-              textAlign: "center",
-              lineHeight: 1.6,
-            }}
-          >
-            ECDSA signatures
-            <br />
-            256-bit keys
-          </div>
         </div>
 
         {/* VS divider */}
         <div
           style={{
             opacity: vsOpacity,
-            fontSize: 28,
-            fontFamily: fonts.title,
+            fontSize: 24,
+            fontFamily: fonts.display,
             fontWeight: 800,
-            color: colors.textSecondary,
+            color: colors.textDim,
+            letterSpacing: 4,
+            textTransform: "uppercase",
           }}
         >
           vs
@@ -467,63 +350,43 @@ const CurveComparison: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 20,
-            padding: "40px 48px",
-            borderRadius: 20,
-            background: `rgba(0, 212, 255, 0.06)`,
-            border: `1px solid ${colors.accent2}30`,
-            minWidth: 300,
+            gap: 24,
+            padding: "48px 56px",
+            borderRadius: 24,
+            background: colors.bgGlass,
+            backdropFilter: "blur(24px)",
+            WebkitBackdropFilter: "blur(24px)",
+            border: `1px solid ${colors.borderCyan}`,
+            boxShadow: colors.glowCyan,
+            minWidth: 320,
           }}
         >
           <div
             style={{
-              fontSize: 48,
-              fontFamily: fonts.title,
+              fontSize: 52,
+              fontFamily: fonts.display,
               fontWeight: 800,
-              color: colors.accent2,
-            }}
-          >
-            XLM
-          </div>
-          <div
-            style={{
-              fontSize: 18,
-              fontFamily: fonts.body,
-              color: colors.textSecondary,
+              color: colors.cyan,
+              textShadow: `0 0 30px rgba(34, 211, 238, 0.3)`,
             }}
           >
             Stellar
           </div>
-          <Badge label="Ed25519" delay={2.0} variant="accent2" />
-          <div
-            style={{
-              opacity: fadeIn(frame, fps, 3.5),
-              fontSize: 14,
-              fontFamily: fonts.code,
-              color: colors.textSecondary,
-              textAlign: "center",
-              lineHeight: 1.6,
-            }}
-          >
-            EdDSA signatures
-            <br />
-            Faster verification
-          </div>
+          <Badge label="Ed25519" delay={1.8} variant="cyan" />
         </div>
       </div>
 
-      {/* Advantage callout */}
+      {/* Advantage badges staggered */}
       <div
         style={{
-          opacity: fadeIn(frame, fps, 4.5),
           display: "flex",
-          gap: 16,
-          marginTop: 8,
+          gap: 20,
+          marginTop: 16,
         }}
       >
-        <Badge label="Smaller keys" delay={4.8} variant="success" />
-        <Badge label="Deterministic" delay={5.1} variant="success" />
-        <Badge label="Side-channel resistant" delay={5.4} variant="success" />
+        <Badge label="Smaller signatures" delay={3.0} variant="success" />
+        <Badge label="Fast verification" delay={3.4} variant="success" />
+        <Badge label="Side-channel resistant" delay={3.8} variant="success" />
       </div>
     </AbsoluteFill>
   );
@@ -532,10 +395,18 @@ const CurveComparison: React.FC = () => {
 // ── Main Episode 2 Composition ──
 export const Episode2: React.FC = () => {
   return (
-    <AbsoluteFill style={{ backgroundColor: colors.bgPrimary }}>
+    <AbsoluteFill
+      style={{
+        backgroundColor: colors.bgPrimary,
+        fontFamily: fonts.body,
+      }}
+    >
       {/* Episode title card: 0-4s (frames 0-120) */}
       <Sequence from={0} durationInFrames={120}>
-        <EpisodeTitle />
+        <EpisodeTitle
+          number="02"
+          title="Wallet: Cryptographic Identity"
+        />
       </Sequence>
 
       {/* Seed generation pipeline: 4-20s (frames 120-600) */}
@@ -553,7 +424,7 @@ export const Episode2: React.FC = () => {
         <CurveComparison />
       </Sequence>
 
-      {/* Persistent lower-third for the episode */}
+      {/* Persistent lower-third */}
       <Sequence from={120} durationInFrames={1380}>
         <LowerThird
           title="Wallet: Cryptographic Identity"
