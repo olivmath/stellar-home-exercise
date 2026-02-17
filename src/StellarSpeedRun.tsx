@@ -15,10 +15,23 @@ import { Closing } from "./scenes/Closing";
 import { colors } from "./styles/theme";
 import { episodes, toFrame } from "./config/audioMarks";
 import { ProgressBar } from "./components/ProgressBar";
+import { EpisodeTransition } from "./components/EpisodeTransition";
 
 // ─── Scene definitions synced to Whisper timestamps ─────────────────
 // Opening overlaps with ep1 — it's the title card over the first 10s
 const OPENING_DURATION = toFrame(10);
+
+// ─── Episode transitions — title cards between episodes ──────────────
+// Each transition: 2s centered on the boundary between episodes
+const TRANSITION_DURATION = toFrame(2);
+
+const transitions = [
+  { episode: 1, title: "Foundation", subtitle: "Purpose & Network Economics", atSec: 9.4, durationSec: 2.5 },
+  { episode: 2, title: "Wallet", subtitle: "Cryptographic Identity", atSec: 57 },
+  { episode: 3, title: "Transaction", subtitle: "Atomic Operations", atSec: 108 },
+  { episode: 4, title: "Consensus", subtitle: "Stellar Consensus Protocol", atSec: 150 },
+  { episode: 5, title: "Soroban", subtitle: "Smart Contracts in Rust", atSec: 211, durationSec: 2.5 },
+];
 
 const scenes = [
   {
@@ -90,6 +103,20 @@ export const StellarSpeedRun: React.FC = () => {
           <Component />
         </Sequence>
       ))}
+
+      {/* Episode transitions — title cards between episodes */}
+      {transitions.map(({ episode, title, subtitle, atSec, durationSec }) => {
+        const dur = toFrame(durationSec ?? 2);
+        return (
+          <Sequence
+            key={`transition-${episode}`}
+            from={toFrame(atSec) - dur / 2}
+            durationInFrames={dur}
+          >
+            <EpisodeTransition episode={episode} title={title} subtitle={subtitle} />
+          </Sequence>
+        );
+      })}
 
       {/* Progress bar — always on top */}
       <ProgressBar />

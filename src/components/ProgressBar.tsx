@@ -8,8 +8,7 @@ const SEGMENTS = [
   { label: "Ep 2", startSec: 57, endSec: 108 },
   { label: "Ep 3", startSec: 108, endSec: 150 },
   { label: "Ep 4", startSec: 150, endSec: 211 },
-  { label: "Ep 5", startSec: 211, endSec: 277 },
-  { label: "Ep 6", startSec: 277, endSec: 295 },
+  { label: "Ep 5", startSec: 211, endSec: 295 },
 ];
 
 const TOTAL_DURATION_SEC = 295;

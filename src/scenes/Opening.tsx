@@ -17,30 +17,36 @@ export const Opening: React.FC = () => {
   const { fps } = useVideoConfig();
 
   // Title fade + scale
-  const titleProgress = interpolate(frame, [40, 80], [0, 1], {
+  const titleProgress = interpolate(frame, [25, 65], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
   const titleScale = interpolate(titleProgress, [0, 1], [0.92, 1]);
 
   // Subtitle
-  const subtitleOpacity = interpolate(frame, [85, 115], [0, 1], {
+  const subtitleOpacity = interpolate(frame, [70, 100], [0, 1], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
   // Logo
-  const logoOpacity = interpolate(frame, [20, 50], [0, 1], {
+  const logoOpacity = interpolate(frame, [5, 35], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
+  // Fade out everything before EP1 transition (starts at frame 240)
+  const fadeOut = interpolate(frame, [252, 282], [1, 0], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
 
   return (
     <AbsoluteFill style={{ backgroundColor: "transparent" }}>
-      {/* Dark overlay — fades in with title */}
+      {/* Dark overlay — fades in with title, fades out before EP1 */}
       <AbsoluteFill
         style={{
-          backgroundColor: `rgba(15, 15, 15, ${titleProgress * 0.5})`,
+          backgroundColor: `rgba(15, 15, 15, ${titleProgress * fadeOut * 0.5})`,
         }}
       />
 
@@ -55,7 +61,7 @@ export const Opening: React.FC = () => {
           height: 500,
           borderRadius: "50%",
           background: `radial-gradient(ellipse, rgba(253, 218, 36, 0.06) 0%, rgba(0, 167, 181, 0.02) 40%, transparent 70%)`,
-          opacity: titleProgress,
+          opacity: titleProgress * fadeOut,
           pointerEvents: "none",
         }}
       />
@@ -66,7 +72,7 @@ export const Opening: React.FC = () => {
       >
         <div
           style={{
-            opacity: titleProgress,
+            opacity: titleProgress * fadeOut,
             transform: `scale(${titleScale})`,
             display: "flex",
             flexDirection: "column",
@@ -118,7 +124,7 @@ export const Opening: React.FC = () => {
           {/* Gold gradient underline — brand signature */}
           <div
             style={{
-              width: interpolate(frame, [90, 140], [0, 240], {
+              width: interpolate(frame, [75, 125], [0, 240], {
                 extrapolateLeft: "clamp",
                 extrapolateRight: "clamp",
               }),
@@ -131,8 +137,8 @@ export const Opening: React.FC = () => {
         </div>
       </AbsoluteFill>
 
-      {/* Lower third */}
-      <Sequence from={140} durationInFrames={160}>
+      {/* Lower third — fades out with everything else */}
+      <Sequence from={125} durationInFrames={100}>
         <LowerThird title="A complete overview of the Stellar network" />
       </Sequence>
     </AbsoluteFill>
