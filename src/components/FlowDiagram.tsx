@@ -1,7 +1,7 @@
 import { useCurrentFrame, useVideoConfig, interpolate } from "remotion";
 import { colors } from "../styles/theme";
 import { fadeIn } from "../animations/springs";
-import { text, glass, glowDot, shadows, radius, space } from "../styles/designSystem";
+import { text, panel, shadows, radius, space } from "../styles/designSystem";
 
 type Props = {
   steps: string[];
@@ -41,17 +41,20 @@ export const FlowDiagram: React.FC<Props> = ({
             {/* Step node */}
             <div
               style={{
-                ...glass.neutral,
+                ...panel.base,
                 padding: `${space.md + 2}px ${space.xl}px`,
                 borderRadius: radius.md,
                 border: `1px solid ${accentColor}25`,
-                boxShadow: `0 0 20px ${accentColor}06, ${shadows.innerLight}`,
+                boxShadow: `0 0 20px ${accentColor}06, ${shadows.inner}`,
               }}
             >
               {/* Accent dot */}
               <div
                 style={{
-                  ...glowDot(accentColor, 6),
+                  width: 6,
+                  height: 6,
+                  borderRadius: "50%",
+                  backgroundColor: accentColor,
                   position: "absolute",
                   top: -3,
                   left: -3,

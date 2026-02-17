@@ -9,7 +9,7 @@ import {
 } from "remotion";
 import { colors } from "../styles/theme";
 import { text, space, shadows, radius, layout } from "../styles/designSystem";
-import { fadeIn, slideIn, scaleIn } from "../animations/springs";
+import { fadeIn, slideIn } from "../animations/springs";
 import { EpisodeTitle } from "../components/EpisodeTitle";
 import { ScientistCard } from "../components/ScientistCard";
 import { GlassPanel } from "../components/GlassPanel";
@@ -102,9 +102,9 @@ const TTLConcept: React.FC = () => {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
   });
-  const barColor = warningMix > 0.5 ? colors.warning : colors.success;
+  const barColor = warningMix > 0.5 ? colors.negative : colors.positive;
   const barGlow =
-    warningMix > 0.5 ? colors.glowWarning : colors.glowSuccess;
+    warningMix > 0.5 ? shadows.accent : shadows.accent;
 
   // Branch outcomes appear via spring
   const branchReveal = spring({
@@ -134,7 +134,7 @@ const TTLConcept: React.FC = () => {
         >
           <span
             style={{
-              ...text.accentSM,
+              ...text.overlineSM,
               color: colors.warmGrey,
               letterSpacing: 3,
             }}
@@ -195,18 +195,18 @@ const TTLConcept: React.FC = () => {
             style={{
               width: 1,
               height: 36,
-              background: `${colors.success}40`,
+              background: `${colors.positive}40`,
             }}
           />
           <GlassPanel
             padding={`${space.md}px ${space.lg}px`}
-            borderColor={`${colors.success}30`}
-            glow={colors.glowSuccess}
+            borderColor={`${colors.positive}30`}
+            glow={shadows.accent}
           >
             <span
               style={{
                 ...text.bodyMD,
-                color: colors.success,
+                color: colors.positive,
               }}
             >
               Renew Rent &rarr; Keep Alive
@@ -225,18 +225,18 @@ const TTLConcept: React.FC = () => {
             style={{
               width: 1,
               height: 36,
-              background: `${colors.warning}40`,
+              background: `${colors.negative}40`,
             }}
           />
           <GlassPanel
             padding={`${space.md}px ${space.lg}px`}
-            borderColor={`${colors.warning}30`}
-            glow={colors.glowWarning}
+            borderColor={`${colors.negative}30`}
+            glow={shadows.accent}
           >
             <span
               style={{
                 ...text.bodyMD,
-                color: colors.warning,
+                color: colors.negative,
               }}
             >
               No Rent &rarr; Archived
@@ -254,9 +254,9 @@ const CryptoBurst: React.FC = () => {
   const { fps } = useVideoConfig();
 
   const badges = [
-    { label: "zk-SNARK Verify", variant: "gold" as const, angle: 0 },
-    { label: "Passkeys", variant: "teal" as const, angle: 1 },
-    { label: "Native L1 Crypto", variant: "success" as const, angle: 2 },
+    { label: "zk-SNARK Verify", variant: "accent" as const, angle: 0 },
+    { label: "Passkeys", variant: "info" as const, angle: 1 },
+    { label: "Native L1 Crypto", variant: "positive" as const, angle: 2 },
   ];
 
   return (
@@ -270,7 +270,7 @@ const CryptoBurst: React.FC = () => {
       {/* Section label */}
       <div
         style={{
-          ...text.accentSM,
+          ...text.overlineSM,
           color: colors.warmGrey,
           letterSpacing: 4,
           opacity: fadeIn(frame, fps, 0.2),
@@ -351,8 +351,8 @@ export const Episode5: React.FC = () => {
             }}
           >
             <StackLayer label="Soroban" index={0} accentColor={colors.gold} />
-            <StackLayer label="WASM VM" index={1} accentColor={colors.teal} />
-            <StackLayer label="Rust" index={2} accentColor={colors.success} />
+            <StackLayer label="WASM VM" index={1} accentColor={colors.info} />
+            <StackLayer label="Rust" index={2} accentColor={colors.positive} />
           </div>
         </AbsoluteFill>
       </Sequence>
@@ -368,7 +368,7 @@ export const Episode5: React.FC = () => {
         >
           <div
             style={{
-              ...text.accentSM,
+              ...text.overlineSM,
               color: colors.warmGrey,
               letterSpacing: 4,
               opacity: 0.7,
@@ -399,7 +399,7 @@ export const Episode5: React.FC = () => {
         >
           <div
             style={{
-              ...text.accentSM,
+              ...text.overlineSM,
               color: colors.warmGrey,
               letterSpacing: 4,
               opacity: 0.7,

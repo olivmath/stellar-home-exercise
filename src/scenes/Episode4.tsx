@@ -8,8 +8,8 @@ import {
   Sequence,
 } from "remotion";
 import { colors } from "../styles/theme";
-import { text, space, radius, layout } from "../styles/designSystem";
-import { fadeIn, slideIn, scaleIn } from "../animations/springs";
+import { text, space, radius, layout, shadows } from "../styles/designSystem";
+import { fadeIn, slideIn } from "../animations/springs";
 import { EpisodeTitle } from "../components/EpisodeTitle";
 import { GlassPanel } from "../components/GlassPanel";
 import { Badge } from "../components/Badge";
@@ -141,8 +141,8 @@ export const Episode4: React.FC = () => {
                 >
                   <GlassPanel
                     padding="40px 48px"
-                    borderColor={colors.borderTeal}
-                    glow={colors.glowTeal}
+                    borderColor={colors.borderMedium}
+                    glow={shadows.accent}
                     style={{
                       ...layout.centerColumn,
                       gap: space.lg,
@@ -152,7 +152,7 @@ export const Episode4: React.FC = () => {
                     <div
                       style={{
                         ...text.h1,
-                        color: colors.teal,
+                        color: colors.info,
                       }}
                     >
                       Ledgers
@@ -177,7 +177,7 @@ export const Episode4: React.FC = () => {
                   <Badge
                     label="~5s close time"
                     delay={1.8}
-                    variant="success"
+                    variant="positive"
                     size="lg"
                   />
                 </div>
@@ -260,7 +260,7 @@ export const Episode4: React.FC = () => {
                   delay: 0.4,
                 },
                 {
-                  color: colors.teal,
+                  color: colors.info,
                   fillColor: "rgba(0, 167, 181, 0.15)",
                   borderColor: "rgba(0, 167, 181, 0.4)",
                   label: "Slice B",
@@ -268,7 +268,7 @@ export const Episode4: React.FC = () => {
                   delay: 0.7,
                 },
                 {
-                  color: colors.success,
+                  color: colors.positive,
                   fillColor: "rgba(52, 211, 153, 0.15)",
                   borderColor: "rgba(52, 211, 153, 0.4)",
                   label: "Slice C",
@@ -306,7 +306,7 @@ export const Episode4: React.FC = () => {
                       >
                         <div
                           style={{
-                            ...text.accentSM,
+                            ...text.overlineSM,
                             color: circle.color,
                           }}
                         >

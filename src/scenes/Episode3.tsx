@@ -8,8 +8,8 @@ import {
   Sequence,
 } from "remotion";
 import { colors } from "../styles/theme";
-import { text, space, gradients } from "../styles/designSystem";
-import { fadeIn, slideIn, scaleIn } from "../animations/springs";
+import { text, space, shadows } from "../styles/designSystem";
+import { fadeIn, slideIn } from "../animations/springs";
 import { EpisodeTitle } from "../components/EpisodeTitle";
 import { FlowDiagram } from "../components/FlowDiagram";
 import { GlassPanel } from "../components/GlassPanel";
@@ -74,7 +74,7 @@ const TransactionLifecycle: React.FC = () => {
           position: "absolute",
           width: 600,
           height: 300,
-          background: gradients.tealOrb,
+          background: `radial-gradient(ellipse, rgba(107, 155, 210, 0.06) 0%, transparent 70%)`,
           top: "15%",
           left: "50%",
           transform: "translateX(-50%)",
@@ -96,7 +96,7 @@ const TransactionLifecycle: React.FC = () => {
       <FlowDiagram
         steps={["Wallet", "Horizon", "Core", "Ledger"]}
         delay={0.5}
-        accentColor={colors.teal}
+        accentColor={colors.info}
       />
 
       {/* Subtitle */}
@@ -198,8 +198,8 @@ const AtomicityVisual: React.FC = () => {
       {/* Operation cards row */}
       <div style={{ display: "flex", gap: space.xl, alignItems: "center" }}>
         {ops.map((op, i) => {
-          const borderColor = op.status === "success" ? colors.success : colors.warning;
-          const markColor = op.status === "success" ? colors.success : colors.warning;
+          const borderColor = op.status === "success" ? colors.positive : colors.negative;
+          const markColor = op.status === "success" ? colors.positive : colors.negative;
 
           return (
             <div
@@ -267,13 +267,13 @@ const AtomicityVisual: React.FC = () => {
       >
         <GlassPanel
           padding={`${space.lg}px ${space.xxl}px`}
-          glow={colors.glowWarning}
-          borderColor={colors.warning}
+          glow={shadows.accent}
+          borderColor={colors.negative}
         >
           <div
             style={{
               ...text.h2,
-              color: colors.warning,
+              color: colors.negative,
               letterSpacing: 1,
               textAlign: "center",
               textShadow: `0 0 20px rgba(251, 113, 133, 0.3)`,
@@ -322,7 +322,7 @@ const OperationTypes: React.FC = () => {
       {/* Section label */}
       <div
         style={{
-          ...text.accentSM,
+          ...text.overlineSM,
           color: colors.warmGrey,
           opacity: fadeIn(frame, fps, 0.1),
         }}
@@ -350,9 +350,9 @@ const OperationTypes: React.FC = () => {
       </div>
 
       <div style={{ display: "flex", gap: space.xl, marginTop: space.md }}>
-        <Badge label="Payment" delay={1.0} variant="teal" size="lg" />
-        <Badge label="Change Trust" delay={1.6} variant="gold" size="lg" />
-        <Badge label="Invoke Contract" delay={2.2} variant="success" size="lg" />
+        <Badge label="Payment" delay={1.0} variant="info" size="lg" />
+        <Badge label="Change Trust" delay={1.6} variant="accent" size="lg" />
+        <Badge label="Invoke Contract" delay={2.2} variant="positive" size="lg" />
       </div>
     </AbsoluteFill>
   );

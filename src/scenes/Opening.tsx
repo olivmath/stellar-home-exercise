@@ -9,7 +9,7 @@ import {
   staticFile,
 } from "remotion";
 import { colors } from "../styles/theme";
-import { text, space, accentLine } from "../styles/designSystem";
+import { text, space, divider } from "../styles/designSystem";
 
 import { LowerThird } from "../components/LowerThird";
 
@@ -85,7 +85,7 @@ export const Opening: React.FC = () => {
           <div style={{ opacity: logoOpacity }}>
             <Img
               src={staticFile("images/branding/stellar-logo.svg")}
-              style={{ width: 72, height: 72, opacity: 0.9 }}
+              style={{ width: 110, height: 110, opacity: 0.9 }}
             />
           </div>
 
@@ -113,6 +113,8 @@ export const Opening: React.FC = () => {
               opacity: subtitleOpacity,
               fontSize: 20,
               letterSpacing: 8,
+              color: colors.white,
+              textShadow: "0 2px 12px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 0, 0, 0.6)",
             }}
           >
             End-to-End in 5 Minutes
@@ -121,7 +123,7 @@ export const Opening: React.FC = () => {
           {/* Gold gradient underline — brand signature */}
           <div
             style={{
-              ...accentLine.gold(
+              ...divider.gold(
                 interpolate(frame, [75, 125], [0, 240], {
                   extrapolateLeft: "clamp",
                   extrapolateRight: "clamp",

@@ -44,7 +44,7 @@ const ColumnPanel: React.FC<{ column: Column; delay: number; side: "left" | "rig
       {/* Column title */}
       <div
         style={{
-          ...text.accentMD,
+          ...text.overlineMD,
           fontSize: 24,
           color: v.color,
         }}

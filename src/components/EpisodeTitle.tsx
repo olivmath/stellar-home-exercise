@@ -1,7 +1,7 @@
 import { useCurrentFrame, useVideoConfig, interpolate } from "remotion";
 import { colors } from "../styles/theme";
 import { fadeIn } from "../animations/springs";
-import { text, accentLine, space } from "../styles/designSystem";
+import { text, divider, space } from "../styles/designSystem";
 
 type Props = {
   number: string;
@@ -45,7 +45,7 @@ export const EpisodeTitle: React.FC<Props> = ({
       {/* Episode number */}
       <div
         style={{
-          ...text.accentSM,
+          ...text.overlineSM,
           color: colors.gold,
           textShadow: "0 0 24px rgba(253, 218, 36, 0.25)",
         }}
@@ -82,7 +82,7 @@ export const EpisodeTitle: React.FC<Props> = ({
       </div>
 
       {/* Gold underline */}
-      <div style={accentLine.gold(lineWidth)} />
+      <div style={divider.gold(lineWidth)} />
     </div>
   );
 };

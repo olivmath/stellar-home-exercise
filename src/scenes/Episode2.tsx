@@ -12,7 +12,7 @@ import { FlowDiagram } from "../components/FlowDiagram";
 import { Badge } from "../components/Badge";
 import { LowerThird } from "../components/LowerThird";
 import { GlassPanel } from "../components/GlassPanel";
-import { text, space, layout, glass, gradients, shadows, accentLine, glowDot, radius } from "../styles/designSystem";
+import { text, space, layout, panel, shadows, radius } from "../styles/designSystem";
 import { episodes, toFrame } from "../config/audioMarks";
 
 // ── Timing: relative to ep2 start (57.68s) ──
@@ -130,7 +130,7 @@ const BytesAnimation: React.FC = () => {
                 key={i}
                 style={{
                   ...text.codeLG,
-                  color: i % 3 === 0 ? colors.gold : colors.teal,
+                  color: i % 3 === 0 ? colors.gold : colors.info,
                   opacity: itemOpacity,
                   background: "rgba(255, 255, 255, 0.04)",
                   padding: `${space.xs}px ${space.sm}px`,
@@ -158,7 +158,7 @@ const BytesAnimation: React.FC = () => {
             style={{
               height: 2,
               width: 60,
-              background: `linear-gradient(90deg, ${colors.teal}40, ${colors.gold})`,
+              background: `linear-gradient(90deg, ${colors.info}40, ${colors.gold})`,
               borderRadius: 1,
             }}
           />
@@ -185,7 +185,7 @@ const BytesAnimation: React.FC = () => {
           {/* Seed label */}
           <div
             style={{
-              ...text.accentSM,
+              ...text.overlineSM,
               color: colors.gold,
               textAlign: "center",
               marginBottom: space.sm,
@@ -211,7 +211,7 @@ const BytesAnimation: React.FC = () => {
                 <div
                   key={i}
                   style={{
-                    ...glass.gold,
+                    ...panel.accent,
                     padding: `${space.sm}px ${space.md}px`,
                     borderRadius: radius.sm,
                     opacity: itemOpacity,
@@ -268,11 +268,11 @@ const KeyFlow: React.FC = () => {
   );
 
   const nodeStyle = (color: string): React.CSSProperties => ({
-    ...glass.neutral,
+    ...panel.base,
     padding: `${space.lg}px ${space.xl + 8}px`,
     borderRadius: radius.md,
     border: `1px solid ${color}25`,
-    boxShadow: `0 0 20px ${color}08, ${shadows.innerLight}`,
+    boxShadow: `0 0 20px ${color}08, ${shadows.inner}`,
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -301,7 +301,7 @@ const KeyFlow: React.FC = () => {
         }}
       >
         <GlassPanel
-          variant="gold"
+          variant="accent"
           padding={`${space.xxl}px ${space.xl}px`}
           style={{
             display: "flex",
@@ -310,13 +310,13 @@ const KeyFlow: React.FC = () => {
             gap: 0,
           }}
         >
-          <div style={{ ...text.accentSM, color: colors.gold, opacity: fadeIn(frame, fps, 0.2), marginBottom: space.lg }}>
+          <div style={{ ...text.overlineSM, color: colors.gold, opacity: fadeIn(frame, fps, 0.2), marginBottom: space.lg }}>
             Key Derivation
           </div>
 
           {/* Seed */}
           <div style={{ ...nodeStyle(colors.gold), opacity: seedOpacity }}>
-            <div style={glowDot(colors.gold, 6)} />
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: colors.gold }} />
             <span style={{ ...text.codeMD, color: colors.gold }}>Seed</span>
             <span style={{ ...text.codeSM, color: colors.textDim }}>(32 bytes)</span>
           </div>
@@ -338,38 +338,38 @@ const KeyFlow: React.FC = () => {
 
           {/* Secret Key */}
           <div style={{
-            ...nodeStyle(colors.warning),
+            ...nodeStyle(colors.negative),
             opacity: secretSlide.opacity,
             transform: `translateX(${secretSlide.translateY}px)`,
           }}>
-            <div style={glowDot(colors.warning, 6)} />
-            <span style={{ ...text.codeMD, color: colors.warning }}>Secret Key</span>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: colors.negative }} />
+            <span style={{ ...text.codeMD, color: colors.negative }}>Secret Key</span>
             <span style={{ ...text.codeSM, color: colors.textDim }}>S...</span>
           </div>
 
           {/* Arrow 2 ↓ */}
-          <div style={verticalArrow(arrow2Progress, colors.teal)}>
+          <div style={verticalArrow(arrow2Progress, colors.info)}>
             <div style={{
               width: 1.5,
               flex: 1,
-              background: `linear-gradient(180deg, ${colors.teal}35, ${colors.teal})`,
+              background: `linear-gradient(180deg, ${colors.info}35, ${colors.info})`,
               borderRadius: 1,
             }} />
             <div style={{
               borderLeft: "4px solid transparent",
               borderRight: "4px solid transparent",
-              borderTop: `7px solid ${colors.teal}`,
+              borderTop: `7px solid ${colors.info}`,
             }} />
           </div>
 
           {/* Public Key */}
           <div style={{
-            ...nodeStyle(colors.teal),
+            ...nodeStyle(colors.info),
             opacity: publicSlide.opacity,
             transform: `translateX(${publicSlide.translateY}px)`,
           }}>
-            <div style={glowDot(colors.teal, 6)} />
-            <span style={{ ...text.codeMD, color: colors.teal }}>Public Key</span>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: colors.info }} />
+            <span style={{ ...text.codeMD, color: colors.info }}>Public Key</span>
             <span style={{ ...text.codeSM, color: colors.textDim }}>G...</span>
           </div>
         </GlassPanel>
@@ -386,66 +386,71 @@ const Base32Encoding: React.FC = () => {
 
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
-      <AbsoluteFill style={layout.centerColumn}>
+      {/* Right-aligned vertical layout */}
+      <div
+        style={{
+          position: "absolute",
+          right: space.section,
+          top: "50%",
+          transform: "translateY(-50%)",
+        }}
+      >
         <GlassPanel
-          variant="teal"
-          padding={`${space.xxl}px ${space.xxxl - 8}px`}
+          variant="info"
+          padding={`${space.xxl}px ${space.xl}px`}
           style={{
             opacity,
             transform: `translateY(${translateY}px)`,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: space.lg + 4,
-            maxWidth: 600,
+            gap: space.lg,
+            width: 280,
           }}
         >
-          <div style={{ ...text.accentSM, color: colors.teal }}>
+          <div style={{ ...text.overlineSM, color: colors.info }}>
             Encoding
           </div>
 
-          {/* Circular connection */}
-          <div style={{ display: "flex", alignItems: "center", gap: space.xl }}>
-            <div
-              style={{
-                ...glass.gold,
-                padding: `${space.md}px ${space.lg + 4}px`,
-                borderRadius: radius.md,
-              }}
-            >
-              <span style={{ ...text.codeMD, color: colors.gold }}>Secret (S...)</span>
-            </div>
-
-            <div style={{ ...text.bodyMD, color: colors.warmGrey }}>
-              &#8596;
-            </div>
-
-            <div
-              style={{
-                ...glass.teal,
-                padding: `${space.md}px ${space.lg + 4}px`,
-                borderRadius: radius.md,
-              }}
-            >
-              <span style={{ ...text.codeMD, color: colors.teal }}>Public (G...)</span>
-            </div>
-          </div>
-
-          {/* Arrow to Base32 */}
+          {/* Secret Key */}
           <div
             style={{
-              opacity: fadeIn(frame, fps, 1.0),
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: space.md,
+              ...panel.accent,
+              padding: `${space.md}px ${space.lg + 4}px`,
+              borderRadius: radius.md,
+              width: "100%",
+              textAlign: "center",
             }}
           >
-            <div style={{ ...text.bodyMD, color: colors.warmGrey }}>&#8595;</div>
-            <Badge label="Base32 StrKey Encoding" delay={1.2} variant="teal" size="lg" />
+            <span style={{ ...text.codeMD, color: colors.gold }}>Secret (S...)</span>
+          </div>
+
+          {/* Arrow ↓ */}
+          <div style={{ ...text.bodyMD, color: colors.warmGrey, opacity: fadeIn(frame, fps, 0.8) }}>&#8595;</div>
+
+          {/* Base32 badge */}
+          <div style={{ opacity: fadeIn(frame, fps, 1.0) }}>
+            <Badge label="Base32 StrKey" delay={1.0} variant="info" size="lg" />
+          </div>
+
+          {/* Arrow ↓ */}
+          <div style={{ ...text.bodyMD, color: colors.warmGrey, opacity: fadeIn(frame, fps, 1.4) }}>&#8595;</div>
+
+          {/* Public Key */}
+          <div
+            style={{
+              ...panel.surface,
+              padding: `${space.md}px ${space.lg + 4}px`,
+              borderRadius: radius.md,
+              width: "100%",
+              textAlign: "center",
+              opacity: fadeIn(frame, fps, 1.6),
+            }}
+          >
+            <span style={{ ...text.codeMD, color: colors.info }}>Public (G...)</span>
           </div>
         </GlassPanel>
-      </AbsoluteFill>
+      </div>
     </AbsoluteFill>
   );
 };
@@ -461,8 +466,8 @@ const SignVerify: React.FC = () => {
       {/* LEFT — Verification */}
       <div style={{ position: "absolute", left: 60, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
-          variant="success"
-          borderColor={`${colors.success}20`}
+          variant="positive"
+          borderColor={`${colors.positive}20`}
           padding={`${space.xxl - 8}px ${space.xxl - 4}px`}
           style={{
             opacity: slideIn(frame, fps, 0.3).opacity,
@@ -474,18 +479,18 @@ const SignVerify: React.FC = () => {
             width: 420,
           }}
         >
-          <div style={{ ...text.accentSM, color: colors.success }}>
+          <div style={{ ...text.overlineSM, color: colors.positive }}>
             Verification
           </div>
-          <FlowDiagram steps={["Public Key", "Verify", "Network"]} delay={0.5} accentColor={colors.success} />
+          <FlowDiagram steps={["Public Key", "Verify", "Network"]} delay={0.5} accentColor={colors.positive} />
         </GlassPanel>
       </div>
 
       {/* RIGHT — Signing */}
       <div style={{ position: "absolute", right: 60, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
-          variant="warning"
-          borderColor={`${colors.warning}20`}
+          variant="negative"
+          borderColor={`${colors.negative}20`}
           padding={`${space.xxl - 8}px ${space.xxl - 4}px`}
           style={{
             opacity: slideIn(frame, fps, 1.0).opacity,
@@ -497,10 +502,10 @@ const SignVerify: React.FC = () => {
             width: 420,
           }}
         >
-          <div style={{ ...text.accentSM, color: colors.warning }}>
+          <div style={{ ...text.overlineSM, color: colors.negative }}>
             Signing
           </div>
-          <FlowDiagram steps={["Secret Key", "Sign", "TX"]} delay={1.2} accentColor={colors.warning} />
+          <FlowDiagram steps={["Secret Key", "Sign", "TX"]} delay={1.2} accentColor={colors.negative} />
         </GlassPanel>
       </div>
     </AbsoluteFill>
@@ -545,8 +550,8 @@ const CurveComparison: React.FC = () => {
       {/* LEFT — Bitcoin */}
       <div style={{ position: "absolute", left: 80, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
-          variant="warning"
-          borderColor={`${colors.warning}15`}
+          variant="negative"
+          borderColor={`${colors.negative}15`}
           padding={`${space.xxl - 4}px ${space.xxl}px`}
           style={{
             opacity: slideIn(frame, fps, 0.3).opacity,
@@ -562,7 +567,7 @@ const CurveComparison: React.FC = () => {
             style={{
               ...text.displayMD,
               fontSize: 44,
-              color: colors.warning,
+              color: colors.negative,
               textShadow: "0 0 30px rgba(251, 113, 133, 0.2)",
             }}
           >
@@ -573,7 +578,7 @@ const CurveComparison: React.FC = () => {
           <div
             style={{
               ...text.codeLG,
-              color: colors.warning,
+              color: colors.negative,
               minHeight: 32,
               textShadow: `0 0 20px rgba(251, 113, 133, 0.3)`,
             }}
@@ -581,7 +586,7 @@ const CurveComparison: React.FC = () => {
             {secpChars > 0 && (
               <>
                 {secp256k1Name.slice(0, secpChars)}
-                <span style={{ opacity: frame % 16 < 8 ? 1 : 0, color: colors.warning }}>|</span>
+                <span style={{ opacity: frame % 16 < 8 ? 1 : 0, color: colors.negative }}>|</span>
               </>
             )}
           </div>
@@ -604,7 +609,7 @@ const CurveComparison: React.FC = () => {
       {/* RIGHT — Stellar */}
       <div style={{ position: "absolute", right: 80, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
-          variant="gold"
+          variant="accent"
           padding={`${space.xxl - 4}px ${space.xxl}px`}
           style={{
             opacity: slideIn(frame, fps, 1.0).opacity,

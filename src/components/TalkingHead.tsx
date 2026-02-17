@@ -118,8 +118,8 @@ export const TalkingHead: React.FC<Props> = ({
           height: h,
           borderRadius: 16,
           overflow: "hidden",
-          border: `1px solid ${colors.borderGold}`,
-          boxShadow: `0 8px 32px rgba(0,0,0,0.6), ${colors.glowGold}`,
+          border: `1px solid ${colors.borderAccent}`,
+          boxShadow: `0 8px 32px rgba(0,0,0,0.6), ${colors.shadowAccent}`,
           opacity,
           zIndex: 100,
         }}

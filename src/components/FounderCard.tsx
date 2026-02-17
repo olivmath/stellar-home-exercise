@@ -1,7 +1,7 @@
 import { useCurrentFrame, useVideoConfig, Img, staticFile } from "remotion";
 import { colors } from "../styles/theme";
 import { slideIn } from "../animations/springs";
-import { text, glass, accentLine, gradients, shadows, radius, space, variants } from "../styles/designSystem";
+import { text, panel, divider, shadows, radius, space, variants } from "../styles/designSystem";
 
 type Props = {
   name: string;
@@ -27,7 +27,7 @@ export const FounderCard: React.FC<Props> = ({
       style={{
         opacity,
         transform: `translateY(${translateY}px)`,
-        ...glass.gold,
+        ...panel.accent,
         padding: `${space.xxl}px ${space.xxxl - 8}px`,
         display: "flex",
         flexDirection: "column",
@@ -36,8 +36,8 @@ export const FounderCard: React.FC<Props> = ({
         width: 380,
       }}
     >
-      {/* Top gold accent line */}
-      <div style={accentLine.topGlow("gold")} />
+      {/* Top accent divider */}
+      <div style={divider.subtle()} />
 
       {/* Avatar with gold ring */}
       <div
@@ -47,13 +47,13 @@ export const FounderCard: React.FC<Props> = ({
           borderRadius: radius.circle,
           overflow: "hidden",
           border: `2.5px solid ${colors.gold}`,
-          boxShadow: `${shadows.goldMedium}, ${shadows.lg}`,
+          boxShadow: `${shadows.accent}, ${shadows.lg}`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           background: photo
             ? "transparent"
-            : gradients.goldToTeal,
+            : colors.goldDim,
         }}
       >
         {photo ? (
@@ -82,7 +82,7 @@ export const FounderCard: React.FC<Props> = ({
       <div
         style={{
           ...text.label,
-          color: colors.warmGrey,
+          color: colors.coolGrey,
           letterSpacing: 2,
         }}
       >
@@ -97,11 +97,11 @@ export const FounderCard: React.FC<Props> = ({
               key={logo}
               style={{
                 ...text.codeSM,
-                color: colors.teal,
+                color: colors.info,
                 padding: `${space.sm - 2}px ${space.md - 2}px`,
                 borderRadius: radius.sm,
-                background: variants.teal.bg,
-                border: `1px solid ${variants.teal.border}`,
+                background: variants.info.bg,
+                border: `1px solid ${variants.info.border}`,
               }}
             >
               {logo}

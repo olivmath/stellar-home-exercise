@@ -9,7 +9,7 @@ import {
   staticFile,
 } from "remotion";
 import { colors } from "../styles/theme";
-import { text, space, shadows, layout, glass, radius } from "../styles/designSystem";
+import { text, space, shadows, layout, radius } from "../styles/designSystem";
 import { fadeIn, slideIn } from "../animations/springs";
 import { FounderCard } from "../components/FounderCard";
 import { Badge } from "../components/Badge";
@@ -45,13 +45,13 @@ const Year2014: React.FC = () => {
       >
         <div
           style={{
-            ...text.accentLG,
+            ...text.overlineLG,
             fontSize: 140,
             color: colors.gold,
             opacity: yearOpacity,
             transform: `scale(${yearScale})`,
             letterSpacing: 8,
-            textShadow: shadows.goldMedium,
+            textShadow: shadows.accent,
             lineHeight: 1,
           }}
         >
@@ -163,8 +163,8 @@ const SDF: React.FC = () => {
       >
         <GlassPanel
           padding="56px 64px"
-          borderColor={colors.borderGold}
-          glow={colors.glowGold}
+          borderColor={colors.borderAccent}
+          glow={shadows.accent}
           style={{
             opacity,
             transform: `translateY(${translateY}px)`,
@@ -199,7 +199,7 @@ const SDF: React.FC = () => {
           </div>
 
           <div style={{ opacity: badgeOpacity }}>
-            <Badge label="Financial Inclusion" delay={0.8} variant="success" />
+            <Badge label="Financial Inclusion" delay={0.8} variant="positive" />
           </div>
         </GlassPanel>
       </div>
@@ -235,12 +235,12 @@ const TransactionFee: React.FC = () => {
 
         <div
           style={{
-            ...text.accentLG,
+            ...text.overlineLG,
             opacity: feeOpacity,
             fontSize: 64,
             color: colors.gold,
             letterSpacing: 4,
-            textShadow: shadows.goldStrong,
+            textShadow: shadows.accent,
           }}
         >
           $0.00000167 USD
@@ -290,15 +290,15 @@ const MinersVsValidators: React.FC = () => {
       <div style={{ position: "absolute", left: space.section, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
           padding="44px 48px"
-          borderColor={`${colors.warning}20`}
-          glow={colors.glowWarning}
+          borderColor={`${colors.negative}20`}
+          glow={shadows.accent}
           style={{ opacity: minerOpacity, transform: `translateY(${minerY}px)`, ...cardStyle }}
         >
-          <div style={{ ...text.accentLG, color: colors.warning }}>
+          <div style={{ ...text.overlineLG, color: colors.negative }}>
             Miners
           </div>
-          <div style={itemStyle(colors.warning)}>High Energy Cost</div>
-          <div style={{ ...itemStyle(colors.warning), opacity: fadeIn(frame, fps, 0.8) }}>Inflation</div>
+          <div style={itemStyle(colors.negative)}>High Energy Cost</div>
+          <div style={{ ...itemStyle(colors.negative), opacity: fadeIn(frame, fps, 0.8) }}>Inflation</div>
         </GlassPanel>
       </div>
 
@@ -306,15 +306,15 @@ const MinersVsValidators: React.FC = () => {
       <div style={{ position: "absolute", right: space.section, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
           padding="44px 48px"
-          borderColor={`${colors.success}20`}
-          glow={colors.glowSuccess}
+          borderColor={`${colors.positive}20`}
+          glow={shadows.accent}
           style={{ opacity: validatorOpacity, transform: `translateY(${validatorY}px)`, ...cardStyle }}
         >
-          <div style={{ ...text.accentLG, color: colors.success }}>
+          <div style={{ ...text.overlineLG, color: colors.positive }}>
             Validators
           </div>
-          <div style={itemStyle(colors.success)}>Utility & Interoperability</div>
-          <div style={{ ...itemStyle(colors.success), opacity: fadeIn(frame, fps, 1.8) }}>Zero Inflation</div>
+          <div style={itemStyle(colors.positive)}>Utility & Interoperability</div>
+          <div style={{ ...itemStyle(colors.positive), opacity: fadeIn(frame, fps, 1.8) }}>Zero Inflation</div>
         </GlassPanel>
       </div>
     </AbsoluteFill>
@@ -333,8 +333,8 @@ const CAPs: React.FC = () => {
       <div style={{ position: "absolute", right: space.section, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
           padding="56px 64px"
-          borderColor={colors.borderTeal}
-          glow={colors.glowTeal}
+          borderColor={colors.borderMedium}
+          glow={shadows.accent}
           style={{
             opacity,
             transform: `translateY(${translateY}px)`,
@@ -345,8 +345,8 @@ const CAPs: React.FC = () => {
         >
           <div
             style={{
-              ...text.accentMD,
-              color: colors.teal,
+              ...text.overlineMD,
+              color: colors.info,
             }}
           >
             Governance

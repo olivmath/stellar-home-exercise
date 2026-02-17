@@ -18,7 +18,7 @@ const sizeMap = {
 export const Badge: React.FC<Props> = ({
   label,
   delay = 0,
-  variant = "gold",
+  variant = "accent",
   size = "md",
 }) => {
   const frame = useCurrentFrame();
@@ -41,7 +41,7 @@ export const Badge: React.FC<Props> = ({
         fontSize: s.fontSize,
         fontWeight: s.fontWeight,
         letterSpacing: s.letterSpacing,
-        boxShadow: `${v.glowSoft}, ${shadows.innerLight}`,
+        boxShadow: `${shadows.accent}, ${shadows.inner}`,
         position: "relative",
       }}
     >

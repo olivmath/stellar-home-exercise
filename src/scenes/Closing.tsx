@@ -8,7 +8,7 @@ import {
   Sequence,
 } from "remotion";
 import { colors } from "../styles/theme";
-import { text, space, shadows, gradients, radius, layout } from "../styles/designSystem";
+import { text, space, shadows, radius, layout } from "../styles/designSystem";
 import { fadeIn, slideIn } from "../animations/springs";
 import { NetworkBackground } from "../components/NetworkBackground";
 import { LowerThird } from "../components/LowerThird";
@@ -44,7 +44,7 @@ const ChecklistItem: React.FC<{
       {/* Checkmark */}
       <span
         style={{
-          color: colors.success,
+          color: colors.positive,
           ...text.codeMD,
           display: "inline-flex",
           alignItems: "center",
@@ -52,9 +52,9 @@ const ChecklistItem: React.FC<{
           width: 28,
           height: 28,
           borderRadius: radius.sm,
-          background: `${colors.success}12`,
-          border: `1px solid ${colors.success}30`,
-          boxShadow: shadows.successSoft,
+          background: `${colors.positive}12`,
+          border: `1px solid ${colors.positive}30`,
+          boxShadow: shadows.accent,
         }}
       >
         &#10003;
@@ -119,8 +119,8 @@ const FinalStatement: React.FC = () => {
             width: accentLineWidth,
             height: 2,
             borderRadius: 2,
-            background: gradients.goldToTeal,
-            boxShadow: `0 0 16px ${colors.gold}40, 0 0 32px ${colors.teal}20`,
+            background: `linear-gradient(90deg, ${colors.gold}, ${colors.info})`,
+            boxShadow: `0 0 16px ${colors.gold}40, 0 0 32px ${colors.info}20`,
           }}
         />
       </div>
@@ -130,8 +130,8 @@ const FinalStatement: React.FC = () => {
         style={{
           opacity: closingAnim.opacity,
           transform: `translateY(${closingAnim.translateY}px)`,
-          ...text.accentSM,
-          color: colors.teal,
+          ...text.overlineSM,
+          color: colors.info,
           marginTop: space.xs,
           letterSpacing: 0.5,
           textShadow,
@@ -185,7 +185,7 @@ export const Closing: React.FC = () => {
           {/* Section title */}
           <div
             style={{
-              ...text.accentSM,
+              ...text.overlineSM,
               color: colors.warmGrey,
               marginBottom: space.md,
               opacity: fadeIn(frame, fps, 0.1),

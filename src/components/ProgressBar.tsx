@@ -1,7 +1,7 @@
 import { useCurrentFrame, useVideoConfig, interpolate } from "remotion";
 import { colors } from "../styles/theme";
 import { toFrame } from "../config/audioMarks";
-import { text, shadows, gradients, space } from "../styles/designSystem";
+import { text, space } from "../styles/designSystem";
 
 const SEGMENTS = [
   { label: "Intro", startSec: 0, endSec: 9 },
@@ -78,7 +78,7 @@ export const ProgressBar: React.FC = () => {
                 color: isActive
                   ? colors.gold
                   : isComplete
-                    ? colors.teal
+                    ? colors.info
                     : colors.textDim,
                 opacity: isActive ? 1 : isComplete ? 0.7 : 0.3,
               }}
@@ -103,12 +103,12 @@ export const ProgressBar: React.FC = () => {
                   height: "100%",
                   borderRadius: BAR_HEIGHT / 2,
                   background: isActive
-                    ? `linear-gradient(90deg, ${colors.gold}, ${colors.teal})`
+                    ? `linear-gradient(90deg, ${colors.gold}, ${colors.info})`
                     : isComplete
-                      ? colors.teal
+                      ? colors.info
                       : "transparent",
                   boxShadow: isActive
-                    ? `0 0 10px rgba(253, 218, 36, 0.35)`
+                    ? `0 0 10px ${colors.goldMuted}`
                     : "none",
                 }}
               />

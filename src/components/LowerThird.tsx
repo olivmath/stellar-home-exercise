@@ -1,7 +1,7 @@
 import { useCurrentFrame, useVideoConfig, interpolate } from "remotion";
 import { colors } from "../styles/theme";
 import { fadeIn } from "../animations/springs";
-import { text, space, shadows } from "../styles/designSystem";
+import { text, space } from "../styles/designSystem";
 
 type Props = {
   title: string;
@@ -55,7 +55,7 @@ export const LowerThird: React.FC<Props> = ({
 
       {/* Subtitle */}
       {subtitle && (
-        <div style={{ ...text.caption, color: colors.warmGrey }}>
+        <div style={{ ...text.caption, color: colors.coolGrey }}>
           {subtitle}
         </div>
       )}

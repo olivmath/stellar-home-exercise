@@ -1,7 +1,7 @@
 import React from "react";
 import { AbsoluteFill, useCurrentFrame, useVideoConfig, interpolate } from "remotion";
 import { colors } from "../styles/theme";
-import { text, accentLine, gradients, noiseOverlay, space, layout } from "../styles/designSystem";
+import { text, divider, noiseOverlay, space } from "../styles/designSystem";
 
 type Props = {
   episode: number;
@@ -66,30 +66,18 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
         alignItems: "center",
       }}
     >
-      {/* Ambient gold orb */}
+      {/* Ambient gold orb — simplified */}
       <div
         style={{
           position: "absolute",
-          top: "25%",
-          left: "30%",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
           width: 500,
           height: 500,
           borderRadius: "50%",
-          background: gradients.goldOrb,
+          background: `radial-gradient(circle, ${colors.goldDim}, transparent)`,
           opacity: 0.6,
-        }}
-      />
-      {/* Ambient teal orb */}
-      <div
-        style={{
-          position: "absolute",
-          bottom: "20%",
-          right: "25%",
-          width: 400,
-          height: 400,
-          borderRadius: "50%",
-          background: gradients.tealOrb,
-          opacity: 0.5,
         }}
       />
 
@@ -109,11 +97,10 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
         {/* EP number */}
         <div
           style={{
-            ...text.accentLG,
+            ...text.overlineLG,
             color: colors.gold,
             transform: `scale(${numberScale})`,
             opacity: numberOpacity,
-            textShadow: "0 0 30px rgba(253, 218, 36, 0.2)",
           }}
         >
           Episode {String(episode).padStart(2, "0")}
@@ -143,7 +130,7 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
         </div>
 
         {/* Gold underline */}
-        <div style={accentLine.gold(lineWidth)} />
+        <div style={divider.gold(lineWidth)} />
       </div>
     </AbsoluteFill>
   );

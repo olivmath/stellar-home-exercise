@@ -1,7 +1,7 @@
 import { useCurrentFrame, useVideoConfig } from "remotion";
 import { colors } from "../styles/theme";
 import { slideIn } from "../animations/springs";
-import { text, glass, accentLine, gradients, space } from "../styles/designSystem";
+import { text, panel, divider, space } from "../styles/designSystem";
 
 type Props = {
   name: string;
@@ -25,7 +25,7 @@ export const ScientistCard: React.FC<Props> = ({
       style={{
         opacity,
         transform: `translateY(${translateY}px)`,
-        ...glass.teal,
+        ...panel.base,
         padding: `${space.xxl}px ${space.xxxl - 8}px`,
         display: "flex",
         flexDirection: "column",
@@ -34,8 +34,8 @@ export const ScientistCard: React.FC<Props> = ({
         maxWidth: 520,
       }}
     >
-      {/* Left teal accent bar */}
-      <div style={accentLine.sideBar("teal")} />
+      {/* Left accent bar */}
+      <div style={divider.accent()} />
 
       {/* Name */}
       <div style={{ ...text.h1 }}>
@@ -56,9 +56,7 @@ export const ScientistCard: React.FC<Props> = ({
       {/* Gold divider */}
       <div
         style={{
-          width: 44,
-          height: 1.5,
-          background: gradients.goldLineSoft,
+          ...divider.gold(44),
           marginTop: space.xs,
           marginBottom: space.xs,
         }}

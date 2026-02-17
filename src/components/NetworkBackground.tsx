@@ -1,6 +1,5 @@
 import { useCurrentFrame, useVideoConfig, interpolate } from "remotion";
 import { colors } from "../styles/theme";
-import { gradients } from "../styles/designSystem";
 
 const seededRandom = (seed: number) => {
   const x = Math.sin(seed * 9301 + 49297) * 49297;
@@ -63,7 +62,7 @@ export const NetworkBackground: React.FC<Props> = ({
         overflow: "hidden",
       }}
     >
-      {/* Ambient gold orb */}
+      {/* Ambient gold orb — simplified */}
       <div
         style={{
           position: "absolute",
@@ -72,10 +71,10 @@ export const NetworkBackground: React.FC<Props> = ({
           width: 600,
           height: 600,
           borderRadius: "50%",
-          background: gradients.goldOrb,
+          background: `radial-gradient(circle, ${colors.goldDim}, transparent)`,
         }}
       />
-      {/* Ambient teal orb */}
+      {/* Ambient info orb — simplified */}
       <div
         style={{
           position: "absolute",
@@ -84,7 +83,7 @@ export const NetworkBackground: React.FC<Props> = ({
           width: 500,
           height: 500,
           borderRadius: "50%",
-          background: gradients.tealOrb,
+          background: `radial-gradient(circle, ${colors.info}0A, transparent)`,
         }}
       />
 
@@ -130,7 +129,7 @@ export const NetworkBackground: React.FC<Props> = ({
           { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
         );
         const isGold = i % 3 === 0;
-        const color = isGold ? colors.gold : colors.teal;
+        const color = isGold ? colors.gold : colors.info;
 
         return (
           <div
