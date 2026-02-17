@@ -470,38 +470,13 @@ const Base32Encoding: React.FC = () => {
   );
 };
 
-// ── Scene 2.3: Sign vs Verify — SWAPPED (83.78s to 87.40s) ──
-// Verification LEFT, Signing RIGHT
-const SignVerify: React.FC = () => {
+// ── Scene 2.3a: Signing — RIGHT ──
+const Signing: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
-      {/* LEFT — Verification (appears second) */}
-      <div style={{ position: "absolute", left: 60, top: "50%", transform: "translateY(-50%)" }}>
-        <GlassPanel
-          variant="positive"
-          borderColor={`${colors.positive}20`}
-          padding={`${space.xxl - 8}px ${space.xxl - 4}px`}
-          style={{
-            opacity: slideIn(frame, fps, 0.5).opacity,
-            transform: `translateY(${slideIn(frame, fps, 0.5).translateY}px)`,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: space.lg - 4,
-            width: 420,
-          }}
-        >
-          <div style={{ ...text.overlineSM, color: colors.positive }}>
-            Verification
-          </div>
-          <FlowDiagram steps={["Public Key", "Verify", "Network"]} delay={0.7} accentColor={colors.positive} />
-        </GlassPanel>
-      </div>
-
-      {/* RIGHT — Signing (appears first) */}
       <div style={{ position: "absolute", right: 60, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
           variant="negative"
@@ -527,6 +502,38 @@ const SignVerify: React.FC = () => {
   );
 };
 
+// ── Scene 2.3b: Verification — LEFT ──
+const Verification: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  return (
+    <AbsoluteFill style={layout.dimOverlay(0.55)}>
+      <div style={{ position: "absolute", left: 60, top: "50%", transform: "translateY(-50%)" }}>
+        <GlassPanel
+          variant="positive"
+          borderColor={`${colors.positive}20`}
+          padding={`${space.xxl - 8}px ${space.xxl - 4}px`}
+          style={{
+            opacity: slideIn(frame, fps, 0.3).opacity,
+            transform: `translateY(${slideIn(frame, fps, 0.3).translateY}px)`,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: space.lg - 4,
+            width: 420,
+          }}
+        >
+          <div style={{ ...text.overlineSM, color: colors.positive }}>
+            Verification
+          </div>
+          <FlowDiagram steps={["Public Key", "Verify", "Network"]} delay={0.5} accentColor={colors.positive} />
+        </GlassPanel>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
 // ── Scene 2.4: Curve Comparison — Dynamic Names (90.72s to 102.16s) ──
 // secp256k1 appears when Bitcoin is mentioned (~91.5s = 0.78s into scene)
 // Ed25519 appears when Stellar is mentioned (~93.5s = 2.78s into scene)
@@ -534,19 +541,21 @@ const CurveComparison: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Bitcoin/secp256k1 mentioned around 91.5s (0.78s into scene)
-  const bitcoinDelay = 0.78;
-  // Stellar/Ed25519 mentioned around 93.5s (2.78s into scene)
-  const stellarDelay = 2.78;
+  // Bitcoin card appears immediately
+  const bitcoinDelay = 0.3;
+  // Stellar card appears at 01:33.50 = 93.50s, scene starts at 88.26s
+  const stellarDelay = 5.24;
 
-  // Dynamic name typing effect
+  // Curve names appear LAST (after title + description)
   const secp256k1Name = "secp256k1";
   const ed25519Name = "Ed25519";
+  const secpCurveDelay = bitcoinDelay + 1.5; // curve name after desc
+  const edCurveDelay = stellarDelay + 1.5;
 
   const secpChars = Math.floor(
     interpolate(
       frame,
-      [bitcoinDelay * fps, (bitcoinDelay + 0.6) * fps],
+      [secpCurveDelay * fps, (secpCurveDelay + 0.6) * fps],
       [0, secp256k1Name.length],
       { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
     )
@@ -554,7 +563,7 @@ const CurveComparison: React.FC = () => {
   const edChars = Math.floor(
     interpolate(
       frame,
-      [stellarDelay * fps, (stellarDelay + 0.5) * fps],
+      [edCurveDelay * fps, (edCurveDelay + 0.5) * fps],
       [0, ed25519Name.length],
       { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
     )
@@ -609,7 +618,7 @@ const CurveComparison: React.FC = () => {
           <div
             style={{
               ...text.bodySM,
-              opacity: fadeIn(frame, fps, bitcoinDelay + 0.8),
+              opacity: fadeIn(frame, fps, bitcoinDelay + 0.6),
               textAlign: "center",
               lineHeight: 1.6,
             }}
@@ -627,8 +636,8 @@ const CurveComparison: React.FC = () => {
           variant="accent"
           padding={`${space.xxl - 4}px ${space.xxl}px`}
           style={{
-            opacity: slideIn(frame, fps, 1.0).opacity,
-            transform: `translateY(${slideIn(frame, fps, 1.0).translateY}px)`,
+            opacity: slideIn(frame, fps, stellarDelay).opacity,
+            transform: `translateY(${slideIn(frame, fps, stellarDelay).translateY}px)`,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -667,7 +676,7 @@ const CurveComparison: React.FC = () => {
           <div
             style={{
               ...text.bodySM,
-              opacity: fadeIn(frame, fps, stellarDelay + 0.8),
+              opacity: fadeIn(frame, fps, stellarDelay + 0.6),
               textAlign: "center",
               lineHeight: 1.6,
             }}
@@ -762,13 +771,18 @@ export const Episode2: React.FC = () => {
         <Base32Encoding />
       </Sequence>
 
-      {/* Scene 2.3: Sign vs Verify — 83.78s to 87.40s (swapped sides) */}
-      <Sequence from={rel(83.78)} durationInFrames={rel(87.40) - rel(83.78)}>
-        <SignVerify />
+      {/* Scene 2.3a: Signing — RIGHT */}
+      <Sequence from={rel(84.50)} durationInFrames={rel(88.26) - rel(84.50)}>
+        <Signing />
       </Sequence>
 
-      {/* Scene 2.4: Curve Comparison — 90.72s to 102.16s (dynamic names) */}
-      <Sequence from={rel(90.72)} durationInFrames={rel(102.16) - rel(90.72)}>
+      {/* Scene 2.3b: Verification — LEFT (01:26.09) */}
+      <Sequence from={rel(86.09)} durationInFrames={rel(88.26) - rel(86.09)}>
+        <Verification />
+      </Sequence>
+
+      {/* Scene 2.4: Curve Comparison — 88.26s to 102.16s (dynamic names) */}
+      <Sequence from={rel(88.26)} durationInFrames={rel(102.16) - rel(88.26)}>
         <CurveComparison />
       </Sequence>
 
