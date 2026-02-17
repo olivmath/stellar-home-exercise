@@ -15,6 +15,7 @@ import { Badge } from "../components/Badge";
 import { LowerThird } from "../components/LowerThird";
 import { GlassPanel } from "../components/GlassPanel";
 import { ComparisonGrid } from "../components/ComparisonGrid";
+import { NarrationText } from "../components/NarrationText";
 import { episodes, toFrame } from "../config/audioMarks";
 
 // ── Timing: relative to episode start (0s) ──
@@ -97,7 +98,7 @@ const Founders: React.FC = () => {
             name="Jed McCaleb"
             subtitle="Co-founder"
             photo="jed-mccaleb.jpg"
-            logos={["Ripple", "Mt. Gox"]}
+
             delay={0.3}
           />
         </div>
@@ -117,6 +118,20 @@ const Founders: React.FC = () => {
 };
 
 // ── Scene 1.3: SDF (VIDEO + OVERLAY) — 17.3s to 27.08s ──
+// Card RIGHT, dynamic narration LEFT
+const sdfWords = [
+  { text: "The", atSec: 22.08 },
+  { text: "goal", atSec: 22.20 },
+  { text: "is", atSec: 22.36 },
+  { text: "clear:", atSec: 22.52 },
+  { text: "financial", atSec: 23.16 },
+  { text: "inclusion", atSec: 23.38 },
+  { text: "and", atSec: 24.00 },
+  { text: "efficient", atSec: 24.32 },
+  { text: "global", atSec: 24.68 },
+  { text: "settlement.", atSec: 25.18 },
+];
+
 const SDF: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -125,7 +140,33 @@ const SDF: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: "rgba(15, 15, 15, 0.55)" }}>
-      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+      {/* LEFT — Dynamic narration text */}
+      <div
+        style={{
+          position: "absolute",
+          left: 80,
+          top: "50%",
+          transform: "translateY(-50%)",
+        }}
+      >
+        <GlassPanel
+          padding="40px 44px"
+          borderColor={colors.borderSubtle}
+          style={{ maxWidth: 480, opacity: fadeIn(frame, fps, 4.5) }}
+        >
+          <NarrationText words={sdfWords} sceneStartSec={17.3} delay={4.5} />
+        </GlassPanel>
+      </div>
+
+      {/* RIGHT — SDF card */}
+      <div
+        style={{
+          position: "absolute",
+          right: 80,
+          top: "50%",
+          transform: "translateY(-50%)",
+        }}
+      >
         <GlassPanel
           padding="56px 64px"
           borderColor={colors.borderGold}
@@ -137,32 +178,17 @@ const SDF: React.FC = () => {
             flexDirection: "column",
             alignItems: "center",
             gap: 24,
-            maxWidth: 640,
+            maxWidth: 420,
           }}
         >
-          <div
-            style={{
-              width: 88,
-              height: 88,
-              borderRadius: 16,
-              background: `linear-gradient(135deg, rgba(253, 218, 36, 0.08), rgba(0, 167, 181, 0.05))`,
-              border: `1px solid ${colors.borderGold}`,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              boxShadow: colors.glowGold,
-              padding: 14,
-            }}
-          >
-            <Img
-              src={staticFile("images/branding/sdf-badge.svg")}
-              style={{ width: "100%", height: "100%", objectFit: "contain" }}
-            />
-          </div>
+          <Img
+            src={staticFile("images/branding/stellar-logo.svg")}
+            style={{ width: 72, height: 72, opacity: 0.9 }}
+          />
 
           <h3
             style={{
-              fontSize: 40,
+              fontSize: 36,
               fontFamily: fonts.display,
               fontWeight: 700,
               color: colors.textPrimary,
@@ -189,7 +215,7 @@ const SDF: React.FC = () => {
             <Badge label="Financial Inclusion" delay={0.8} variant="success" />
           </div>
         </GlassPanel>
-      </AbsoluteFill>
+      </div>
     </AbsoluteFill>
   );
 };
@@ -235,7 +261,7 @@ const TransactionFee: React.FC = () => {
             textShadow: `0 0 40px rgba(253, 218, 36, 0.25)`,
           }}
         >
-          ~$0.0001
+          $0.00000167
         </div>
 
         <div
@@ -253,32 +279,65 @@ const TransactionFee: React.FC = () => {
   );
 };
 
-// ── Scene 1.5: Miners vs Validators (ANIMATION FULL) — 33.72s to 44.02s ──
+// ── Scene 1.5: Miners vs Validators (VIDEO + OVERLAY) ──
+// Miners LEFT (appears first), Validators RIGHT (1s later)
 const MinersVsValidators: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const { opacity: minerOpacity, translateY: minerY } = slideIn(frame, fps, 0.3);
+  const { opacity: validatorOpacity, translateY: validatorY } = slideIn(frame, fps, 1.3);
+
+  const cardStyle: React.CSSProperties = {
+    display: "flex",
+    flexDirection: "column",
+    gap: 20,
+    width: 440,
+  };
+
+  const itemStyle = (accentColor: string): React.CSSProperties => ({
+    fontFamily: fonts.body,
+    fontSize: 22,
+    color: colors.textPrimary,
+    padding: "18px 24px",
+    background: "rgba(255,255,255,0.03)",
+    borderRadius: 12,
+    borderLeft: `3px solid ${accentColor}`,
+  });
+
   return (
-    <AbsoluteFill style={{ backgroundColor: colors.bgPrimary }}>
-      <AbsoluteFill
-        style={{
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
-          gap: 40,
-        }}
-      >
-        <ComparisonGrid
-          left={{
-            title: "Miners",
-            variant: "warning",
-            items: ["High Energy Cost", "Inflation"],
-          }}
-          right={{
-            title: "Validators",
-            variant: "success",
-            items: ["Utility & Interoperability", "Zero Inflation"],
-          }}
-          delay={0.3}
-        />
-      </AbsoluteFill>
+    <AbsoluteFill style={{ backgroundColor: "rgba(15, 15, 15, 0.55)" }}>
+      {/* LEFT — Miners */}
+      <div style={{ position: "absolute", left: 80, top: "50%", transform: "translateY(-50%)" }}>
+        <GlassPanel
+          padding="44px 48px"
+          borderColor={`${colors.warning}20`}
+          glow={colors.glowWarning}
+          style={{ opacity: minerOpacity, transform: `translateY(${minerY}px)`, ...cardStyle }}
+        >
+          <div style={{ fontFamily: fonts.accent, fontSize: 28, color: colors.warning, letterSpacing: 4, textTransform: "uppercase" }}>
+            Miners
+          </div>
+          <div style={itemStyle(colors.warning)}>High Energy Cost</div>
+          <div style={{ ...itemStyle(colors.warning), opacity: fadeIn(frame, fps, 0.8) }}>Inflation</div>
+        </GlassPanel>
+      </div>
+
+      {/* RIGHT — Validators */}
+      <div style={{ position: "absolute", right: 80, top: "50%", transform: "translateY(-50%)" }}>
+        <GlassPanel
+          padding="44px 48px"
+          borderColor={`${colors.success}20`}
+          glow={colors.glowSuccess}
+          style={{ opacity: validatorOpacity, transform: `translateY(${validatorY}px)`, ...cardStyle }}
+        >
+          <div style={{ fontFamily: fonts.accent, fontSize: 28, color: colors.success, letterSpacing: 4, textTransform: "uppercase" }}>
+            Validators
+          </div>
+          <div style={itemStyle(colors.success)}>Utility & Interoperability</div>
+          <div style={{ ...itemStyle(colors.success), opacity: fadeIn(frame, fps, 1.8) }}>Zero Inflation</div>
+        </GlassPanel>
+      </div>
     </AbsoluteFill>
   );
 };
@@ -292,7 +351,7 @@ const CAPs: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: "rgba(15, 15, 15, 0.55)" }}>
-      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+      <div style={{ position: "absolute", right: 80, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
           padding="56px 64px"
           borderColor={colors.borderTeal}
@@ -304,7 +363,7 @@ const CAPs: React.FC = () => {
             flexDirection: "column",
             alignItems: "center",
             gap: 28,
-            maxWidth: 700,
+            maxWidth: 500,
           }}
         >
           <div
@@ -358,7 +417,7 @@ const CAPs: React.FC = () => {
             Upgrades based on validator community consensus
           </div>
         </GlassPanel>
-      </AbsoluteFill>
+      </div>
     </AbsoluteFill>
   );
 };
@@ -367,8 +426,8 @@ const CAPs: React.FC = () => {
 export const Episode1: React.FC = () => {
   return (
     <AbsoluteFill style={{ fontFamily: fonts.body }}>
-      {/* Scene 1.1: Year 2014 — 10.3s to 16.88s */}
-      <Sequence from={rel(10.3)} durationInFrames={rel(16.88) - rel(10.3)}>
+      {/* Scene 1.1: Year 2014 — 10.3s to 17.3s (ends with founders) */}
+      <Sequence from={rel(10.3)} durationInFrames={rel(17.3) - rel(10.3)}>
         <Year2014 />
       </Sequence>
 
@@ -382,13 +441,13 @@ export const Episode1: React.FC = () => {
         <SDF />
       </Sequence>
 
-      {/* Scene 1.4: Transaction Fee — 27.08s to 33.44s */}
-      <Sequence from={rel(27.08)} durationInFrames={rel(33.44) - rel(27.08)}>
+      {/* Scene 1.4: Transaction Fee — 27.08s to 33.04s (-0.4s) */}
+      <Sequence from={rel(27.08)} durationInFrames={rel(33.04) - rel(27.08)}>
         <TransactionFee />
       </Sequence>
 
-      {/* Scene 1.5: Miners vs Validators — 33.72s to 44.02s */}
-      <Sequence from={rel(33.72)} durationInFrames={rel(44.02) - rel(33.72)}>
+      {/* Scene 1.5: Miners vs Validators — 32.74s to 42.62s — LEFT + RIGHT */}
+      <Sequence from={rel(32.74)} durationInFrames={rel(42.62) - rel(32.74)}>
         <MinersVsValidators />
       </Sequence>
 

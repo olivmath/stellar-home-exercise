@@ -31,12 +31,12 @@ export const FounderCard: React.FC<Props> = ({
         WebkitBackdropFilter: "blur(20px)",
         border: `1px solid ${colors.borderGold}`,
         borderRadius: 16,
-        padding: "40px 44px",
+        padding: "48px 56px",
         display: "flex",
         flexDirection: "column",
         alignItems: "center",
-        gap: 18,
-        minWidth: 300,
+        gap: 22,
+        width: 380,
         boxShadow: colors.glowGold,
         position: "relative",
         overflow: "hidden",
@@ -58,8 +58,8 @@ export const FounderCard: React.FC<Props> = ({
       {/* Avatar with gold ring */}
       <div
         style={{
-          width: 96,
-          height: 96,
+          width: 240,
+          height: 240,
           borderRadius: "50%",
           overflow: "hidden",
           border: `2.5px solid ${colors.gold}`,
