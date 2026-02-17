@@ -5,6 +5,8 @@ import {
   useVideoConfig,
   interpolate,
   Sequence,
+  Img,
+  staticFile,
 } from "remotion";
 import { colors, fonts } from "../styles/theme";
 import { fadeIn, slideIn } from "../animations/springs";
@@ -97,8 +99,8 @@ const Organization: React.FC = () => {
         <GlassPanel padding="64px" borderColor={colors.borderGold} glow={colors.glowGold}
           style={{ opacity, transform: `translateY(${translateY}px)`, display: "flex", flexDirection: "column", alignItems: "center", gap: 28, maxWidth: 680, zIndex: 1 }}
         >
-          <div style={{ width: 88, height: 88, borderRadius: 18, background: `linear-gradient(135deg, rgba(253, 218, 36, 0.12), rgba(0, 167, 181, 0.08))`, border: `1px solid ${colors.borderGold}`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 36, fontFamily: fonts.accent, color: colors.gold, boxShadow: colors.glowGold }}>
-            SDF
+          <div style={{ width: 96, height: 96, borderRadius: 18, background: `linear-gradient(135deg, rgba(253, 218, 36, 0.08), rgba(0, 167, 181, 0.05))`, border: `1px solid ${colors.borderGold}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: colors.glowGold, padding: 16 }}>
+            <Img src={staticFile("images/branding/sdf-badge.svg")} style={{ width: "100%", height: "100%", objectFit: "contain" }} />
           </div>
           <h3 style={{ fontSize: 44, fontFamily: fonts.display, fontWeight: 700, color: colors.textPrimary, margin: 0, textAlign: "center" }}>
             Stellar Development Foundation
