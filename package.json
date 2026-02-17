@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "studio": "remotion studio",
-    "render": "remotion render StellarWorkshop out/workshop.mp4",
-    "build": "remotion render StellarWorkshop out/workshop.mp4"
+    "preview": "remotion render StellarSpeedRun out/preview.mp4 --crf=28",
+    "render": "remotion render StellarSpeedRun out/stellar-speedrun.mp4 --crf=18 --concurrency=75%",
+    "render:hq": "remotion render StellarSpeedRun out/stellar-speedrun-hq.mp4 --crf=10"
   },
   "dependencies": {
     "@remotion/cli": "4.0.424",
