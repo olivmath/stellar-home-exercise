@@ -129,7 +129,7 @@ export const text = {
 
   bodyMD: {
     fontFamily: fonts.body,
-    fontSize: 17,
+    fontSize: 34,
     fontWeight: 400,
     lineHeight: 1.65,
     letterSpacing: 0,
@@ -138,7 +138,7 @@ export const text = {
 
   bodySM: {
     fontFamily: fonts.body,
-    fontSize: 14,
+    fontSize: 28,
     fontWeight: 400,
     lineHeight: 1.55,
     letterSpacing: 0.1,
@@ -148,7 +148,7 @@ export const text = {
   // ── Label / Caption ──
   label: {
     fontFamily: fonts.body,
-    fontSize: 12,
+    fontSize: 24,
     fontWeight: 500,
     letterSpacing: 0.5,
     color: colors.textDim,
@@ -156,7 +156,7 @@ export const text = {
 
   caption: {
     fontFamily: fonts.body,
-    fontSize: 13,
+    fontSize: 26,
     fontWeight: 400,
     letterSpacing: 0.2,
     lineHeight: 1.5,
@@ -166,7 +166,7 @@ export const text = {
   // ── Code ──
   codeLG: {
     fontFamily: fonts.code,
-    fontSize: 20,
+    fontSize: 40,
     fontWeight: 400,
     letterSpacing: 0.3,
     color: colors.textSecondary,
@@ -174,7 +174,7 @@ export const text = {
 
   codeMD: {
     fontFamily: fonts.code,
-    fontSize: 16,
+    fontSize: 32,
     fontWeight: 400,
     letterSpacing: 0.3,
     color: colors.textSecondary,
@@ -182,7 +182,7 @@ export const text = {
 
   codeSM: {
     fontFamily: fonts.code,
-    fontSize: 13,
+    fontSize: 26,
     fontWeight: 400,
     letterSpacing: 0.2,
     color: colors.textDim,

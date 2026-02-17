@@ -98,7 +98,6 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
         <div
           style={{
             ...text.overlineLG,
-            fontSize: 30,
             color: colors.gold,
             transform: `scale(${numberScale})`,
             opacity: numberOpacity,
@@ -111,7 +110,6 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
         <h1
           style={{
             ...text.displayXL,
-            fontSize: 128,
             margin: 0,
             opacity: titleOpacity,
             transform: `translateY(${titleY}px)`,
@@ -124,7 +122,6 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
         <div
           style={{
             ...text.caption,
-            fontSize: 32,
             opacity: subtitleOpacity,
             transform: `translateY(${subtitleY}px)`,
           }}

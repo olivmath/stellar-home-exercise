@@ -93,7 +93,6 @@ export const Opening: React.FC = () => {
           <h1
             style={{
               ...text.displayXL,
-              fontSize: 192,
               letterSpacing: -2,
               lineHeight: 1,
               background: `linear-gradient(135deg, ${colors.gold}, ${colors.white})`,
@@ -111,7 +110,6 @@ export const Opening: React.FC = () => {
             style={{
               ...text.caption,
               opacity: subtitleOpacity,
-              fontSize: 40,
               letterSpacing: 8,
               color: colors.white,
               textShadow: "0 2px 12px rgba(0, 0, 0, 0.8), 0 0 4px rgba(0, 0, 0, 0.6)",

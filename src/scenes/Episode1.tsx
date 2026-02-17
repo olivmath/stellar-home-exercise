@@ -250,7 +250,6 @@ const TransactionFee: React.FC = () => {
           style={{
             opacity: feeOpacity,
             ...text.bodyMD,
-            fontSize: 34,
             color: colors.warmGrey,
           }}
         >
