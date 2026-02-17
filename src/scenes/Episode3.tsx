@@ -7,7 +7,8 @@ import {
   interpolate,
   Sequence,
 } from "remotion";
-import { colors, fonts } from "../styles/theme";
+import { colors } from "../styles/theme";
+import { text, space, gradients } from "../styles/designSystem";
 import { fadeIn, slideIn, scaleIn } from "../animations/springs";
 import { EpisodeTitle } from "../components/EpisodeTitle";
 import { FlowDiagram } from "../components/FlowDiagram";
@@ -64,7 +65,7 @@ const TransactionLifecycle: React.FC = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        gap: 48,
+        gap: space.xxl,
       }}
     >
       {/* Subtle top glow */}
@@ -73,7 +74,7 @@ const TransactionLifecycle: React.FC = () => {
           position: "absolute",
           width: 600,
           height: 300,
-          background: `radial-gradient(ellipse, rgba(0, 167, 181, 0.05) 0%, transparent 70%)`,
+          background: gradients.tealOrb,
           top: "15%",
           left: "50%",
           transform: "translateX(-50%)",
@@ -85,11 +86,8 @@ const TransactionLifecycle: React.FC = () => {
       <div
         style={{
           opacity: titleOpacity,
-          color: colors.textPrimary,
+          ...text.displayMD,
           fontSize: 38,
-          fontFamily: fonts.display,
-          fontWeight: 700,
-          letterSpacing: -0.5,
         }}
       >
         Transaction Lifecycle
@@ -106,9 +104,8 @@ const TransactionLifecycle: React.FC = () => {
       <div
         style={{
           opacity: subtitleOpacity,
+          ...text.bodyMD,
           color: colors.warmGrey,
-          fontSize: 18,
-          fontFamily: fonts.body,
           letterSpacing: 0.3,
         }}
       >
@@ -182,11 +179,8 @@ const AtomicityVisual: React.FC = () => {
       <div
         style={{
           opacity: titleOpacity,
-          color: colors.textPrimary,
+          ...text.displayMD,
           fontSize: 38,
-          fontFamily: fonts.display,
-          fontWeight: 700,
-          letterSpacing: -0.5,
         }}
       >
         Atomic Transactions
@@ -194,11 +188,10 @@ const AtomicityVisual: React.FC = () => {
 
       <div
         style={{
+          ...text.bodyMD,
           color: colors.warmGrey,
-          fontSize: 18,
-          fontFamily: fonts.body,
           opacity: subtitleOpacity,
-          marginBottom: 8,
+          marginBottom: space.sm,
         }}
       >
         All operations succeed, or none do.
@@ -219,7 +212,7 @@ const AtomicityVisual: React.FC = () => {
               }}
             >
               <GlassPanel
-                padding="24px 32px"
+                padding={`${space.lg}px ${space.xl}px`}
                 borderColor={borderColor}
                 style={{
                   minWidth: 180,
@@ -245,9 +238,9 @@ const AtomicityVisual: React.FC = () => {
                 />
                 <div
                   style={{
+                    ...text.codeMD,
                     color: colors.textPrimary,
                     fontSize: 18,
-                    fontFamily: fonts.code,
                     fontWeight: 600,
                   }}
                 >
@@ -273,19 +266,18 @@ const AtomicityVisual: React.FC = () => {
         style={{
           opacity: resultProg,
           transform: `translateY(${interpolate(resultProg, [0, 1], [40, 0])}px)`,
-          marginTop: 8,
+          marginTop: space.sm,
         }}
       >
         <GlassPanel
-          padding="20px 48px"
+          padding={`20px ${space.xxl}px`}
           glow={colors.glowWarning}
           borderColor={colors.warning}
         >
           <div
             style={{
+              ...text.h2,
               color: colors.warning,
-              fontSize: 28,
-              fontFamily: fonts.display,
               fontWeight: 800,
               letterSpacing: 1,
               textAlign: "center",
@@ -335,11 +327,9 @@ const OperationTypes: React.FC = () => {
       {/* Section label */}
       <div
         style={{
+          ...text.accentSM,
           color: colors.warmGrey,
           fontSize: 14,
-          fontFamily: fonts.accent,
-          textTransform: "uppercase" as const,
-          letterSpacing: 4,
           opacity: fadeIn(frame, fps, 0.1),
         }}
       >
@@ -349,11 +339,8 @@ const OperationTypes: React.FC = () => {
       <div
         style={{
           opacity: titleOpacity,
-          color: colors.textPrimary,
+          ...text.displayMD,
           fontSize: 38,
-          fontFamily: fonts.display,
-          fontWeight: 700,
-          letterSpacing: -0.5,
         }}
       >
         Operation Types
@@ -361,16 +348,16 @@ const OperationTypes: React.FC = () => {
 
       <div
         style={{
+          ...text.bodyMD,
           color: colors.warmGrey,
           fontSize: 17,
-          fontFamily: fonts.body,
           opacity: subtitleOpacity,
         }}
       >
         A transaction bundles one or more operations
       </div>
 
-      <div style={{ display: "flex", gap: 32, marginTop: 12 }}>
+      <div style={{ display: "flex", gap: space.xl, marginTop: 12 }}>
         <Badge label="Payment" delay={1.0} variant="teal" size="lg" />
         <Badge label="Change Trust" delay={1.6} variant="gold" size="lg" />
         <Badge label="Invoke Contract" delay={2.2} variant="success" size="lg" />
@@ -385,7 +372,7 @@ export const Episode3: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        fontFamily: fonts.body,
+        fontFamily: text.bodyMD.fontFamily,
       }}
     >
       {/* Section 1 — TransactionEnvelope/Intro (108.68s to 117.22s) */}

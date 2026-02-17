@@ -8,6 +8,7 @@ import {
   Sequence,
 } from "remotion";
 import { colors, fonts } from "../styles/theme";
+import { text, space, shadows, gradients, radius, layout } from "../styles/designSystem";
 import { fadeIn, slideIn } from "../animations/springs";
 import { NetworkBackground } from "../components/NetworkBackground";
 import { LowerThird } from "../components/LowerThird";
@@ -36,18 +37,16 @@ const ChecklistItem: React.FC<{
         transform: `translateY(${anim.translateY}px)`,
         display: "flex",
         alignItems: "center",
-        gap: 18,
-        fontSize: 28,
-        fontFamily: fonts.display,
+        gap: space.md + 2,
+        ...text.h2,
         fontWeight: 500,
-        color: colors.textPrimary,
       }}
     >
       {/* Checkmark */}
       <span
         style={{
           color: colors.success,
-          fontSize: 22,
+          ...text.h3,
           fontFamily: fonts.code,
           fontWeight: 700,
           display: "inline-flex",
@@ -55,10 +54,10 @@ const ChecklistItem: React.FC<{
           justifyContent: "center",
           width: 28,
           height: 28,
-          borderRadius: 8,
+          borderRadius: radius.sm,
           background: `${colors.success}12`,
           border: `1px solid ${colors.success}30`,
-          boxShadow: colors.glowSuccess,
+          boxShadow: shadows.successSoft,
         }}
       >
         &#10003;
@@ -89,15 +88,13 @@ const FinalStatement: React.FC = () => {
     [0, 180]
   );
 
-  const textShadow = "0 2px 12px rgba(15, 15, 15, 0.8), 0 0 4px rgba(15, 15, 15, 0.6)";
+  const textShadow = `${shadows.sm}, 0 0 4px rgba(15, 15, 15, 0.6)`;
 
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 14,
+        ...layout.centerColumn,
+        gap: space.md - 2,
       }}
     >
       {/* Name */}
@@ -105,18 +102,14 @@ const FinalStatement: React.FC = () => {
         style={{
           opacity: nameAnim.opacity,
           transform: `translateY(${nameAnim.translateY}px)`,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: 10,
+          ...layout.centerColumn,
+          gap: space.sm + 2,
         }}
       >
         <span
           style={{
-            color: colors.textPrimary,
+            ...text.h1,
             fontSize: 36,
-            fontFamily: fonts.display,
-            fontWeight: 700,
             textShadow,
           }}
         >
@@ -130,7 +123,7 @@ const FinalStatement: React.FC = () => {
             width: accentLineWidth,
             height: 2,
             borderRadius: 2,
-            background: `linear-gradient(90deg, ${colors.gold}, ${colors.teal})`,
+            background: gradients.goldToTeal,
             boxShadow: `0 0 16px ${colors.gold}40, 0 0 32px ${colors.teal}20`,
           }}
         />
@@ -141,13 +134,11 @@ const FinalStatement: React.FC = () => {
         style={{
           opacity: closingAnim.opacity,
           transform: `translateY(${closingAnim.translateY}px)`,
+          ...text.accentSM,
           color: colors.teal,
-          fontSize: 16,
-          fontFamily: fonts.accent,
           fontWeight: 500,
-          marginTop: 6,
+          marginTop: space.xs + 2,
           letterSpacing: 0.5,
-          textTransform: "uppercase" as const,
           textShadow,
         }}
       >
@@ -190,24 +181,19 @@ export const Closing: React.FC = () => {
         <AbsoluteFill
           style={{
             backgroundColor: colors.bgPrimary,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 24,
-            padding: 80,
+            ...layout.centerColumn,
+            gap: space.lg,
+            padding: space.section,
             opacity: checklistFadeOut,
           }}
         >
           {/* Section title */}
           <div
             style={{
+              ...text.accentSM,
               color: colors.warmGrey,
               fontSize: 14,
-              fontFamily: fonts.accent,
-              textTransform: "uppercase" as const,
-              letterSpacing: 4,
-              marginBottom: 20,
+              marginBottom: space.xl - 12,
               opacity: fadeIn(frame, fps, 0.1),
             }}
           >

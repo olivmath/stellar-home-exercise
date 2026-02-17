@@ -8,7 +8,8 @@ import {
   Img,
   staticFile,
 } from "remotion";
-import { colors, fonts } from "../styles/theme";
+import { colors } from "../styles/theme";
+import { text, space, accentLine } from "../styles/designSystem";
 
 import { LowerThird } from "../components/LowerThird";
 
@@ -77,7 +78,7 @@ export const Opening: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 28,
+            gap: space.xl,
           }}
         >
           {/* Stellar logo */}
@@ -91,16 +92,15 @@ export const Opening: React.FC = () => {
           {/* Main title — Lora serif with gold gradient */}
           <h1
             style={{
+              ...text.displayXL,
               fontSize: 96,
-              fontFamily: fonts.display,
-              fontWeight: 700,
+              letterSpacing: -2,
+              lineHeight: 1,
               background: `linear-gradient(135deg, ${colors.gold}, ${colors.white})`,
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
               margin: 0,
-              letterSpacing: -2,
-              lineHeight: 1,
             }}
           >
             Stellar Speed Run
@@ -109,13 +109,10 @@ export const Opening: React.FC = () => {
           {/* Subtitle — Inter */}
           <div
             style={{
+              ...text.caption,
               opacity: subtitleOpacity,
               fontSize: 20,
-              fontFamily: fonts.body,
-              color: colors.warmGrey,
               letterSpacing: 8,
-              textTransform: "uppercase",
-              fontWeight: 400,
             }}
           >
             End-to-End in 5 Minutes
@@ -124,14 +121,12 @@ export const Opening: React.FC = () => {
           {/* Gold gradient underline — brand signature */}
           <div
             style={{
-              width: interpolate(frame, [75, 125], [0, 240], {
-                extrapolateLeft: "clamp",
-                extrapolateRight: "clamp",
-              }),
-              height: 2,
-              background: `linear-gradient(90deg, transparent, ${colors.gold}80, ${colors.gold}, ${colors.gold}80, transparent)`,
-              borderRadius: 1,
-              boxShadow: `0 0 20px rgba(253, 218, 36, 0.2)`,
+              ...accentLine.gold(
+                interpolate(frame, [75, 125], [0, 240], {
+                  extrapolateLeft: "clamp",
+                  extrapolateRight: "clamp",
+                })
+              ),
             }}
           />
         </div>

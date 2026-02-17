@@ -7,7 +7,8 @@ import {
   interpolate,
   Sequence,
 } from "remotion";
-import { colors, fonts } from "../styles/theme";
+import { colors } from "../styles/theme";
+import { text, space, radius, layout } from "../styles/designSystem";
 import { fadeIn, slideIn, scaleIn } from "../animations/springs";
 import { EpisodeTitle } from "../components/EpisodeTitle";
 import { GlassPanel } from "../components/GlassPanel";
@@ -42,7 +43,7 @@ export const Episode4: React.FC = () => {
     <AbsoluteFill
       style={{
         backgroundColor,
-        fontFamily: fonts.body,
+        ...text.bodyMD,
       }}
     >
       {/* ============================================
@@ -52,10 +53,8 @@ export const Episode4: React.FC = () => {
       <Sequence from={0} durationInFrames={rel(177.14)}>
         <AbsoluteFill
           style={{
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            gap: 44,
+            ...layout.centerColumn,
+            gap: space.xxl,
           }}
         >
           {/* Episode title */}
@@ -67,7 +66,7 @@ export const Episode4: React.FC = () => {
               display: "flex",
               gap: 56,
               alignItems: "stretch",
-              marginTop: 24,
+              marginTop: space.lg,
             }}
           >
             {/* LEFT — Blocks (crossed out / deprecated) */}
@@ -84,19 +83,16 @@ export const Episode4: React.FC = () => {
                     padding="40px 48px"
                     borderColor={colors.borderSubtle}
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: 20,
+                      ...layout.centerColumn,
+                      gap: space.lg,
                       minWidth: 300,
                     }}
                   >
                     <div
                       style={{
-                        color: colors.textDim,
+                        ...text.h1,
                         fontSize: 32,
-                        fontFamily: fonts.display,
-                        fontWeight: 700,
+                        color: colors.textDim,
                         textDecoration: "line-through",
                         textDecorationThickness: 3,
                       }}
@@ -105,9 +101,8 @@ export const Episode4: React.FC = () => {
                     </div>
                     <div
                       style={{
+                        ...text.bodySM,
                         color: colors.textDim,
-                        fontSize: 16,
-                        fontFamily: fonts.body,
                         textAlign: "center",
                         lineHeight: 1.8,
                       }}
@@ -141,10 +136,8 @@ export const Episode4: React.FC = () => {
                   style={{
                     opacity,
                     transform: `translateY(${translateY}px)`,
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: 20,
+                    ...layout.centerColumn,
+                    gap: space.lg,
                   }}
                 >
                   <GlassPanel
@@ -152,28 +145,24 @@ export const Episode4: React.FC = () => {
                     borderColor={colors.borderTeal}
                     glow={colors.glowTeal}
                     style={{
-                      display: "flex",
-                      flexDirection: "column",
-                      alignItems: "center",
-                      gap: 20,
+                      ...layout.centerColumn,
+                      gap: space.lg,
                       minWidth: 300,
                     }}
                   >
                     <div
                       style={{
-                        color: colors.teal,
+                        ...text.h1,
                         fontSize: 32,
-                        fontFamily: fonts.display,
-                        fontWeight: 700,
+                        color: colors.teal,
                       }}
                     >
                       Ledgers
                     </div>
                     <div
                       style={{
+                        ...text.bodySM,
                         color: colors.warmGrey,
-                        fontSize: 16,
-                        fontFamily: fonts.body,
                         textAlign: "center",
                         lineHeight: 1.8,
                       }}
@@ -209,7 +198,7 @@ export const Episode4: React.FC = () => {
           style={{
             justifyContent: "flex-end",
             alignItems: "center",
-            paddingBottom: 80,
+            paddingBottom: space.section,
           }}
         >
           <ScientistCard
@@ -228,21 +217,15 @@ export const Episode4: React.FC = () => {
       <Sequence from={rel(197.18)} durationInFrames={rel(210.38) - rel(197.18)}>
         <AbsoluteFill
           style={{
-            justifyContent: "center",
-            alignItems: "center",
-            flexDirection: "column",
-            gap: 40,
+            ...layout.centerColumn,
+            gap: space.xxl,
           }}
         >
           {/* Section heading */}
           <div
             style={{
               opacity: fadeIn(frame - rel(197.18), fps, 0.2),
-              color: colors.textPrimary,
-              fontSize: 34,
-              fontFamily: fonts.display,
-              fontWeight: 700,
-              letterSpacing: -0.5,
+              ...text.h1,
             }}
           >
             Quorum Slices
@@ -315,24 +298,19 @@ export const Episode4: React.FC = () => {
                           top: cy,
                           width: circleSize,
                           height: circleSize,
-                          borderRadius: "50%",
+                          borderRadius: radius.circle,
                           background: circle.fillColor,
                           border: `2px solid ${circle.borderColor}`,
                           backdropFilter: "blur(8px)",
                           opacity: circleOpacity,
-                          display: "flex",
-                          justifyContent: "center",
-                          alignItems: "center",
+                          ...layout.centerRow,
                         }}
                       >
                         <div
                           style={{
+                            ...text.accentSM,
                             color: circle.color,
-                            fontSize: 16,
-                            fontFamily: fonts.accent,
                             fontWeight: 700,
-                            letterSpacing: 1,
-                            textTransform: "uppercase" as const,
                           }}
                         >
                           {circle.label}
@@ -358,11 +336,7 @@ export const Episode4: React.FC = () => {
                 style={{
                   opacity: labelProg,
                   transform: `translateY(${interpolate(labelProg, [0, 1], [20, 0])}px)`,
-                  color: colors.textPrimary,
-                  fontSize: 24,
-                  fontFamily: fonts.display,
-                  fontWeight: 600,
-                  letterSpacing: 0.5,
+                  ...text.h3,
                   textAlign: "center",
                 }}
               >

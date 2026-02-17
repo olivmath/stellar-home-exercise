@@ -7,7 +7,8 @@ import {
   interpolate,
   Sequence,
 } from "remotion";
-import { colors, fonts } from "../styles/theme";
+import { colors } from "../styles/theme";
+import { text, space, shadows, radius, layout } from "../styles/designSystem";
 import { fadeIn, slideIn, scaleIn } from "../animations/springs";
 import { EpisodeTitle } from "../components/EpisodeTitle";
 import { ScientistCard } from "../components/ScientistCard";
@@ -54,7 +55,7 @@ const StackLayer: React.FC<{
       }}
     >
       <GlassPanel
-        padding="24px 40px 24px 52px"
+        padding={`${space.lg}px ${space.xl + space.sm}px ${space.lg}px ${space.xxl + space.xs}px`}
         borderColor={colors.borderSubtle}
         style={{ width: "100%" }}
       >
@@ -66,17 +67,14 @@ const StackLayer: React.FC<{
             top: 0,
             bottom: 0,
             width: 3,
-            borderRadius: "20px 0 0 20px",
+            borderRadius: `${radius.xl}px 0 0 ${radius.xl}px`,
             background: accentColor,
             boxShadow: `0 0 12px ${accentColor}60`,
           }}
         />
         <span
           style={{
-            color: colors.textPrimary,
-            fontSize: 28,
-            fontFamily: fonts.display,
-            fontWeight: 700,
+            ...text.h2,
           }}
         >
           {label}
@@ -118,32 +116,27 @@ const TTLConcept: React.FC = () => {
   return (
     <div
       style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 48,
+        ...layout.centerColumn,
+        gap: space.xxl,
         opacity: panelAppear,
       }}
     >
       <GlassPanel
-        padding="32px 56px"
+        padding={`${space.xl}px ${space.xxxl - space.sm}px`}
         borderColor={colors.borderSubtle}
         glow={barGlow}
       >
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: 16,
+            ...layout.centerColumn,
+            gap: space.md,
           }}
         >
           <span
             style={{
+              ...text.accentSM,
               color: colors.warmGrey,
               fontSize: 14,
-              fontFamily: fonts.accent,
-              textTransform: "uppercase" as const,
               letterSpacing: 3,
             }}
           >
@@ -155,7 +148,7 @@ const TTLConcept: React.FC = () => {
             style={{
               width: 300,
               height: 6,
-              borderRadius: 3,
+              borderRadius: radius.xs,
               background: `${colors.textDim}30`,
               overflow: "hidden",
             }}
@@ -164,7 +157,7 @@ const TTLConcept: React.FC = () => {
               style={{
                 width: `${(1 - barProgress) * 100}%`,
                 height: "100%",
-                borderRadius: 3,
+                borderRadius: radius.xs,
                 background: barColor,
                 boxShadow: `0 0 8px ${barColor}80`,
                 transition: "background 0.3s ease",
@@ -174,9 +167,9 @@ const TTLConcept: React.FC = () => {
 
           <span
             style={{
+              ...text.codeSM,
               color: colors.textDim,
               fontSize: 13,
-              fontFamily: fonts.code,
             }}
           >
             TTL: {Math.max(0, Math.round((1 - barProgress) * 100))}%
@@ -188,7 +181,7 @@ const TTLConcept: React.FC = () => {
       <div
         style={{
           display: "flex",
-          gap: 80,
+          gap: space.section,
           opacity: branchReveal,
           transform: `translateY(${(1 - branchReveal) * 30}px)`,
         }}
@@ -196,9 +189,7 @@ const TTLConcept: React.FC = () => {
         {/* Renew path */}
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            ...layout.centerColumn,
             gap: 12,
           }}
         >
@@ -210,16 +201,15 @@ const TTLConcept: React.FC = () => {
             }}
           />
           <GlassPanel
-            padding="16px 28px"
+            padding={`${space.md}px ${space.lg + space.xs}px`}
             borderColor={`${colors.success}30`}
             glow={colors.glowSuccess}
           >
             <span
               style={{
+                ...text.h3,
                 color: colors.success,
                 fontSize: 18,
-                fontFamily: fonts.display,
-                fontWeight: 600,
               }}
             >
               Renew Rent &rarr; Keep Alive
@@ -230,9 +220,7 @@ const TTLConcept: React.FC = () => {
         {/* Archive path */}
         <div
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            ...layout.centerColumn,
             gap: 12,
           }}
         >
@@ -244,16 +232,15 @@ const TTLConcept: React.FC = () => {
             }}
           />
           <GlassPanel
-            padding="16px 28px"
+            padding={`${space.md}px ${space.lg + space.xs}px`}
             borderColor={`${colors.warning}30`}
             glow={colors.glowWarning}
           >
             <span
               style={{
+                ...text.h3,
                 color: colors.warning,
                 fontSize: 18,
-                fontFamily: fonts.display,
-                fontWeight: 600,
               }}
             >
               No Rent &rarr; Archived
@@ -280,19 +267,16 @@ const CryptoBurst: React.FC = () => {
     <div
       style={{
         position: "relative",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 28,
+        ...layout.centerColumn,
+        gap: space.lg + space.xs,
       }}
     >
       {/* Section label */}
       <div
         style={{
+          ...text.accentSM,
           color: colors.warmGrey,
           fontSize: 14,
-          fontFamily: fonts.accent,
-          textTransform: "uppercase" as const,
           letterSpacing: 4,
           opacity: fadeIn(frame, fps, 0.2),
         }}
@@ -306,9 +290,7 @@ const CryptoBurst: React.FC = () => {
           position: "relative",
           width: 600,
           height: 200,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          ...layout.centerRow,
         }}
       >
         {badges.map((b, i) => {
@@ -351,19 +333,16 @@ export const Episode5: React.FC = () => {
     <AbsoluteFill
       style={{
         backgroundColor: colors.bgPrimary,
-        fontFamily: fonts.body,
+        ...text.bodyMD,
       }}
     >
       {/* ── Section 1: SorobanIntro — Title + Stack Architecture (212.1s to 225.82s) ── */}
       <Sequence from={0} durationInFrames={rel(225.82)}>
         <AbsoluteFill
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 48,
-            padding: 80,
+            ...layout.centerColumn,
+            gap: space.xxl,
+            padding: space.section,
           }}
         >
           <EpisodeTitle number="05" title="Soroban, WASM & zk-Proofs" />
@@ -371,11 +350,9 @@ export const Episode5: React.FC = () => {
           {/* Vertical stack */}
           <div
             style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: 16,
-              marginTop: 24,
+              ...layout.centerColumn,
+              gap: space.md,
+              marginTop: space.lg,
             }}
           >
             <StackLayer label="Soroban" index={0} accentColor={colors.gold} />
@@ -389,20 +366,15 @@ export const Episode5: React.FC = () => {
       <Sequence from={rel(225.82)} durationInFrames={rel(247.58) - rel(225.82)}>
         <AbsoluteFill
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 32,
-            padding: 80,
+            ...layout.centerColumn,
+            gap: space.xl,
+            padding: space.section,
           }}
         >
           <div
             style={{
+              ...text.accentSM,
               color: colors.warmGrey,
-              fontSize: 14,
-              fontFamily: fonts.accent,
-              textTransform: "uppercase" as const,
               letterSpacing: 4,
               opacity: 0.7,
             }}
@@ -425,20 +397,15 @@ export const Episode5: React.FC = () => {
       <Sequence from={rel(247.58)} durationInFrames={rel(256.9) - rel(247.58)}>
         <AbsoluteFill
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            gap: 32,
-            padding: 80,
+            ...layout.centerColumn,
+            gap: space.xl,
+            padding: space.section,
           }}
         >
           <div
             style={{
+              ...text.accentSM,
               color: colors.warmGrey,
-              fontSize: 14,
-              fontFamily: fonts.accent,
-              textTransform: "uppercase" as const,
               letterSpacing: 4,
               opacity: 0.7,
             }}
@@ -459,11 +426,8 @@ export const Episode5: React.FC = () => {
       <Sequence from={rel(256.9)} durationInFrames={rel(275.28) - rel(256.9)}>
         <AbsoluteFill
           style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: 80,
+            ...layout.centerColumn,
+            padding: space.section,
           }}
         >
           <CryptoBurst />
