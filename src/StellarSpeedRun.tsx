@@ -16,12 +16,15 @@ import { colors } from "./styles/theme";
 import { episodes, toFrame } from "./config/audioMarks";
 
 // ─── Scene definitions synced to Whisper timestamps ─────────────────
+// Opening overlaps with ep1 — it's the title card over the first 10s
+const OPENING_DURATION = toFrame(10);
+
 const scenes = [
   {
     id: "opening",
     component: Opening,
     from: 0,
-    duration: episodes.ep1.startFrame, // Opening runs until ep1 starts
+    duration: OPENING_DURATION,
   },
   {
     id: "ep1",
