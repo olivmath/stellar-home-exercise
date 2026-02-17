@@ -261,7 +261,7 @@ const TransactionFee: React.FC = () => {
             textShadow: `0 0 40px rgba(253, 218, 36, 0.25)`,
           }}
         >
-          $0.00000167
+          $0.00000167 USD
         </div>
 
         <div
@@ -446,8 +446,8 @@ export const Episode1: React.FC = () => {
         <TransactionFee />
       </Sequence>
 
-      {/* Scene 1.5: Miners vs Validators — 32.74s to 42.62s — LEFT + RIGHT */}
-      <Sequence from={rel(32.74)} durationInFrames={rel(42.62) - rel(32.74)}>
+      {/* Scene 1.5: Miners vs Validators — 32.74s to 41.72s — LEFT + RIGHT */}
+      <Sequence from={rel(32.74)} durationInFrames={rel(41.72) - rel(32.74)}>
         <MinersVsValidators />
       </Sequence>
 
@@ -456,8 +456,8 @@ export const Episode1: React.FC = () => {
         <CAPs />
       </Sequence>
 
-      {/* Lower-third across full episode */}
-      <Sequence from={toFrame(2)} durationInFrames={rel(55.52) - toFrame(2)}>
+      {/* Lower-third across full episode — starts after opening */}
+      <Sequence from={toFrame(11)} durationInFrames={rel(55.52) - toFrame(12)}>
         <LowerThird title="Foundation & Network Economics" subtitle="Episode 01" delay={0} />
       </Sequence>
     </AbsoluteFill>
