@@ -772,12 +772,12 @@ export const Episode2: React.FC = () => {
       </Sequence>
 
       {/* Scene 2.3a: Signing — RIGHT */}
-      <Sequence from={rel(84.50)} durationInFrames={rel(88.26) - rel(84.50)}>
+      <Sequence from={rel(84.10)} durationInFrames={rel(87.86) - rel(84.10)}>
         <Signing />
       </Sequence>
 
-      {/* Scene 2.3b: Verification — LEFT (01:26.09) */}
-      <Sequence from={rel(86.09)} durationInFrames={rel(88.26) - rel(86.09)}>
+      {/* Scene 2.3b: Verification — LEFT (01:25.69) */}
+      <Sequence from={rel(85.69)} durationInFrames={rel(87.86) - rel(85.69)}>
         <Verification />
       </Sequence>
 
