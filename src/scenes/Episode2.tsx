@@ -541,16 +541,17 @@ const CurveComparison: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Bitcoin card appears immediately
-  const bitcoinDelay = 0.3;
-  // Stellar card appears at 01:33.50 = 93.50s, scene starts at 88.26s
-  const stellarDelay = 5.24;
+  // Bitcoin card ready at 01:28.73 = 88.73s, scene at 88.26s → 0.47s
+  // Card needs ~0.3s to slide in, so start immediately
+  const bitcoinDelay = 0;
+  // Stellar card ready at 01:32.56 = 92.56s → 4.30s into scene
+  const stellarDelay = 3.9; // starts sliding 0.4s before ready
 
-  // Curve names appear LAST (after title + description)
+  // Curve names start typing exactly when narration says the name
   const secp256k1Name = "secp256k1";
   const ed25519Name = "Ed25519";
-  const secpCurveDelay = bitcoinDelay + 1.5; // curve name after desc
-  const edCurveDelay = stellarDelay + 1.5;
+  const secpCurveDelay = 0.47; // 01:28.73
+  const edCurveDelay = 4.30;   // 01:32.56
 
   const secpChars = Math.floor(
     interpolate(
@@ -618,7 +619,7 @@ const CurveComparison: React.FC = () => {
           <div
             style={{
               ...text.bodySM,
-              opacity: fadeIn(frame, fps, bitcoinDelay + 0.6),
+              opacity: fadeIn(frame, fps, bitcoinDelay + 0.2),
               textAlign: "center",
               lineHeight: 1.6,
             }}
@@ -676,7 +677,7 @@ const CurveComparison: React.FC = () => {
           <div
             style={{
               ...text.bodySM,
-              opacity: fadeIn(frame, fps, stellarDelay + 0.6),
+              opacity: fadeIn(frame, fps, stellarDelay + 0.2),
               textAlign: "center",
               lineHeight: 1.6,
             }}
@@ -772,12 +773,12 @@ export const Episode2: React.FC = () => {
       </Sequence>
 
       {/* Scene 2.3a: Signing — RIGHT */}
-      <Sequence from={rel(84.10)} durationInFrames={rel(87.86) - rel(84.10)}>
+      <Sequence from={rel(84.00)} durationInFrames={rel(87.00) - rel(84.00)}>
         <Signing />
       </Sequence>
 
       {/* Scene 2.3b: Verification — LEFT (01:25.69) */}
-      <Sequence from={rel(85.69)} durationInFrames={rel(87.86) - rel(85.69)}>
+      <Sequence from={rel(84.69)} durationInFrames={rel(87.00) - rel(84.69)}>
         <Verification />
       </Sequence>
 
