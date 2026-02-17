@@ -485,8 +485,8 @@ const SignVerify: React.FC = () => {
           borderColor={`${colors.positive}20`}
           padding={`${space.xxl - 8}px ${space.xxl - 4}px`}
           style={{
-            opacity: slideIn(frame, fps, 1.0).opacity,
-            transform: `translateY(${slideIn(frame, fps, 1.0).translateY}px)`,
+            opacity: slideIn(frame, fps, 0.5).opacity,
+            transform: `translateY(${slideIn(frame, fps, 0.5).translateY}px)`,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -497,7 +497,7 @@ const SignVerify: React.FC = () => {
           <div style={{ ...text.overlineSM, color: colors.positive }}>
             Verification
           </div>
-          <FlowDiagram steps={["Public Key", "Verify", "Network"]} delay={1.2} accentColor={colors.positive} />
+          <FlowDiagram steps={["Public Key", "Verify", "Network"]} delay={0.7} accentColor={colors.positive} />
         </GlassPanel>
       </div>
 
