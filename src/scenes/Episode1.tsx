@@ -422,6 +422,56 @@ const CAPs: React.FC = () => {
   );
 };
 
+// ── Scene 1.7: Closing question — fullscreen dynamic text — 50.94s to 55.52s ──
+const closingWords = [
+  { text: "How", atSec: 53.10 },
+  { text: "does", atSec: 53.28 },
+  { text: "a", atSec: 53.58 },
+  { text: "user", atSec: 54.00 },
+  { text: "enter", atSec: 54.42 },
+  { text: "this", atSec: 55.00 },
+  { text: "network?", atSec: 55.14 },
+];
+
+const ClosingQuestion: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  return (
+    <AbsoluteFill style={{ backgroundColor: "rgba(15, 15, 15, 0.6)" }}>
+      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+        <div
+          style={{
+            fontFamily: fonts.display,
+            fontSize: 64,
+            fontWeight: 700,
+            color: colors.textPrimary,
+            textAlign: "center",
+            lineHeight: 1.4,
+            maxWidth: 900,
+          }}
+        >
+          {closingWords.map((word, i) => {
+            const wordFrame = Math.round((word.atSec - 51.00) * fps);
+            const visible = frame >= wordFrame;
+            return (
+              <span
+                key={i}
+                style={{
+                  opacity: visible ? 1 : 0,
+                  color: visible ? (word.text === "network?" ? colors.gold : colors.textPrimary) : "transparent",
+                }}
+              >
+                {word.text}{" "}
+              </span>
+            );
+          })}
+        </div>
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
 // ── Main Episode 1 — Sequences synced to audioMarks ──
 export const Episode1: React.FC = () => {
   return (
@@ -447,13 +497,18 @@ export const Episode1: React.FC = () => {
       </Sequence>
 
       {/* Scene 1.5: Miners vs Validators — 32.74s to 41.72s — LEFT + RIGHT */}
-      <Sequence from={rel(32.74)} durationInFrames={rel(41.72) - rel(32.74)}>
+      <Sequence from={rel(32.74)} durationInFrames={rel(41.10) - rel(32.74)}>
         <MinersVsValidators />
       </Sequence>
 
       {/* Scene 1.6: CAPs — 44.02s to 55.52s */}
-      <Sequence from={rel(44.02)} durationInFrames={rel(55.52) - rel(44.02)}>
+      <Sequence from={rel(44.02)} durationInFrames={rel(51.00) - rel(44.02)}>
         <CAPs />
+      </Sequence>
+
+      {/* Scene 1.7: Closing question — fullscreen — 51.0s to 55.52s */}
+      <Sequence from={rel(51.00)} durationInFrames={rel(55.52) - rel(51.00)}>
+        <ClosingQuestion />
       </Sequence>
 
       {/* Lower-third across full episode — starts after opening */}

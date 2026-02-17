@@ -16,6 +16,7 @@ import { colors } from "./styles/theme";
 import { episodes, toFrame } from "./config/audioMarks";
 import { ProgressBar } from "./components/ProgressBar";
 import { EpisodeTransition } from "./components/EpisodeTransition";
+import { DebugTimer } from "./components/DebugTimer";
 
 // ─── Scene definitions synced to Whisper timestamps ─────────────────
 // Opening overlaps with ep1 — it's the title card over the first 10s
@@ -120,6 +121,9 @@ export const StellarSpeedRun: React.FC = () => {
 
       {/* Progress bar — always on top */}
       <ProgressBar />
+
+      {/* Debug timer — remove before final render */}
+      <DebugTimer />
     </AbsoluteFill>
   );
 };
