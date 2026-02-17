@@ -7,7 +7,7 @@ import {
   interpolate,
   Sequence,
 } from "remotion";
-import { colors, fonts } from "../styles/theme";
+import { colors } from "../styles/theme";
 import { text, space, shadows, gradients, radius, layout } from "../styles/designSystem";
 import { fadeIn, slideIn } from "../animations/springs";
 import { NetworkBackground } from "../components/NetworkBackground";
@@ -37,18 +37,15 @@ const ChecklistItem: React.FC<{
         transform: `translateY(${anim.translateY}px)`,
         display: "flex",
         alignItems: "center",
-        gap: space.md + 2,
+        gap: space.md,
         ...text.h2,
-        fontWeight: 500,
       }}
     >
       {/* Checkmark */}
       <span
         style={{
           color: colors.success,
-          ...text.h3,
-          fontFamily: fonts.code,
-          fontWeight: 700,
+          ...text.codeMD,
           display: "inline-flex",
           alignItems: "center",
           justifyContent: "center",
@@ -94,7 +91,7 @@ const FinalStatement: React.FC = () => {
     <div
       style={{
         ...layout.centerColumn,
-        gap: space.md - 2,
+        gap: space.md,
       }}
     >
       {/* Name */}
@@ -103,13 +100,12 @@ const FinalStatement: React.FC = () => {
           opacity: nameAnim.opacity,
           transform: `translateY(${nameAnim.translateY}px)`,
           ...layout.centerColumn,
-          gap: space.sm + 2,
+          gap: space.sm,
         }}
       >
         <span
           style={{
             ...text.h1,
-            fontSize: 36,
             textShadow,
           }}
         >
@@ -136,8 +132,7 @@ const FinalStatement: React.FC = () => {
           transform: `translateY(${closingAnim.translateY}px)`,
           ...text.accentSM,
           color: colors.teal,
-          fontWeight: 500,
-          marginTop: space.xs + 2,
+          marginTop: space.xs,
           letterSpacing: 0.5,
           textShadow,
         }}
@@ -175,7 +170,7 @@ export const Closing: React.FC = () => {
   });
 
   return (
-    <AbsoluteFill style={{ fontFamily: fonts.body }}>
+    <AbsoluteFill>
       {/* -- Phase 1: Checklist/ReviewShot (275.28s to 293.0s) -- ANIMATION FULL, solid bg hides video */}
       <Sequence from={0} durationInFrames={rel(293.0)}>
         <AbsoluteFill
@@ -192,8 +187,7 @@ export const Closing: React.FC = () => {
             style={{
               ...text.accentSM,
               color: colors.warmGrey,
-              fontSize: 14,
-              marginBottom: space.xl - 12,
+              marginBottom: space.md,
               opacity: fadeIn(frame, fps, 0.1),
             }}
           >
@@ -223,7 +217,7 @@ export const Closing: React.FC = () => {
               display: "flex",
               alignItems: "flex-end",
               justifyContent: "center",
-              paddingBottom: 120,
+              paddingBottom: space.edge,
             }}
           >
             <FinalStatement />

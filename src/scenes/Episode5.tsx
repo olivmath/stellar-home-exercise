@@ -55,7 +55,7 @@ const StackLayer: React.FC<{
       }}
     >
       <GlassPanel
-        padding={`${space.lg}px ${space.xl + space.sm}px ${space.lg}px ${space.xxl + space.xs}px`}
+        padding={`${space.lg}px ${space.xxl}px`}
         borderColor={colors.borderSubtle}
         style={{ width: "100%" }}
       >
@@ -122,7 +122,7 @@ const TTLConcept: React.FC = () => {
       }}
     >
       <GlassPanel
-        padding={`${space.xl}px ${space.xxxl - space.sm}px`}
+        padding={`${space.xl}px ${space.xxl}px`}
         borderColor={colors.borderSubtle}
         glow={barGlow}
       >
@@ -136,7 +136,6 @@ const TTLConcept: React.FC = () => {
             style={{
               ...text.accentSM,
               color: colors.warmGrey,
-              fontSize: 14,
               letterSpacing: 3,
             }}
           >
@@ -169,7 +168,6 @@ const TTLConcept: React.FC = () => {
             style={{
               ...text.codeSM,
               color: colors.textDim,
-              fontSize: 13,
             }}
           >
             TTL: {Math.max(0, Math.round((1 - barProgress) * 100))}%
@@ -190,7 +188,7 @@ const TTLConcept: React.FC = () => {
         <div
           style={{
             ...layout.centerColumn,
-            gap: 12,
+            gap: space.md,
           }}
         >
           <div
@@ -201,15 +199,14 @@ const TTLConcept: React.FC = () => {
             }}
           />
           <GlassPanel
-            padding={`${space.md}px ${space.lg + space.xs}px`}
+            padding={`${space.md}px ${space.lg}px`}
             borderColor={`${colors.success}30`}
             glow={colors.glowSuccess}
           >
             <span
               style={{
-                ...text.h3,
+                ...text.bodyMD,
                 color: colors.success,
-                fontSize: 18,
               }}
             >
               Renew Rent &rarr; Keep Alive
@@ -221,7 +218,7 @@ const TTLConcept: React.FC = () => {
         <div
           style={{
             ...layout.centerColumn,
-            gap: 12,
+            gap: space.md,
           }}
         >
           <div
@@ -232,15 +229,14 @@ const TTLConcept: React.FC = () => {
             }}
           />
           <GlassPanel
-            padding={`${space.md}px ${space.lg + space.xs}px`}
+            padding={`${space.md}px ${space.lg}px`}
             borderColor={`${colors.warning}30`}
             glow={colors.glowWarning}
           >
             <span
               style={{
-                ...text.h3,
+                ...text.bodyMD,
                 color: colors.warning,
-                fontSize: 18,
               }}
             >
               No Rent &rarr; Archived
@@ -268,7 +264,7 @@ const CryptoBurst: React.FC = () => {
       style={{
         position: "relative",
         ...layout.centerColumn,
-        gap: space.lg + space.xs,
+        gap: space.lg,
       }}
     >
       {/* Section label */}
@@ -276,7 +272,6 @@ const CryptoBurst: React.FC = () => {
         style={{
           ...text.accentSM,
           color: colors.warmGrey,
-          fontSize: 14,
           letterSpacing: 4,
           opacity: fadeIn(frame, fps, 0.2),
         }}

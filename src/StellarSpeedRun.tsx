@@ -29,7 +29,7 @@ const TRANSITION_DURATION = toFrame(2);
 const transitions = [
   { episode: 1, title: "Foundation", subtitle: "Purpose & Network Economics", atSec: 9.4, durationSec: 2.5 },
   { episode: 2, title: "Wallet", subtitle: "Cryptographic Identity", atSec: 57 },
-  { episode: 3, title: "Transaction", subtitle: "Atomic Operations", atSec: 108 },
+  { episode: 3, title: "Transaction", subtitle: "Atomic Operations", atSec: 107.88 },
   { episode: 4, title: "Consensus", subtitle: "Stellar Consensus Protocol", atSec: 150 },
   { episode: 5, title: "Soroban", subtitle: "Smart Contracts in Rust", atSec: 211, durationSec: 2.5 },
 ];

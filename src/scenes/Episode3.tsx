@@ -86,8 +86,7 @@ const TransactionLifecycle: React.FC = () => {
       <div
         style={{
           opacity: titleOpacity,
-          ...text.displayMD,
-          fontSize: 38,
+          ...text.h1,
         }}
       >
         Transaction Lifecycle
@@ -158,7 +157,7 @@ const AtomicityVisual: React.FC = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        gap: 36,
+        gap: space.xl,
       }}
     >
       {/* Ambient warning glow behind cards */}
@@ -179,8 +178,7 @@ const AtomicityVisual: React.FC = () => {
       <div
         style={{
           opacity: titleOpacity,
-          ...text.displayMD,
-          fontSize: 38,
+          ...text.h1,
         }}
       >
         Atomic Transactions
@@ -198,7 +196,7 @@ const AtomicityVisual: React.FC = () => {
       </div>
 
       {/* Operation cards row */}
-      <div style={{ display: "flex", gap: 28, alignItems: "center" }}>
+      <div style={{ display: "flex", gap: space.xl, alignItems: "center" }}>
         {ops.map((op, i) => {
           const borderColor = op.status === "success" ? colors.success : colors.warning;
           const markColor = op.status === "success" ? colors.success : colors.warning;
@@ -219,7 +217,7 @@ const AtomicityVisual: React.FC = () => {
                   display: "flex",
                   flexDirection: "column",
                   alignItems: "center",
-                  gap: 12,
+                  gap: space.md,
                   position: "relative",
                   overflow: "hidden",
                 }}
@@ -240,16 +238,14 @@ const AtomicityVisual: React.FC = () => {
                   style={{
                     ...text.codeMD,
                     color: colors.textPrimary,
-                    fontSize: 18,
-                    fontWeight: 600,
                   }}
                 >
                   {op.label}
                 </div>
                 <div
                   style={{
+                    ...text.h1,
                     color: markColor,
-                    fontSize: 32,
                     lineHeight: 1,
                   }}
                 >
@@ -270,7 +266,7 @@ const AtomicityVisual: React.FC = () => {
         }}
       >
         <GlassPanel
-          padding={`20px ${space.xxl}px`}
+          padding={`${space.lg}px ${space.xxl}px`}
           glow={colors.glowWarning}
           borderColor={colors.warning}
         >
@@ -278,7 +274,6 @@ const AtomicityVisual: React.FC = () => {
             style={{
               ...text.h2,
               color: colors.warning,
-              fontWeight: 800,
               letterSpacing: 1,
               textAlign: "center",
               textShadow: `0 0 20px rgba(251, 113, 133, 0.3)`,
@@ -307,7 +302,7 @@ const OperationTypes: React.FC = () => {
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "column",
-        gap: 40,
+        gap: space.xxl,
       }}
     >
       {/* Ambient multi-color glow */}
@@ -329,7 +324,6 @@ const OperationTypes: React.FC = () => {
         style={{
           ...text.accentSM,
           color: colors.warmGrey,
-          fontSize: 14,
           opacity: fadeIn(frame, fps, 0.1),
         }}
       >
@@ -339,8 +333,7 @@ const OperationTypes: React.FC = () => {
       <div
         style={{
           opacity: titleOpacity,
-          ...text.displayMD,
-          fontSize: 38,
+          ...text.h1,
         }}
       >
         Operation Types
@@ -350,14 +343,13 @@ const OperationTypes: React.FC = () => {
         style={{
           ...text.bodyMD,
           color: colors.warmGrey,
-          fontSize: 17,
           opacity: subtitleOpacity,
         }}
       >
         A transaction bundles one or more operations
       </div>
 
-      <div style={{ display: "flex", gap: space.xl, marginTop: 12 }}>
+      <div style={{ display: "flex", gap: space.xl, marginTop: space.md }}>
         <Badge label="Payment" delay={1.0} variant="teal" size="lg" />
         <Badge label="Change Trust" delay={1.6} variant="gold" size="lg" />
         <Badge label="Invoke Contract" delay={2.2} variant="success" size="lg" />
@@ -372,7 +364,7 @@ export const Episode3: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        fontFamily: text.bodyMD.fontFamily,
+        ...text.bodyMD,
       }}
     >
       {/* Section 1 — TransactionEnvelope/Intro (108.68s to 117.22s) */}

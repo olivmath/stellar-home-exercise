@@ -4,185 +4,430 @@ import {
   useCurrentFrame,
   useVideoConfig,
   Sequence,
+  interpolate,
 } from "remotion";
-import { colors, fonts } from "../styles/theme";
-import { fadeIn, slideIn } from "../animations/springs";
+import { colors } from "../styles/theme";
+import { fadeIn, slideIn, scaleIn } from "../animations/springs";
 import { FlowDiagram } from "../components/FlowDiagram";
 import { Badge } from "../components/Badge";
 import { LowerThird } from "../components/LowerThird";
 import { GlassPanel } from "../components/GlassPanel";
+import { text, space, layout, glass, gradients, shadows, accentLine, glowDot, radius } from "../styles/designSystem";
 import { episodes, toFrame } from "../config/audioMarks";
 
 // ── Timing: relative to ep2 start (57.68s) ──
 const EP = episodes.ep2.startSec;
 const rel = (sec: number) => toFrame(sec - EP);
 
-// ── Scene 2.1: Key Flow (VIDEO + OVERLAY) — 60.8s to 78.3s ──
-// Seed → Secret Key → Public Key
-const KeyFlow: React.FC = () => {
+// ── Fake data for the 32 bytes animation ──
+const RANDOM_BYTES = [
+  182, 43, 7, 251, 94, 160, 33, 218, 71, 129, 55, 12, 199, 88, 244, 3,
+  167, 21, 109, 230, 74, 146, 5, 191, 62, 213, 97, 38, 155, 240, 81, 126,
+];
+const MNEMONIC_WORDS = [
+  "abandon", "ability", "able", "about",
+  "above", "absent", "absorb", "abstract",
+  "absurd", "abuse", "access", "accident",
+];
+
+// ── Scene: 32 Bytes → Numbers → Words (63.03s to 65.83s) ──
+const BytesAnimation: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  // Timing: all 3 elements appear staggered but stay visible
+  const titleDelay = 0;
+  const numbersDelay = Math.round(fps * 0.4);
+  const seedDelay = Math.round(fps * 1.2);
+  const arrowDelay = Math.round(fps * 1.0);
+
+  const titleOpacity = interpolate(frame, [titleDelay, titleDelay + 10], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const titleScale = interpolate(frame, [titleDelay, titleDelay + 10], [0.85, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
+  const numbersOpacity = interpolate(frame, [numbersDelay, numbersDelay + 10], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
+  const seedOpacity = interpolate(frame, [seedDelay, seedDelay + 10], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
+  const arrowProgress = interpolate(frame, [arrowDelay, arrowDelay + 15], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
   return (
-    <AbsoluteFill style={{ backgroundColor: "rgba(15, 15, 15, 0.55)" }}>
-      <AbsoluteFill
+    <AbsoluteFill style={{ backgroundColor: "#0F0F0F" }}>
+      {/* Vertically centered layout */}
+      <div
         style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          display: "flex",
+          flexDirection: "column",
           justifyContent: "center",
           alignItems: "center",
-          flexDirection: "column",
-          gap: 36,
+          gap: space.xxl,
+          padding: `0 ${space.edge}px`,
         }}
       >
-        <GlassPanel
-          padding="48px 56px"
-          borderColor={colors.borderGold}
-          glow={colors.glowGold}
+        {/* "32 bytes" title */}
+        <div
+          style={{
+            ...text.displayXL,
+            fontSize: 120,
+            color: colors.gold,
+            opacity: titleOpacity,
+            transform: `scale(${titleScale})`,
+            textShadow: `0 0 80px rgba(253, 218, 36, 0.4), 0 0 160px rgba(253, 218, 36, 0.15)`,
+            letterSpacing: -3,
+          }}
+        >
+          32 bytes
+        </div>
+
+        {/* Row: Numbers (left) → Arrow → Seed (right) */}
+        <div
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            gap: space.xl,
+          }}
+        >
+        {/* Left: Random numbers grid */}
+        <div
+          style={{
+            flex: 1,
+            opacity: numbersOpacity,
+            display: "flex",
+            flexWrap: "wrap",
+            gap: space.sm,
+            justifyContent: "center",
+            alignContent: "center",
+          }}
+        >
+          {RANDOM_BYTES.map((byte, i) => {
+            const itemDelay = numbersDelay + i * 0.4;
+            const itemOpacity = interpolate(frame, [itemDelay, itemDelay + 4], [0, 1], {
+              extrapolateLeft: "clamp",
+              extrapolateRight: "clamp",
+            });
+            return (
+              <div
+                key={i}
+                style={{
+                  ...text.codeLG,
+                  color: i % 3 === 0 ? colors.gold : colors.teal,
+                  opacity: itemOpacity,
+                  background: "rgba(255, 255, 255, 0.04)",
+                  padding: `${space.xs}px ${space.sm}px`,
+                  borderRadius: radius.xs,
+                  minWidth: 52,
+                  textAlign: "center",
+                }}
+              >
+                {byte}
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Center: Arrow */}
+        <div
           style={{
             display: "flex",
-            flexDirection: "column",
             alignItems: "center",
-            gap: 32,
-            maxWidth: 860,
+            opacity: arrowProgress,
+            minWidth: 80,
           }}
         >
           <div
             style={{
-              fontFamily: fonts.accent,
-              fontSize: 18,
+              height: 2,
+              width: 60,
+              background: `linear-gradient(90deg, ${colors.teal}40, ${colors.gold})`,
+              borderRadius: 1,
+            }}
+          />
+          <div
+            style={{
+              borderTop: "6px solid transparent",
+              borderBottom: "6px solid transparent",
+              borderLeft: `10px solid ${colors.gold}`,
+            }}
+          />
+        </div>
+
+        {/* Right: Mnemonic seed words */}
+        <div
+          style={{
+            flex: 1,
+            opacity: seedOpacity,
+            display: "flex",
+            flexDirection: "column",
+            gap: space.sm,
+            alignItems: "stretch",
+          }}
+        >
+          {/* Seed label */}
+          <div
+            style={{
+              ...text.accentSM,
               color: colors.gold,
-              letterSpacing: 6,
-              textTransform: "uppercase",
-              opacity: fadeIn(frame, fps, 0.2),
+              textAlign: "center",
+              marginBottom: space.sm,
             }}
           >
-            Deterministic Key Derivation
+            SEED PHRASE
           </div>
-
-          <FlowDiagram
-            steps={["Seed (32 bytes)", "Secret Key (S...)", "Public Key (G...)"]}
-            delay={0.5}
-            accentColor={colors.gold}
-          />
-
-          <div style={{ display: "flex", gap: 80, justifyContent: "center" }}>
-            <div
-              style={{
-                opacity: fadeIn(frame, fps, 2.0),
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 8,
-              }}
-            >
-              <div
-                style={{
-                  width: 6,
-                  height: 6,
-                  borderRadius: "50%",
-                  backgroundColor: colors.gold,
-                  boxShadow: `0 0 8px rgba(253, 218, 36, 0.4)`,
-                }}
-              />
-              <div style={{ fontSize: 14, fontFamily: fonts.code, color: colors.warmGrey }}>
-                256-bit random
-              </div>
-            </div>
-            <div
-              style={{
-                opacity: fadeIn(frame, fps, 2.5),
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                gap: 8,
-              }}
-            >
-              <div
-                style={{
-                  width: 6,
-                  height: 6,
-                  borderRadius: "50%",
-                  backgroundColor: colors.teal,
-                  boxShadow: `0 0 8px rgba(0, 167, 181, 0.4)`,
-                }}
-              />
-              <div style={{ fontSize: 14, fontFamily: fonts.code, color: colors.warmGrey }}>
-                Ed25519 derivation
-              </div>
-            </div>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: space.sm,
+              justifyContent: "center",
+            }}
+          >
+            {MNEMONIC_WORDS.map((word, i) => {
+              const itemStart = seedDelay + i * 1;
+              const itemOpacity = interpolate(frame, [itemStart, itemStart + 6], [0, 1], {
+                extrapolateLeft: "clamp",
+                extrapolateRight: "clamp",
+              });
+              return (
+                <div
+                  key={i}
+                  style={{
+                    ...glass.gold,
+                    padding: `${space.sm}px ${space.md}px`,
+                    borderRadius: radius.sm,
+                    opacity: itemOpacity,
+                  }}
+                >
+                  <span style={{ ...text.codeMD, color: colors.textDim, marginRight: space.xs }}>
+                    {i + 1}.
+                  </span>
+                  <span style={{ ...text.codeMD, color: colors.gold }}>
+                    {word}
+                  </span>
+                </div>
+              );
+            })}
           </div>
-        </GlassPanel>
-      </AbsoluteFill>
+        </div>
+      </div>
+      </div>
     </AbsoluteFill>
   );
 };
 
-// ── Scene 2.2: Base32 Encoding (VIDEO + OVERLAY) — 78.3s to 83.78s ──
+// ── Scene 2.1: Key Flow — Sequential reveal (68.23s to 78.3s) ──
+// Seed → Secret Key → Public Key, each appearing at specific timestamps
+const KeyFlow: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  // Relative frames within this sequence (starts at 68.23s)
+  // Seed appears immediately (68.23s = frame 0 of this sequence)
+  // Secret at 70.59s = 70.59 - 68.23 = 2.36s into sequence
+  // Public at 73.50s = 73.50 - 68.23 = 5.27s into sequence
+  const seedDelay = 0.3;
+  const secretDelay = 2.36;
+  const publicDelay = 5.27;
+
+  const seedOpacity = fadeIn(frame, fps, seedDelay);
+  const secretSlide = slideIn(frame, fps, secretDelay);
+  const publicSlide = slideIn(frame, fps, publicDelay);
+
+  // Arrow between seed→secret
+  const arrow1Progress = interpolate(
+    frame,
+    [secretDelay * fps - 10, secretDelay * fps + 5],
+    [0, 1],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+  // Arrow between secret→public
+  const arrow2Progress = interpolate(
+    frame,
+    [publicDelay * fps - 10, publicDelay * fps + 5],
+    [0, 1],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+
+  const nodeStyle = (color: string): React.CSSProperties => ({
+    ...glass.neutral,
+    padding: `${space.lg}px ${space.xl + 8}px`,
+    borderRadius: radius.md,
+    border: `1px solid ${color}25`,
+    boxShadow: `0 0 20px ${color}08, ${shadows.innerLight}`,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: space.sm,
+    width: 220,
+  });
+
+  const verticalArrow = (progress: number, _color: string): React.CSSProperties => ({
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    opacity: progress,
+    height: 50,
+    justifyContent: "center",
+  });
+
+  return (
+    <AbsoluteFill style={layout.dimOverlay(0.55)}>
+      {/* Left-aligned vertical flow */}
+      <div
+        style={{
+          position: "absolute",
+          left: space.section,
+          top: "50%",
+          transform: "translateY(-50%)",
+        }}
+      >
+        <GlassPanel
+          variant="gold"
+          padding={`${space.xxl}px ${space.xl}px`}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 0,
+          }}
+        >
+          <div style={{ ...text.accentSM, color: colors.gold, opacity: fadeIn(frame, fps, 0.2), marginBottom: space.lg }}>
+            Key Derivation
+          </div>
+
+          {/* Seed */}
+          <div style={{ ...nodeStyle(colors.gold), opacity: seedOpacity }}>
+            <div style={glowDot(colors.gold, 6)} />
+            <span style={{ ...text.codeMD, color: colors.gold }}>Seed</span>
+            <span style={{ ...text.codeSM, color: colors.textDim }}>(32 bytes)</span>
+          </div>
+
+          {/* Arrow 1 ↓ */}
+          <div style={verticalArrow(arrow1Progress, colors.gold)}>
+            <div style={{
+              width: 1.5,
+              flex: 1,
+              background: `linear-gradient(180deg, ${colors.gold}35, ${colors.gold})`,
+              borderRadius: 1,
+            }} />
+            <div style={{
+              borderLeft: "4px solid transparent",
+              borderRight: "4px solid transparent",
+              borderTop: `7px solid ${colors.gold}`,
+            }} />
+          </div>
+
+          {/* Secret Key */}
+          <div style={{
+            ...nodeStyle(colors.warning),
+            opacity: secretSlide.opacity,
+            transform: `translateX(${secretSlide.translateY}px)`,
+          }}>
+            <div style={glowDot(colors.warning, 6)} />
+            <span style={{ ...text.codeMD, color: colors.warning }}>Secret Key</span>
+            <span style={{ ...text.codeSM, color: colors.textDim }}>S...</span>
+          </div>
+
+          {/* Arrow 2 ↓ */}
+          <div style={verticalArrow(arrow2Progress, colors.teal)}>
+            <div style={{
+              width: 1.5,
+              flex: 1,
+              background: `linear-gradient(180deg, ${colors.teal}35, ${colors.teal})`,
+              borderRadius: 1,
+            }} />
+            <div style={{
+              borderLeft: "4px solid transparent",
+              borderRight: "4px solid transparent",
+              borderTop: `7px solid ${colors.teal}`,
+            }} />
+          </div>
+
+          {/* Public Key */}
+          <div style={{
+            ...nodeStyle(colors.teal),
+            opacity: publicSlide.opacity,
+            transform: `translateX(${publicSlide.translateY}px)`,
+          }}>
+            <div style={glowDot(colors.teal, 6)} />
+            <span style={{ ...text.codeMD, color: colors.teal }}>Public Key</span>
+            <span style={{ ...text.codeSM, color: colors.textDim }}>G...</span>
+          </div>
+        </GlassPanel>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
+// ── Scene 2.2: Base32 Encoding (78.3s to 83.78s) ──
 const Base32Encoding: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const { opacity, translateY } = slideIn(frame, fps, 0.3);
 
   return (
-    <AbsoluteFill style={{ backgroundColor: "rgba(15, 15, 15, 0.55)" }}>
-      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+    <AbsoluteFill style={layout.dimOverlay(0.55)}>
+      <AbsoluteFill style={layout.centerColumn}>
         <GlassPanel
-          padding="48px 56px"
-          borderColor={colors.borderTeal}
-          glow={colors.glowTeal}
+          variant="teal"
+          padding={`${space.xxl}px ${space.xxxl - 8}px`}
           style={{
             opacity,
             transform: `translateY(${translateY}px)`,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 28,
+            gap: space.lg + 4,
             maxWidth: 600,
           }}
         >
-          <div
-            style={{
-              fontFamily: fonts.accent,
-              fontSize: 18,
-              color: colors.teal,
-              letterSpacing: 6,
-              textTransform: "uppercase",
-            }}
-          >
+          <div style={{ ...text.accentSM, color: colors.teal }}>
             Encoding
           </div>
 
           {/* Circular connection */}
-          <div style={{ display: "flex", alignItems: "center", gap: 32 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: space.xl }}>
             <div
               style={{
-                padding: "16px 28px",
-                borderRadius: 12,
-                border: `1px solid ${colors.borderGold}`,
-                background: colors.bgGlass,
-                fontFamily: fonts.code,
-                fontSize: 18,
-                color: colors.gold,
+                ...glass.gold,
+                padding: `${space.md}px ${space.lg + 4}px`,
+                borderRadius: radius.md,
               }}
             >
-              Secret (S...)
+              <span style={{ ...text.codeMD, color: colors.gold }}>Secret (S...)</span>
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 4 }}>
-              <div style={{ fontSize: 20, color: colors.warmGrey }}>↔</div>
+            <div style={{ ...text.bodyMD, color: colors.warmGrey }}>
+              &#8596;
             </div>
 
             <div
               style={{
-                padding: "16px 28px",
-                borderRadius: 12,
-                border: `1px solid ${colors.borderTeal}`,
-                background: colors.bgGlass,
-                fontFamily: fonts.code,
-                fontSize: 18,
-                color: colors.teal,
+                ...glass.teal,
+                padding: `${space.md}px ${space.lg + 4}px`,
+                borderRadius: radius.md,
               }}
             >
-              Public (G...)
+              <span style={{ ...text.codeMD, color: colors.teal }}>Public (G...)</span>
             </div>
           </div>
 
@@ -193,10 +438,10 @@ const Base32Encoding: React.FC = () => {
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: 12,
+              gap: space.md,
             }}
           >
-            <div style={{ fontSize: 20, color: colors.warmGrey }}>↓</div>
+            <div style={{ ...text.bodyMD, color: colors.warmGrey }}>&#8595;</div>
             <Badge label="Base32 StrKey Encoding" delay={1.2} variant="teal" size="lg" />
           </div>
         </GlassPanel>
@@ -205,121 +450,146 @@ const Base32Encoding: React.FC = () => {
   );
 };
 
-// ── Scene 2.3: Sign vs Verify (VIDEO + OVERLAY) — 83.78s to 90.72s ──
-// Secret signs LEFT, Public verifies RIGHT
+// ── Scene 2.3: Sign vs Verify — SWAPPED (83.78s to 87.40s) ──
+// Verification LEFT, Signing RIGHT
 const SignVerify: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
   return (
-    <AbsoluteFill style={{ backgroundColor: "rgba(15, 15, 15, 0.55)" }}>
-      {/* LEFT — Signing */}
+    <AbsoluteFill style={layout.dimOverlay(0.55)}>
+      {/* LEFT — Verification */}
       <div style={{ position: "absolute", left: 60, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
-          padding="40px 44px"
-          borderColor={`${colors.warning}20`}
-          glow={colors.glowWarning}
+          variant="success"
+          borderColor={`${colors.success}20`}
+          padding={`${space.xxl - 8}px ${space.xxl - 4}px`}
           style={{
             opacity: slideIn(frame, fps, 0.3).opacity,
             transform: `translateY(${slideIn(frame, fps, 0.3).translateY}px)`,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 20,
+            gap: space.lg - 4,
             width: 420,
           }}
         >
-          <div
-            style={{
-              fontFamily: fonts.accent,
-              fontSize: 18,
-              color: colors.warning,
-              letterSpacing: 6,
-              textTransform: "uppercase",
-            }}
-          >
-            Signing
+          <div style={{ ...text.accentSM, color: colors.success }}>
+            Verification
           </div>
-          <FlowDiagram steps={["Secret Key", "Sign", "TX"]} delay={0.5} accentColor={colors.warning} />
+          <FlowDiagram steps={["Public Key", "Verify", "Network"]} delay={0.5} accentColor={colors.success} />
         </GlassPanel>
       </div>
 
-      {/* RIGHT — Verification */}
+      {/* RIGHT — Signing */}
       <div style={{ position: "absolute", right: 60, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
-          padding="40px 44px"
-          borderColor={`${colors.success}20`}
-          glow={colors.glowSuccess}
+          variant="warning"
+          borderColor={`${colors.warning}20`}
+          padding={`${space.xxl - 8}px ${space.xxl - 4}px`}
           style={{
             opacity: slideIn(frame, fps, 1.0).opacity,
             transform: `translateY(${slideIn(frame, fps, 1.0).translateY}px)`,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 20,
+            gap: space.lg - 4,
             width: 420,
           }}
         >
-          <div
-            style={{
-              fontFamily: fonts.accent,
-              fontSize: 18,
-              color: colors.success,
-              letterSpacing: 6,
-              textTransform: "uppercase",
-            }}
-          >
-            Verification
+          <div style={{ ...text.accentSM, color: colors.warning }}>
+            Signing
           </div>
-          <FlowDiagram steps={["Public Key", "Verify", "Network"]} delay={1.2} accentColor={colors.success} />
+          <FlowDiagram steps={["Secret Key", "Sign", "TX"]} delay={1.2} accentColor={colors.warning} />
         </GlassPanel>
       </div>
     </AbsoluteFill>
   );
 };
 
-// ── Scene 2.4: Curve Comparison (VIDEO + OVERLAY) — 90.72s to 102.16s ──
-// Bitcoin LEFT, Stellar RIGHT
+// ── Scene 2.4: Curve Comparison — Dynamic Names (90.72s to 102.16s) ──
+// secp256k1 appears when Bitcoin is mentioned (~91.5s = 0.78s into scene)
+// Ed25519 appears when Stellar is mentioned (~93.5s = 2.78s into scene)
 const CurveComparison: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  // Bitcoin/secp256k1 mentioned around 91.5s (0.78s into scene)
+  const bitcoinDelay = 0.78;
+  // Stellar/Ed25519 mentioned around 93.5s (2.78s into scene)
+  const stellarDelay = 2.78;
+
+  // Dynamic name typing effect
+  const secp256k1Name = "secp256k1";
+  const ed25519Name = "Ed25519";
+
+  const secpChars = Math.floor(
+    interpolate(
+      frame,
+      [bitcoinDelay * fps, (bitcoinDelay + 0.6) * fps],
+      [0, secp256k1Name.length],
+      { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+    )
+  );
+  const edChars = Math.floor(
+    interpolate(
+      frame,
+      [stellarDelay * fps, (stellarDelay + 0.5) * fps],
+      [0, ed25519Name.length],
+      { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+    )
+  );
+
   return (
-    <AbsoluteFill style={{ backgroundColor: "rgba(15, 15, 15, 0.55)" }}>
+    <AbsoluteFill style={layout.dimOverlay(0.55)}>
       {/* LEFT — Bitcoin */}
       <div style={{ position: "absolute", left: 80, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
-          padding="44px 48px"
+          variant="warning"
           borderColor={`${colors.warning}15`}
-          glow={colors.glowWarning}
+          padding={`${space.xxl - 4}px ${space.xxl}px`}
           style={{
             opacity: slideIn(frame, fps, 0.3).opacity,
             transform: `translateY(${slideIn(frame, fps, 0.3).translateY}px)`,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 20,
+            gap: space.lg - 4,
             width: 420,
           }}
         >
           <div
             style={{
+              ...text.displayMD,
               fontSize: 44,
-              fontFamily: fonts.display,
-              fontWeight: 700,
               color: colors.warning,
-              textShadow: `0 0 30px rgba(251, 113, 133, 0.2)`,
+              textShadow: "0 0 30px rgba(251, 113, 133, 0.2)",
             }}
           >
             Bitcoin
           </div>
-          <Badge label="secp256k1" delay={0.8} variant="warning" size="lg" />
+
+          {/* Dynamic curve name */}
           <div
             style={{
-              opacity: fadeIn(frame, fps, 1.5),
-              fontSize: 16,
-              fontFamily: fonts.body,
-              color: colors.warmGrey,
+              ...text.codeLG,
+              color: colors.warning,
+              minHeight: 32,
+              textShadow: `0 0 20px rgba(251, 113, 133, 0.3)`,
+            }}
+          >
+            {secpChars > 0 && (
+              <>
+                {secp256k1Name.slice(0, secpChars)}
+                <span style={{ opacity: frame % 16 < 8 ? 1 : 0, color: colors.warning }}>|</span>
+              </>
+            )}
+          </div>
+
+          <div
+            style={{
+              ...text.bodySM,
+              opacity: fadeIn(frame, fps, bitcoinDelay + 0.8),
               textAlign: "center",
               lineHeight: 1.6,
             }}
@@ -334,37 +604,50 @@ const CurveComparison: React.FC = () => {
       {/* RIGHT — Stellar */}
       <div style={{ position: "absolute", right: 80, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
-          padding="44px 48px"
-          borderColor={colors.borderGold}
-          glow={colors.glowGold}
+          variant="gold"
+          padding={`${space.xxl - 4}px ${space.xxl}px`}
           style={{
             opacity: slideIn(frame, fps, 1.0).opacity,
             transform: `translateY(${slideIn(frame, fps, 1.0).translateY}px)`,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 20,
+            gap: space.lg - 4,
             width: 420,
           }}
         >
           <div
             style={{
+              ...text.displayMD,
               fontSize: 44,
-              fontFamily: fonts.display,
-              fontWeight: 700,
               color: colors.gold,
-              textShadow: `0 0 30px rgba(253, 218, 36, 0.2)`,
+              textShadow: "0 0 30px rgba(253, 218, 36, 0.2)",
             }}
           >
             Stellar
           </div>
-          <Badge label="Ed25519" delay={1.5} variant="gold" size="lg" />
+
+          {/* Dynamic curve name */}
           <div
             style={{
-              opacity: fadeIn(frame, fps, 2.2),
-              fontSize: 16,
-              fontFamily: fonts.body,
-              color: colors.warmGrey,
+              ...text.codeLG,
+              color: colors.gold,
+              minHeight: 32,
+              textShadow: `0 0 20px rgba(253, 218, 36, 0.3)`,
+            }}
+          >
+            {edChars > 0 && (
+              <>
+                {ed25519Name.slice(0, edChars)}
+                <span style={{ opacity: frame % 16 < 8 ? 1 : 0, color: colors.gold }}>|</span>
+              </>
+            )}
+          </div>
+
+          <div
+            style={{
+              ...text.bodySM,
+              opacity: fadeIn(frame, fps, stellarDelay + 0.8),
               textAlign: "center",
               lineHeight: 1.6,
             }}
@@ -404,14 +687,12 @@ const ClosingQuestion: React.FC = () => {
   const { fps } = useVideoConfig();
 
   return (
-    <AbsoluteFill style={{ backgroundColor: "rgba(15, 15, 15, 0.6)" }}>
-      <AbsoluteFill style={{ justifyContent: "center", alignItems: "center" }}>
+    <AbsoluteFill style={layout.dimOverlay(0.6)}>
+      <AbsoluteFill style={layout.centerColumn}>
         <div
           style={{
-            fontFamily: fonts.display,
+            ...text.displayLG,
             fontSize: 64,
-            fontWeight: 700,
-            color: colors.textPrimary,
             textAlign: "center",
             lineHeight: 1.4,
             maxWidth: 900,
@@ -445,9 +726,14 @@ const ClosingQuestion: React.FC = () => {
 // ── Main Episode 2 — Sequences synced to audioMarks ──
 export const Episode2: React.FC = () => {
   return (
-    <AbsoluteFill style={{ fontFamily: fonts.body }}>
-      {/* Scene 2.1: Key Flow — 60.8s to 78.3s */}
-      <Sequence from={rel(60.8)} durationInFrames={rel(78.3) - rel(60.8)}>
+    <AbsoluteFill>
+      {/* 32 Bytes animation — 62.53s to 66.03s (starts 0.5s earlier, ends 0.2s later) */}
+      <Sequence from={rel(62.53)} durationInFrames={rel(66.03) - rel(62.53)}>
+        <BytesAnimation />
+      </Sequence>
+
+      {/* Scene 2.1: Key Flow — 68.23s to 78.3s */}
+      <Sequence from={rel(68.23)} durationInFrames={rel(78.3) - rel(68.23)}>
         <KeyFlow />
       </Sequence>
 
@@ -456,12 +742,12 @@ export const Episode2: React.FC = () => {
         <Base32Encoding />
       </Sequence>
 
-      {/* Scene 2.3: Sign vs Verify — 83.78s to 90.72s */}
-      <Sequence from={rel(83.78)} durationInFrames={rel(90.72) - rel(83.78)}>
+      {/* Scene 2.3: Sign vs Verify — 83.78s to 87.40s (swapped sides) */}
+      <Sequence from={rel(83.78)} durationInFrames={rel(87.40) - rel(83.78)}>
         <SignVerify />
       </Sequence>
 
-      {/* Scene 2.4: Curve Comparison — 90.72s to 102.16s */}
+      {/* Scene 2.4: Curve Comparison — 90.72s to 102.16s (dynamic names) */}
       <Sequence from={rel(90.72)} durationInFrames={rel(102.16) - rel(90.72)}>
         <CurveComparison />
       </Sequence>

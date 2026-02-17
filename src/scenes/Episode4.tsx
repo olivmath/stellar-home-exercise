@@ -64,7 +64,7 @@ export const Episode4: React.FC = () => {
           <div
             style={{
               display: "flex",
-              gap: 56,
+              gap: space.xxxl,
               alignItems: "stretch",
               marginTop: space.lg,
             }}
@@ -91,7 +91,6 @@ export const Episode4: React.FC = () => {
                     <div
                       style={{
                         ...text.h1,
-                        fontSize: 32,
                         color: colors.textDim,
                         textDecoration: "line-through",
                         textDecorationThickness: 3,
@@ -153,7 +152,6 @@ export const Episode4: React.FC = () => {
                     <div
                       style={{
                         ...text.h1,
-                        fontSize: 32,
                         color: colors.teal,
                       }}
                     >
@@ -310,7 +308,6 @@ export const Episode4: React.FC = () => {
                           style={{
                             ...text.accentSM,
                             color: circle.color,
-                            fontWeight: 700,
                           }}
                         >
                           {circle.label}

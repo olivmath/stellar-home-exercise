@@ -8,7 +8,7 @@ import {
   Img,
   staticFile,
 } from "remotion";
-import { colors, fonts } from "../styles/theme";
+import { colors } from "../styles/theme";
 import { text, space, shadows, layout, glass, radius } from "../styles/designSystem";
 import { fadeIn, slideIn } from "../animations/springs";
 import { FounderCard } from "../components/FounderCard";
@@ -36,7 +36,7 @@ const Year2014: React.FC = () => {
   const { opacity: textOpacity, translateY } = slideIn(frame, fps, 0.8);
 
   return (
-    <AbsoluteFill style={layout.dimOverlay(0.55)}>
+    <AbsoluteFill>
       <AbsoluteFill
         style={{
           ...layout.centerColumn,
@@ -45,13 +45,13 @@ const Year2014: React.FC = () => {
       >
         <div
           style={{
+            ...text.accentLG,
             fontSize: 140,
-            fontFamily: fonts.accent,
             color: colors.gold,
             opacity: yearOpacity,
             transform: `scale(${yearScale})`,
             letterSpacing: 8,
-            textShadow: shadows.goldStrong,
+            textShadow: shadows.goldMedium,
             lineHeight: 1,
           }}
         >
@@ -59,8 +59,7 @@ const Year2014: React.FC = () => {
         </div>
         <h3
           style={{
-            ...text.h1,
-            fontSize: 38,
+            ...text.displayMD,
             margin: 0,
             textAlign: "center",
             opacity: textOpacity,
@@ -80,7 +79,7 @@ const Year2014: React.FC = () => {
 // Cards positioned LEFT and RIGHT to avoid covering face
 const Founders: React.FC = () => {
   return (
-    <AbsoluteFill style={layout.dimOverlay(0.55)}>
+    <AbsoluteFill>
       <AbsoluteFill
         style={{
           ...layout.centerRow,
@@ -182,7 +181,6 @@ const SDF: React.FC = () => {
           <h3
             style={{
               ...text.h1,
-              fontSize: 36,
               margin: 0,
               textAlign: "center",
             }}
@@ -192,9 +190,8 @@ const SDF: React.FC = () => {
 
           <div
             style={{
-              ...text.bodyLG,
+              ...text.h2,
               color: colors.gold,
-              fontWeight: 600,
               letterSpacing: 2,
             }}
           >
@@ -230,7 +227,6 @@ const TransactionFee: React.FC = () => {
             opacity,
             transform: `translateY(${translateY}px)`,
             ...text.h1,
-            fontSize: 36,
             textAlign: "center",
           }}
         >
@@ -239,9 +235,9 @@ const TransactionFee: React.FC = () => {
 
         <div
           style={{
+            ...text.accentLG,
             opacity: feeOpacity,
             fontSize: 64,
-            fontFamily: fonts.accent,
             color: colors.gold,
             letterSpacing: 4,
             textShadow: shadows.goldStrong,
@@ -276,13 +272,13 @@ const MinersVsValidators: React.FC = () => {
   const cardStyle: React.CSSProperties = {
     display: "flex",
     flexDirection: "column",
-    gap: space.lg - 4,
+    gap: space.lg,
     width: 440,
   };
 
   const itemStyle = (accentColor: string): React.CSSProperties => ({
     ...text.bodyLG,
-    padding: `${space.md + 2}px ${space.lg}px`,
+    padding: `${space.md}px ${space.lg}px`,
     background: "rgba(255,255,255,0.03)",
     borderRadius: radius.md,
     borderLeft: `3px solid ${accentColor}`,
@@ -343,7 +339,7 @@ const CAPs: React.FC = () => {
             opacity,
             transform: `translateY(${translateY}px)`,
             ...layout.centerColumn,
-            gap: space.lg + 4,
+            gap: space.xl,
             maxWidth: 500,
           }}
         >
@@ -359,7 +355,6 @@ const CAPs: React.FC = () => {
           <h3
             style={{
               ...text.displayMD,
-              fontSize: 44,
               margin: 0,
               textAlign: "center",
             }}
@@ -369,9 +364,8 @@ const CAPs: React.FC = () => {
 
           <div
             style={{
-              ...text.bodyLG,
+              ...text.h2,
               color: colors.gold,
-              fontWeight: 500,
               textAlign: "center",
             }}
           >
@@ -381,8 +375,7 @@ const CAPs: React.FC = () => {
           <div
             style={{
               opacity: descOpacity,
-              ...text.bodyMD,
-              fontSize: 20,
+              ...text.bodyLG,
               color: colors.warmGrey,
               textAlign: "center",
               maxWidth: 560,
@@ -416,8 +409,7 @@ const ClosingQuestion: React.FC = () => {
       <AbsoluteFill style={layout.centerColumn}>
         <div
           style={{
-            ...text.displayLG,
-            fontSize: 64,
+            ...text.displayXL,
             textAlign: "center",
             lineHeight: 1.4,
             maxWidth: 900,
@@ -447,13 +439,16 @@ const ClosingQuestion: React.FC = () => {
 // ── Main Episode 1 — Sequences synced to audioMarks ──
 export const Episode1: React.FC = () => {
   return (
-    <AbsoluteFill style={{ fontFamily: fonts.body }}>
-      {/* Scene 1.1: Year 2014 — 10.3s to 17.3s (ends with founders) */}
+    <AbsoluteFill>
+      {/* Shadow overlay — video → shadow → content */}
+      <Sequence from={rel(10.3)} durationInFrames={rel(17.3) - rel(10.3)}>
+        <AbsoluteFill style={layout.dimOverlay(0.55)} />
+      </Sequence>
+
+      {/* Scene 1.1 + 1.2: Year 2014 + Founders — on top of shadow */}
       <Sequence from={rel(10.3)} durationInFrames={rel(17.3) - rel(10.3)}>
         <Year2014 />
       </Sequence>
-
-      {/* Scene 1.2: Founders — 10.3s to 17.3s */}
       <Sequence from={rel(10.3)} durationInFrames={rel(17.3) - rel(10.3)}>
         <Founders />
       </Sequence>
