@@ -9,7 +9,7 @@ import {
   staticFile,
 } from "remotion";
 import { colors } from "../styles/theme";
-import { text, space, shadows, layout, radius } from "../styles/designSystem";
+import { text, space, shadows, layout, radius, panel } from "../styles/designSystem";
 import { fadeIn, slideIn } from "../animations/springs";
 import { FounderCard } from "../components/FounderCard";
 import { Badge } from "../components/Badge";
@@ -250,6 +250,7 @@ const TransactionFee: React.FC = () => {
           style={{
             opacity: feeOpacity,
             ...text.bodyMD,
+            fontSize: 34,
             color: colors.warmGrey,
           }}
         >
@@ -276,46 +277,51 @@ const MinersVsValidators: React.FC = () => {
     width: 440,
   };
 
-  const itemStyle = (accentColor: string): React.CSSProperties => ({
+  const itemStyle: React.CSSProperties = {
     ...text.bodyLG,
     padding: `${space.md}px ${space.lg}px`,
-    background: "rgba(255,255,255,0.03)",
-    borderRadius: radius.md,
-    borderLeft: `3px solid ${accentColor}`,
-  });
+    ...panel.surface,
+    borderRadius: radius.sm,
+  };
 
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
       {/* LEFT — Miners */}
       <div style={{ position: "absolute", left: space.section, top: "50%", transform: "translateY(-50%)" }}>
-        <GlassPanel
-          padding="44px 48px"
-          borderColor={`${colors.negative}20`}
-          glow={shadows.accent}
-          style={{ opacity: minerOpacity, transform: `translateY(${minerY}px)`, ...cardStyle }}
+        <div
+          style={{
+            ...panel.base,
+            padding: `${space.xxl}px ${space.xxl}px`,
+            opacity: minerOpacity,
+            transform: `translateY(${minerY}px)`,
+            ...cardStyle,
+          }}
         >
           <div style={{ ...text.overlineLG, color: colors.negative }}>
             Miners
           </div>
-          <div style={itemStyle(colors.negative)}>High Energy Cost</div>
-          <div style={{ ...itemStyle(colors.negative), opacity: fadeIn(frame, fps, 0.8) }}>Inflation</div>
-        </GlassPanel>
+          <div style={itemStyle}>High Energy Cost</div>
+          <div style={{ ...itemStyle, opacity: fadeIn(frame, fps, 0.8) }}>Inflation</div>
+        </div>
       </div>
 
       {/* RIGHT — Validators */}
       <div style={{ position: "absolute", right: space.section, top: "50%", transform: "translateY(-50%)" }}>
-        <GlassPanel
-          padding="44px 48px"
-          borderColor={`${colors.positive}20`}
-          glow={shadows.accent}
-          style={{ opacity: validatorOpacity, transform: `translateY(${validatorY}px)`, ...cardStyle }}
+        <div
+          style={{
+            ...panel.base,
+            padding: `${space.xxl}px ${space.xxl}px`,
+            opacity: validatorOpacity,
+            transform: `translateY(${validatorY}px)`,
+            ...cardStyle,
+          }}
         >
           <div style={{ ...text.overlineLG, color: colors.positive }}>
             Validators
           </div>
-          <div style={itemStyle(colors.positive)}>Utility & Interoperability</div>
-          <div style={{ ...itemStyle(colors.positive), opacity: fadeIn(frame, fps, 1.8) }}>Zero Inflation</div>
-        </GlassPanel>
+          <div style={itemStyle}>Utility & Interoperability</div>
+          <div style={{ ...itemStyle, opacity: fadeIn(frame, fps, 1.8) }}>Zero Inflation</div>
+        </div>
       </div>
     </AbsoluteFill>
   );
