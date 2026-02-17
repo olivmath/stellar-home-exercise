@@ -113,12 +113,29 @@ const BytesAnimation: React.FC = () => {
             flex: 1,
             opacity: numbersOpacity,
             display: "flex",
-            flexWrap: "wrap",
+            flexDirection: "column",
+            alignItems: "center",
             gap: space.sm,
-            justifyContent: "center",
-            alignContent: "center",
           }}
         >
+          {/* Entropy label */}
+          <div
+            style={{
+              ...text.overlineSM,
+              color: colors.info,
+              marginBottom: space.sm,
+            }}
+          >
+            ENTROPY
+          </div>
+          <div
+            style={{
+              display: "flex",
+              flexWrap: "wrap",
+              gap: space.sm,
+              justifyContent: "center",
+            }}
+          >
           {RANDOM_BYTES.map((byte, i) => {
             const itemDelay = numbersDelay + i * 0.4;
             const itemOpacity = interpolate(frame, [itemDelay, itemDelay + 4], [0, 1], {
@@ -143,6 +160,7 @@ const BytesAnimation: React.FC = () => {
               </div>
             );
           })}
+          </div>
         </div>
 
         {/* Center: Arrow */}

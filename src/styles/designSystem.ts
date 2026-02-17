@@ -36,7 +36,7 @@ export const text = {
   // ── Display ──
   displayXL: {
     fontFamily: fonts.display,
-    fontSize: 64,
+    fontSize: 128,
     fontWeight: 600,
     letterSpacing: -1,
     lineHeight: 1.1,
@@ -45,7 +45,7 @@ export const text = {
 
   displayLG: {
     fontFamily: fonts.display,
-    fontSize: 48,
+    fontSize: 96,
     fontWeight: 600,
     letterSpacing: -0.5,
     lineHeight: 1.15,
@@ -54,7 +54,7 @@ export const text = {
 
   displayMD: {
     fontFamily: fonts.display,
-    fontSize: 36,
+    fontSize: 72,
     fontWeight: 600,
     letterSpacing: -0.3,
     lineHeight: 1.2,
@@ -64,7 +64,7 @@ export const text = {
   // ── Headings ──
   h1: {
     fontFamily: fonts.display,
-    fontSize: 32,
+    fontSize: 64,
     fontWeight: 600,
     letterSpacing: -0.3,
     lineHeight: 1.25,
@@ -73,7 +73,7 @@ export const text = {
 
   h2: {
     fontFamily: fonts.display,
-    fontSize: 26,
+    fontSize: 52,
     fontWeight: 500,
     letterSpacing: -0.2,
     lineHeight: 1.3,
@@ -82,7 +82,7 @@ export const text = {
 
   h3: {
     fontFamily: fonts.display,
-    fontSize: 21,
+    fontSize: 42,
     fontWeight: 500,
     letterSpacing: 0,
     lineHeight: 1.35,
@@ -92,7 +92,7 @@ export const text = {
   // ── Overline: spaced caps for labels and markers ──
   overlineLG: {
     fontFamily: fonts.accent,
-    fontSize: 15,
+    fontSize: 30,
     fontWeight: 600,
     letterSpacing: 3,
     textTransform: "uppercase" as const,
@@ -101,7 +101,7 @@ export const text = {
 
   overlineMD: {
     fontFamily: fonts.accent,
-    fontSize: 12,
+    fontSize: 24,
     fontWeight: 600,
     letterSpacing: 2.5,
     textTransform: "uppercase" as const,
@@ -110,7 +110,7 @@ export const text = {
 
   overlineSM: {
     fontFamily: fonts.accent,
-    fontSize: 10,
+    fontSize: 20,
     fontWeight: 600,
     letterSpacing: 2,
     textTransform: "uppercase" as const,
@@ -120,7 +120,7 @@ export const text = {
   // ── Body ──
   bodyLG: {
     fontFamily: fonts.body,
-    fontSize: 20,
+    fontSize: 40,
     fontWeight: 400,
     lineHeight: 1.7,
     letterSpacing: 0,
