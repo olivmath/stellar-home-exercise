@@ -49,12 +49,12 @@ const scenes = [
     from: episodes.ep1.startFrame,
     duration: episodes.ep1.endFrame - episodes.ep1.startFrame,
   },
-  // {
-  //   id: "ep2",
-  //   component: Episode2,
-  //   from: episodes.ep2.startFrame,
-  //   duration: episodes.ep2.endFrame - episodes.ep2.startFrame,
-  // },
+  {
+    id: "ep2",
+    component: Episode2,
+    from: episodes.ep2.startFrame,
+    duration: episodes.ep2.endFrame - episodes.ep2.startFrame,
+  },
   // {
   //   id: "ep3",
   //   component: Episode3,

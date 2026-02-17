@@ -97,7 +97,7 @@ const Founders: React.FC = () => {
           <FounderCard
             name="Jed McCaleb"
             subtitle="Co-founder"
-            photo="jed-mccaleb.jpg"
+            photo="jed-maccaleb.jpg"
 
             delay={0.3}
           />
@@ -108,7 +108,7 @@ const Founders: React.FC = () => {
           <FounderCard
             name="Joyce Kim"
             subtitle="Co-founder"
-            photo="joyce-kim.jpg"
+            photo="joyce-kim.jpeg"
             delay={0.7}
           />
         </div>
