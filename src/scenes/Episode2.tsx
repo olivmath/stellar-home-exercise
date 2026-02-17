@@ -423,49 +423,46 @@ const Base32Encoding: React.FC = () => {
             flexDirection: "column",
             alignItems: "center",
             gap: space.lg,
-            width: 280,
+            width: 320,
           }}
         >
           <div style={{ ...text.overlineSM, color: colors.info }}>
             Encoding
           </div>
 
-          {/* Secret Key */}
-          <div
-            style={{
-              ...panel.accent,
-              padding: `${space.md}px ${space.lg + 4}px`,
-              borderRadius: radius.md,
-              width: "100%",
-              textAlign: "center",
-            }}
-          >
-            <span style={{ ...text.codeMD, color: colors.gold }}>Secret (S...)</span>
+          {/* Secret + Public keys side by side */}
+          <div style={{ display: "flex", gap: space.md, width: "100%" }}>
+            <div
+              style={{
+                ...panel.accent,
+                padding: `${space.md}px ${space.md}px`,
+                borderRadius: radius.md,
+                flex: 1,
+                textAlign: "center",
+              }}
+            >
+              <span style={{ ...text.codeSM, color: colors.gold }}>Secret (S...)</span>
+            </div>
+            <div
+              style={{
+                ...panel.surface,
+                padding: `${space.md}px ${space.md}px`,
+                borderRadius: radius.md,
+                flex: 1,
+                textAlign: "center",
+                opacity: fadeIn(frame, fps, 0.5),
+              }}
+            >
+              <span style={{ ...text.codeSM, color: colors.info }}>Public (G...)</span>
+            </div>
           </div>
 
           {/* Arrow ↓ */}
           <div style={{ ...text.bodyMD, color: colors.warmGrey, opacity: fadeIn(frame, fps, 0.8) }}>&#8595;</div>
 
-          {/* Base32 badge */}
+          {/* Base32 StrKey Encoding result */}
           <div style={{ opacity: fadeIn(frame, fps, 1.0) }}>
             <Badge label="Base32 StrKey" delay={1.0} variant="info" size="lg" />
-          </div>
-
-          {/* Arrow ↓ */}
-          <div style={{ ...text.bodyMD, color: colors.warmGrey, opacity: fadeIn(frame, fps, 1.4) }}>&#8595;</div>
-
-          {/* Public Key */}
-          <div
-            style={{
-              ...panel.surface,
-              padding: `${space.md}px ${space.lg + 4}px`,
-              borderRadius: radius.md,
-              width: "100%",
-              textAlign: "center",
-              opacity: fadeIn(frame, fps, 1.6),
-            }}
-          >
-            <span style={{ ...text.codeMD, color: colors.info }}>Public (G...)</span>
           </div>
         </GlassPanel>
       </div>
@@ -481,34 +478,11 @@ const SignVerify: React.FC = () => {
 
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
-      {/* LEFT — Verification */}
+      {/* LEFT — Verification (appears second) */}
       <div style={{ position: "absolute", left: 60, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
           variant="positive"
           borderColor={`${colors.positive}20`}
-          padding={`${space.xxl - 8}px ${space.xxl - 4}px`}
-          style={{
-            opacity: slideIn(frame, fps, 0.3).opacity,
-            transform: `translateY(${slideIn(frame, fps, 0.3).translateY}px)`,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: space.lg - 4,
-            width: 420,
-          }}
-        >
-          <div style={{ ...text.overlineSM, color: colors.positive }}>
-            Verification
-          </div>
-          <FlowDiagram steps={["Public Key", "Verify", "Network"]} delay={0.5} accentColor={colors.positive} />
-        </GlassPanel>
-      </div>
-
-      {/* RIGHT — Signing */}
-      <div style={{ position: "absolute", right: 60, top: "50%", transform: "translateY(-50%)" }}>
-        <GlassPanel
-          variant="negative"
-          borderColor={`${colors.negative}20`}
           padding={`${space.xxl - 8}px ${space.xxl - 4}px`}
           style={{
             opacity: slideIn(frame, fps, 1.0).opacity,
@@ -520,10 +494,33 @@ const SignVerify: React.FC = () => {
             width: 420,
           }}
         >
+          <div style={{ ...text.overlineSM, color: colors.positive }}>
+            Verification
+          </div>
+          <FlowDiagram steps={["Public Key", "Verify", "Network"]} delay={1.2} accentColor={colors.positive} />
+        </GlassPanel>
+      </div>
+
+      {/* RIGHT — Signing (appears first) */}
+      <div style={{ position: "absolute", right: 60, top: "50%", transform: "translateY(-50%)" }}>
+        <GlassPanel
+          variant="negative"
+          borderColor={`${colors.negative}20`}
+          padding={`${space.xxl - 8}px ${space.xxl - 4}px`}
+          style={{
+            opacity: slideIn(frame, fps, 0.3).opacity,
+            transform: `translateY(${slideIn(frame, fps, 0.3).translateY}px)`,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: space.lg - 4,
+            width: 420,
+          }}
+        >
           <div style={{ ...text.overlineSM, color: colors.negative }}>
             Signing
           </div>
-          <FlowDiagram steps={["Secret Key", "Sign", "TX"]} delay={1.2} accentColor={colors.negative} />
+          <FlowDiagram steps={["Secret Key", "Sign", "TX"]} delay={0.5} accentColor={colors.negative} />
         </GlassPanel>
       </div>
     </AbsoluteFill>
