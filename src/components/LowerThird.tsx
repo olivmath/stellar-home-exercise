@@ -49,13 +49,13 @@ export const LowerThird: React.FC<Props> = ({
       />
 
       {/* Title */}
-      <div style={{ ...text.h1 }}>
+      <div style={{ ...text.h1, color: "#FFFFFF" }}>
         {title}
       </div>
 
       {/* Subtitle */}
       {subtitle && (
-        <div style={{ ...text.caption, color: colors.coolGrey }}>
+        <div style={{ ...text.caption, color: "rgba(255,255,255,0.75)" }}>
           {subtitle}
         </div>
       )}
