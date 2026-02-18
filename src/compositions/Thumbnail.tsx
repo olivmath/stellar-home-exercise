@@ -52,7 +52,7 @@ export const Thumbnail: React.FC = () => {
               ...text.displayXL,
               color: colors.black,
               lineHeight: 1,
-              fontSize: 96,
+              fontSize: 96, // thumbnail-specific: 1280x720 canvas needs larger display text
             }}
           >
             STELLAR
@@ -62,7 +62,7 @@ export const Thumbnail: React.FC = () => {
               ...text.displayXL,
               color: colors.black,
               lineHeight: 1,
-              fontSize: 96,
+              fontSize: 96, // thumbnail-specific: 1280x720 canvas needs larger display text
             }}
           >
             SPEED RUN
@@ -82,8 +82,6 @@ export const Thumbnail: React.FC = () => {
             style={{
               ...text.bodyLG,
               color: colors.black,
-              fontSize: 28,
-              fontWeight: 500,
             }}
           >
             Blockchain in 5 min
@@ -115,7 +113,7 @@ export const Thumbnail: React.FC = () => {
           >
             <span
               style={{
-                ...text.overlineSM,
+                ...text.overlineLG,
                 color: colors.gold,
                 letterSpacing: 2,
               }}
