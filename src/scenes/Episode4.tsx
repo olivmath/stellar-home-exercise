@@ -20,10 +20,10 @@ import { episodes, toFrame } from "../config/audioMarks";
 const EP = episodes.ep4.startSec;
 const rel = (sec: number) => toFrame(sec - EP);
 
-// ── Scene 4.1: Ledgers vs Blocks (151.74s to 159.23s) — VIDEO+OVERLAY ──
-// LEFT: Blocks at f4642 (154.73s) | RIGHT: Ledger at f4641 (154.69s)
-const BLOCKS_DELAY = 154.73 - 151.74; // ~3.0s
-const LEDGER_DELAY = 154.69 - 151.74; // ~2.95s
+// ── Scene 4.1: Ledgers vs Blocks (153.51s to 161.00s) — VIDEO+OVERLAY ──
+// LEFT: Blocks at f4642 (156.50s) | RIGHT: Ledger at f4641 (156.46s)
+const BLOCKS_DELAY = 156.50 - 153.51; // ~3.0s
+const LEDGER_DELAY = 156.46 - 153.51; // ~2.95s
 
 const LedgersVsBlocks: React.FC = () => {
   const frame = useCurrentFrame();
@@ -134,13 +134,13 @@ const LedgersVsBlocks: React.FC = () => {
   );
 };
 
-// ── Scene 4.2: Ledger Lifecycle (159.23s to 171.03s) — VIDEO+OVERLAY ──
-// Task #10: last card at 164.93s (not 165.93s), plus 2/3 quorum indicator
-const SCENE_42_START = 159.23;
+// ── Scene 4.2: Ledger Lifecycle (161.00s to 172.80s) — VIDEO+OVERLAY ──
+// Task #10: last card at 166.70s (not 165.93s), plus 2/3 quorum indicator
+const SCENE_42_START = 161.00;
 const lifecycleSteps = [
   { label: "Collect TXs", atSec: SCENE_42_START, color: colors.gold },
-  { label: "Propose Ledger", atSec: 162.40, color: colors.info },
-  { label: "Consensus", atSec: 164.93, color: colors.positive },
+  { label: "Propose Ledger", atSec: 164.17, color: colors.info },
+  { label: "Consensus", atSec: 166.70, color: colors.positive },
 ];
 
 const LedgerLifecycle: React.FC = () => {
@@ -149,7 +149,7 @@ const LedgerLifecycle: React.FC = () => {
   const { opacity, translateY } = slideIn(frame, fps, 0.3);
 
   // 2/3 quorum indicator appears with the Consensus card
-  const quorumDelaySec = 164.93 - SCENE_42_START;
+  const quorumDelaySec = 166.70 - SCENE_42_START;
   const quorumOpacity = fadeIn(frame, fps, quorumDelaySec + 0.4);
 
   return (
@@ -360,18 +360,18 @@ const NoForks: React.FC = () => {
   );
 };
 
-// ── Scene 4.4: Consensus cards staggered (177.03s to 183.50s) — VIDEO+OVERLAY ──
+// ── Scene 4.4: Consensus cards staggered (178.80s to 185.27s) — VIDEO+OVERLAY ──
 // Task #11: PoW LEFT, PoS RIGHT, SCP CENTER. Shared shadow starts with scene.
-const SCENE_44_START = 177.03;
+const SCENE_44_START = 178.80;
 
 const ConsensusCards: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // PoW appears at 177.03 (delay 0), PoS at 178.09, SCP at 179.66
-  const powDelaySec = 177.03 - SCENE_44_START; // 0
-  const posDelaySec = 178.09 - SCENE_44_START; // 1.06
-  const scpDelaySec = 179.66 - SCENE_44_START; // 2.63
+  // PoW appears at 178.80 (delay 0), PoS at 179.86, SCP at 181.43
+  const powDelaySec = 178.80 - SCENE_44_START; // 0
+  const posDelaySec = 179.86 - SCENE_44_START; // 1.06
+  const scpDelaySec = 181.43 - SCENE_44_START; // 2.63
 
   const { opacity: powOpacity, translateY: powY } = slideIn(frame, fps, powDelaySec);
   const { opacity: scpOpacity, translateY: scpY } = slideIn(frame, fps, scpDelaySec);
@@ -480,10 +480,10 @@ const ConsensusCards: React.FC = () => {
   );
 };
 
-// ── Scene 4.5: David Mazieres (183.50s to 195.83s) — VIDEO+OVERLAY ──
-// Task #12: ScientistCard with photo on RIGHT, FBA label on LEFT at 186.90s
-const SCENE_45_START = 183.50;
-const FBA_APPEAR_SEC = 186.90;
+// ── Scene 4.5: David Mazieres (185.27s to 197.60s) — VIDEO+OVERLAY ──
+// Task #12: ScientistCard with photo on RIGHT, FBA label on LEFT at 188.67s
+const SCENE_45_START = 185.27;
+const FBA_APPEAR_SEC = 188.67;
 
 const DavidMazieres: React.FC = () => {
   const frame = useCurrentFrame();
@@ -942,15 +942,15 @@ const Trilemma: React.FC = () => {
 
 // ── Scene 4.8: Closing question — fullscreen dynamic text ──
 const closingWords = [
-  { text: "What's", atSec: 208.40 },
-  { text: "left", atSec: 208.60 },
-  { text: "is", atSec: 208.80 },
-  { text: "the", atSec: 208.94 },
-  { text: "programmability", atSec: 209.10 },
-  { text: "layer.", atSec: 209.60 },
+  { text: "What's", atSec: 210.17 },
+  { text: "left", atSec: 210.37 },
+  { text: "is", atSec: 210.57 },
+  { text: "the", atSec: 210.71 },
+  { text: "programmability", atSec: 210.87 },
+  { text: "layer.", atSec: 211.37 },
 ];
 
-const CLOSING_START = 208.40;
+const CLOSING_START = 210.17;
 
 const ClosingQuestion: React.FC = () => {
   const frame = useCurrentFrame();
@@ -997,48 +997,48 @@ const ClosingQuestion: React.FC = () => {
 export const Episode4: React.FC = () => {
   return (
     <AbsoluteFill>
-      {/* Scene 4.1: Ledgers vs Blocks — 151.74s to 159.23s */}
-      <Sequence from={rel(151.74)} durationInFrames={rel(159.23) - rel(151.74)}>
+      {/* Scene 4.1: Ledgers vs Blocks — 153.51s to 161.00s */}
+      <Sequence from={rel(153.51)} durationInFrames={rel(161.00) - rel(153.51)}>
         <LedgersVsBlocks />
       </Sequence>
 
-      {/* Scene 4.2: Ledger Lifecycle — 159.23s to 171.03s */}
-      <Sequence from={rel(159.23)} durationInFrames={rel(171.03) - rel(159.23)}>
+      {/* Scene 4.2: Ledger Lifecycle — 161.00s to 172.80s */}
+      <Sequence from={rel(161.00)} durationInFrames={rel(172.80) - rel(161.00)}>
         <LedgerLifecycle />
       </Sequence>
 
-      {/* Scene 4.3: No-Forks — 171.03s to 177.03s */}
-      <Sequence from={rel(171.03)} durationInFrames={rel(177.03) - rel(171.03)}>
+      {/* Scene 4.3: No-Forks — 172.80s to 178.80s */}
+      <Sequence from={rel(172.80)} durationInFrames={rel(178.80) - rel(172.80)}>
         <NoForks />
       </Sequence>
 
-      {/* Scene 4.4: Consensus cards (PoW LEFT, SCP CENTER, PoS RIGHT) — 177.03s to 183.50s */}
-      <Sequence from={rel(177.03)} durationInFrames={rel(183.50) - rel(177.03)}>
+      {/* Scene 4.4: Consensus cards (PoW LEFT, SCP CENTER, PoS RIGHT) — 178.80s to 185.27s */}
+      <Sequence from={rel(178.80)} durationInFrames={rel(185.27) - rel(178.80)}>
         <ConsensusCards />
       </Sequence>
 
-      {/* Scene 4.5: David Mazieres (ScientistCard RIGHT, FBA label LEFT) — 183.50s to 195.83s */}
-      <Sequence from={rel(183.50)} durationInFrames={rel(195.83) - rel(183.50)}>
+      {/* Scene 4.5: David Mazieres (ScientistCard RIGHT, FBA label LEFT) — 185.27s to 197.60s */}
+      <Sequence from={rel(185.27)} durationInFrames={rel(197.60) - rel(185.27)}>
         <DavidMazieres />
       </Sequence>
 
-      {/* Scene 4.6: Quorum Slices — ANIMATION FULL starting at 190.30s to 200.93s */}
-      <Sequence from={rel(190.30)} durationInFrames={rel(200.93) - rel(190.30)}>
+      {/* Scene 4.6: Quorum Slices — ANIMATION FULL starting at 192.07s to 202.70s */}
+      <Sequence from={rel(192.07)} durationInFrames={rel(202.70) - rel(192.07)}>
         <QuorumSlices />
       </Sequence>
 
-      {/* Scene 4.7: Trilemma — words first, then triangle — 200.93s to 204.87s (f6146) */}
-      <Sequence from={rel(200.93)} durationInFrames={rel(204.87) - rel(200.93)}>
+      {/* Scene 4.7: Trilemma — words first, then triangle — 202.70s to 206.64s */}
+      <Sequence from={rel(202.70)} durationInFrames={rel(206.64) - rel(202.70)}>
         <Trilemma />
       </Sequence>
 
-      {/* Scene 4.8: Closing question — 208.4s to 210.38s */}
-      <Sequence from={rel(208.4)} durationInFrames={rel(210.38) - rel(208.4)}>
+      {/* Scene 4.8: Closing question — 210.17s to 212.15s */}
+      <Sequence from={rel(210.17)} durationInFrames={rel(212.15) - rel(210.17)}>
         <ClosingQuestion />
       </Sequence>
 
       {/* Lower-third across full episode */}
-      <Sequence from={rel(152.5)} durationInFrames={rel(210.38) - rel(152.5)}>
+      <Sequence from={rel(154.27)} durationInFrames={rel(212.15) - rel(154.27)}>
         <LowerThird title="Ledgers & Consensus" subtitle="Episode 04" delay={0} />
       </Sequence>
     </AbsoluteFill>

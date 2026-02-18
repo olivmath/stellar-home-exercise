@@ -25,13 +25,13 @@ const rel = (sec: number) => toFrame(sec - EP);
 // RIGHT side card: lifecycle steps
 // Build: already visible | Sign: 117.43s | Submit: 119.40s
 // Horizon: 122.23s | Core: 124.23s | Settlement: 125.79s
-const SCENE_32_START = 114.97;
+const SCENE_32_START = 116.74;
 const lifecycleSteps = [
   { label: "Build", atSec: SCENE_32_START, color: colors.gold },
-  { label: "Sign", atSec: 117.43, color: colors.info },
-  { label: "Submit to Horizon", atSec: 119.40, color: colors.info },
-  { label: "Stellar Core", atSec: 121.86, color: colors.info },
-  { label: "Settlement", atSec: 123.73, color: colors.positive },
+  { label: "Sign", atSec: 119.20, color: colors.info },
+  { label: "Submit to Horizon", atSec: 121.17, color: colors.info },
+  { label: "Stellar Core", atSec: 123.63, color: colors.info },
+  { label: "Settlement", atSec: 125.50, color: colors.positive },
 ];
 
 const SubmissionFlow: React.FC = () => {
@@ -344,7 +344,7 @@ const Atomicity: React.FC = () => {
 // "Change Trust" at 138.76s → offset = 138.76 - 132.90 = 5.86s
 // "Invoke Host Function" at 140.90s → offset = 140.90 - 132.90 = 8.0s
 
-const SCENE_34_START = 132.90;
+const SCENE_34_START = 134.67;
 
 interface OpTypeCardProps {
   label: string;
@@ -414,7 +414,7 @@ const operationTypes = [
     label: "Payment",
     description: "Asset transfers between accounts",
     color: colors.gold,
-    atSec: 136.43,
+    atSec: 136.83,
   },
   {
     label: "Change Trust",
@@ -498,26 +498,18 @@ const OperationTypes: React.FC = () => {
   );
 };
 
-// ── Scene 3.5: Closing question (144.43s to 148.78s) — fullscreen word-by-word ──
-// Task #9: Updated closing phrase:
-// "A transaction is the container. Operations are the intentions inside in the container."
+// ── Scene 3.5: Closing question (149.03s to 152.50s) — fullscreen word-by-word ──
+// "But who decides this is valid?" at 02:29.03 | f4471
 const closingWords = [
-  { text: "A", atSec: 144.43 },
-  { text: "transaction", atSec: 144.67 },
-  { text: "is", atSec: 145.07 },
-  { text: "the", atSec: 145.27 },
-  { text: "container.", atSec: 145.47 },
-  { text: "Operations", atSec: 145.97 },
-  { text: "are", atSec: 146.37 },
-  { text: "the", atSec: 146.57 },
-  { text: "intentions", atSec: 146.67 },
-  { text: "inside", atSec: 147.07 },
-  { text: "in", atSec: 147.37 },
-  { text: "the", atSec: 147.57 },
-  { text: "container.", atSec: 147.77 },
+  { text: "But", atSec: 149.03 },
+  { text: "who", atSec: 149.33 },
+  { text: "decides", atSec: 149.63 },
+  { text: "this", atSec: 150.13 },
+  { text: "is", atSec: 150.43 },
+  { text: "valid?", atSec: 150.73 },
 ];
 
-const CLOSING_START = 144.43;
+const CLOSING_START = 149.03;
 
 const ClosingQuestion: React.FC = () => {
   const frame = useCurrentFrame();
@@ -538,7 +530,7 @@ const ClosingQuestion: React.FC = () => {
           {closingWords.map((word, i) => {
             const wordFrame = Math.round((word.atSec - CLOSING_START) * fps);
             const visible = frame >= wordFrame;
-            const isHighlighted = word.text === "container." || word.text === "intentions";
+            const isHighlighted = word.text === "decides" || word.text === "valid?";
             return (
               <span
                 key={i}
@@ -565,28 +557,28 @@ const ClosingQuestion: React.FC = () => {
 export const Episode3: React.FC = () => {
   return (
     <AbsoluteFill>
-      {/* Scene 3.2: Submission Flow — 114.97s to 125.73s (Task #6: right side, fixed timing) */}
-      <Sequence from={rel(114.97)} durationInFrames={rel(125.73) - rel(114.97)}>
+      {/* Scene 3.2: Submission Flow — 116.74s to 127.50s (Task #6: right side, fixed timing) */}
+      <Sequence from={rel(116.74)} durationInFrames={rel(127.50) - rel(116.74)}>
         <SubmissionFlow />
       </Sequence>
 
-      {/* Scene 3.3: Atomicity — 125.83s to 132.40s (Task #7: 10×10 grid, 100 circles) */}
-      <Sequence from={rel(125.83)} durationInFrames={rel(132.40) - rel(125.83)}>
+      {/* Scene 3.3: Atomicity — 127.60s to 134.17s (Task #7: 10×10 grid, 100 circles) */}
+      <Sequence from={rel(127.60)} durationInFrames={rel(134.17) - rel(127.60)}>
         <Atomicity />
       </Sequence>
 
-      {/* Scene 3.4: Operation Types — 132.90s to 144.43s (Task #8: new scene) */}
-      <Sequence from={rel(132.90)} durationInFrames={rel(144.43) - rel(132.90)}>
+      {/* Scene 3.4: Operation Types — 134.67s to 144.03s (02:24.03 | f4321) */}
+      <Sequence from={rel(134.67)} durationInFrames={rel(144.03) - rel(134.67)}>
         <OperationTypes />
       </Sequence>
 
-      {/* Scene 3.5: Closing question — 144.43s to 148.78s (Task #9: updated phrase) */}
-      <Sequence from={rel(144.43)} durationInFrames={rel(148.78) - rel(144.43)}>
+      {/* Scene 3.5: Closing question — 149.03s to 153.51s (holds until ep4 transition) */}
+      <Sequence from={rel(149.03)} durationInFrames={rel(153.51) - rel(149.03)}>
         <ClosingQuestion />
       </Sequence>
 
       {/* Lower-third across full episode */}
-      <Sequence from={rel(109.5)} durationInFrames={rel(148.78) - rel(109.5)}>
+      <Sequence from={rel(111.27)} durationInFrames={rel(153.51) - rel(111.27)}>
         <LowerThird title="Transactions & Operations" subtitle="Episode 03" delay={0} />
       </Sequence>
     </AbsoluteFill>

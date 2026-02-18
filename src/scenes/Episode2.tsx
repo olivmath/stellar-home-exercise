@@ -698,32 +698,31 @@ const CurveComparison: React.FC = () => {
   );
 };
 
-// ── Scene 2.5: Closing question — fullscreen dynamic text — 102.4s to 106.88s ──
+// ── Scene 2.5: Closing question — ANIMATION FULL (solid bg, no video) — 102.16s to 110.0s ──
+const CLOSING_ANIM_START = 102.16; // animation scene starts here
 const closingWords = [
-  { text: "Now,", atSec: 102.40 },
-  { text: "you", atSec: 102.78 },
-  { text: "have", atSec: 102.98 },
-  { text: "an", atSec: 103.18 },
-  { text: "identity.", atSec: 103.30 },
-  { text: "But", atSec: 104.08 },
-  { text: "what", atSec: 104.26 },
-  { text: "exactly", atSec: 104.70 },
-  { text: "do", atSec: 105.02 },
-  { text: "you", atSec: 105.32 },
-  { text: "send", atSec: 105.42 },
-  { text: "to", atSec: 105.74 },
-  { text: "the", atSec: 105.96 },
-  { text: "network?", atSec: 106.06 },
+  { text: "But", atSec: 106.38 },
+  { text: "what", atSec: 106.62 },
+  { text: "exactly", atSec: 106.94 },
+  { text: "do", atSec: 107.28 },
+  { text: "you", atSec: 107.52 },
+  { text: "send", atSec: 107.62 },
+  { text: "to", atSec: 107.90 },
+  { text: "the", atSec: 108.10 },
+  { text: "network?", atSec: 108.20 },
 ];
-
-const CLOSING_START = 102.40;
 
 const ClosingQuestion: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  const bgOpacity = interpolate(frame, [0, Math.round(fps * 0.4)], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
   return (
-    <AbsoluteFill style={layout.dimOverlay(0.6)}>
+    <AbsoluteFill style={{ backgroundColor: colors.bgPrimary, opacity: bgOpacity }}>
       <AbsoluteFill style={layout.centerColumn}>
         <div
           style={{
@@ -735,7 +734,7 @@ const ClosingQuestion: React.FC = () => {
           }}
         >
           {closingWords.map((word, i) => {
-            const wordFrame = Math.round((word.atSec - CLOSING_START) * fps);
+            const wordFrame = Math.round((word.atSec - CLOSING_ANIM_START) * fps);
             const visible = frame >= wordFrame;
             return (
               <span
@@ -798,13 +797,13 @@ export const Episode2: React.FC = () => {
         <CurveComparison />
       </Sequence>
 
-      {/* Scene 2.5: Closing question — 102.4s to 106.88s */}
-      <Sequence from={rel(102.4)} durationInFrames={rel(106.88) - rel(102.4)}>
+      {/* Scene 2.5: Closing question — ANIMATION FULL — 102.16s to 110.0s */}
+      <Sequence from={rel(102.16)} durationInFrames={rel(110.0) - rel(102.16)}>
         <ClosingQuestion />
       </Sequence>
 
-      {/* Lower-third across full episode */}
-      <Sequence from={rel(60.8)} durationInFrames={rel(106.88) - rel(60.8)}>
+      {/* Lower-third — ends before closing animation */}
+      <Sequence from={rel(60.8)} durationInFrames={rel(102.0) - rel(60.8)}>
         <LowerThird title="Wallet: Cryptographic Identity" subtitle="Episode 02" delay={0} />
       </Sequence>
     </AbsoluteFill>

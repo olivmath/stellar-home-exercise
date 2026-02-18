@@ -16,7 +16,7 @@ export const RemotionRoot: React.FC = () => {
       <Composition
         id="StellarSpeedRun"
         component={StellarSpeedRun}
-        durationInFrames={toFrame(302.0)}
+        durationInFrames={toFrame(303.77)}
         fps={FPS}
         width={1920}
         height={1080}

@@ -16,7 +16,7 @@ import { LowerThird } from "../components/LowerThird";
 import { GlassPanel } from "../components/GlassPanel";
 import { episodes, toFrame } from "../config/audioMarks";
 
-// ── Timing: relative to closing start (275.28s) ──
+// ── Timing: relative to closing start (277.05s) ──
 const EP = episodes.closing.startSec;
 const rel = (sec: number) => toFrame(sec - EP);
 
@@ -354,23 +354,23 @@ const Certificate: React.FC = () => {
 export const Closing: React.FC = () => {
   return (
     <AbsoluteFill>
-      {/* Phase 1: Review Checklist — 275.28s to 290.04s */}
+      {/* Phase 1: Review Checklist — 277.05s to 296.81s */}
       <Sequence from={0} durationInFrames={rel(292.0)}>
         <ReviewChecklist />
       </Sequence>
 
-      {/* Final statement overlaid on checklist — 292.30s to 295.04s */}
-      <Sequence from={rel(292.30)} durationInFrames={rel(295.04) - rel(292.30)}>
+      {/* Final statement overlaid on checklist — 294.07s to 296.81s */}
+      <Sequence from={rel(294.07)} durationInFrames={rel(296.81) - rel(294.07)}>
         <FinalStatement />
       </Sequence>
 
-      {/* Certificate — AFTER everything, 295.04s to 302.0s */}
-      <Sequence from={rel(295.04)} durationInFrames={rel(302.0) - rel(295.04)}>
+      {/* Certificate — AFTER everything, 296.81s to 303.77s */}
+      <Sequence from={rel(296.81)} durationInFrames={rel(303.77) - rel(296.81)}>
         <Certificate />
       </Sequence>
 
       {/* Lower-third across checklist phase */}
-      <Sequence from={rel(276.0)} durationInFrames={rel(288.0) - rel(276.0)}>
+      <Sequence from={rel(277.77)} durationInFrames={rel(289.77) - rel(277.77)}>
         <LowerThird title="Recap & Closing" subtitle="Closing" delay={0} />
       </Sequence>
     </AbsoluteFill>

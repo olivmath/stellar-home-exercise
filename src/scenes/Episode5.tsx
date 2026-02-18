@@ -17,7 +17,7 @@ import { ScientistCard } from "../components/ScientistCard";
 import { text, space, layout, panel, shadows, radius } from "../styles/designSystem";
 import { episodes, toFrame } from "../config/audioMarks";
 
-// ── Timing: relative to ep5 start (212.1s) ──
+// ── Timing: relative to ep5 start (213.87s) ──
 const EP = episodes.ep5.startSec;
 const rel = (sec: number) => toFrame(sec - EP);
 
@@ -336,13 +336,13 @@ const GasModelTTL: React.FC = () => {
 const CODE_LINES = [
   // Imports group (atSec: 244.46)
   {
-    atSec: 244.46,
+    atSec: 246.23,
     tokens: [
       { text: "#![no_std]", color: colors.info },
     ],
   },
   {
-    atSec: 244.46,
+    atSec: 246.23,
     tokens: [
       { text: "use ", color: colors.info },
       { text: "soroban_sdk", color: colors.gold },
@@ -354,11 +354,11 @@ const CODE_LINES = [
 
   // State group (atSec: 245.56)
   {
-    atSec: 245.56,
+    atSec: 247.33,
     tokens: [{ text: "", color: "transparent" }],
   },
   {
-    atSec: 245.56,
+    atSec: 247.33,
     tokens: [
       { text: "const ", color: colors.info },
       { text: "STATE", color: colors.textPrimary },
@@ -373,17 +373,17 @@ const CODE_LINES = [
 
   // Contract + get function group (atSec: 246.63)
   {
-    atSec: 246.63,
+    atSec: 248.40,
     tokens: [{ text: "", color: "transparent" }],
   },
   {
-    atSec: 246.63,
+    atSec: 248.40,
     tokens: [
       { text: "#[contract]", color: colors.gold },
     ],
   },
   {
-    atSec: 246.63,
+    atSec: 248.40,
     tokens: [
       { text: "pub struct ", color: colors.info },
       { text: "FlipperContract", color: colors.gold },
@@ -391,17 +391,17 @@ const CODE_LINES = [
     ],
   },
   {
-    atSec: 246.63,
+    atSec: 248.40,
     tokens: [{ text: "", color: "transparent" }],
   },
   {
-    atSec: 246.63,
+    atSec: 248.40,
     tokens: [
       { text: "#[contractimpl]", color: colors.gold },
     ],
   },
   {
-    atSec: 246.63,
+    atSec: 248.40,
     tokens: [
       { text: "impl ", color: colors.info },
       { text: "FlipperContract ", color: colors.gold },
@@ -409,7 +409,7 @@ const CODE_LINES = [
     ],
   },
   {
-    atSec: 246.63,
+    atSec: 248.40,
     tokens: [
       { text: "    pub fn ", color: colors.info },
       { text: "get", color: colors.textPrimary },
@@ -421,7 +421,7 @@ const CODE_LINES = [
     ],
   },
   {
-    atSec: 246.63,
+    atSec: 248.40,
     tokens: [
       { text: "        env.storage().instance().get(&", color: colors.textDim },
       { text: "STATE", color: colors.textPrimary },
@@ -429,18 +429,18 @@ const CODE_LINES = [
     ],
   },
   {
-    atSec: 246.63,
+    atSec: 248.40,
     tokens: [
       { text: "    }", color: colors.textDim },
     ],
   },
   // Flip function group (atSec: 249.46)
   {
-    atSec: 249.46,
+    atSec: 251.23,
     tokens: [{ text: "", color: "transparent" }],
   },
   {
-    atSec: 249.46,
+    atSec: 251.23,
     tokens: [
       { text: "    pub fn ", color: colors.info },
       { text: "flip", color: colors.gold },
@@ -450,19 +450,19 @@ const CODE_LINES = [
     ],
   },
   {
-    atSec: 249.46,
+    atSec: 251.23,
     tokens: [
       { text: "        env.storage()", color: colors.textDim },
     ],
   },
   {
-    atSec: 249.46,
+    atSec: 251.23,
     tokens: [
       { text: "            .instance()", color: colors.textDim },
     ],
   },
   {
-    atSec: 249.46,
+    atSec: 251.23,
     tokens: [
       { text: "            .update(&", color: colors.textDim },
       { text: "STATE", color: colors.textPrimary },
@@ -472,20 +472,20 @@ const CODE_LINES = [
     ],
   },
   {
-    atSec: 249.46,
+    atSec: 251.23,
     tokens: [
       { text: "    }", color: colors.textDim },
     ],
   },
   {
-    atSec: 249.46,
+    atSec: 251.23,
     tokens: [
       { text: "}", color: colors.textDim },
     ],
   },
 ];
 
-const SCENE_53_START = 242.7; // f7281
+const SCENE_53_START = 244.47; // f7334
 const TYPING_DURATION_FRAMES = 12; // ~0.4s to type each line
 
 const FlipperCode: React.FC = () => {
@@ -757,39 +757,34 @@ const ZkAndPasskeys: React.FC = () => {
 export const Episode5: React.FC = () => {
   return (
     <AbsoluteFill>
-      {/* Scene 5.1: Soroban Intro + Graydon — 212.1s to 226.36s */}
-      <Sequence from={rel(212.1)} durationInFrames={rel(226.36) - rel(212.1)}>
+      {/* Scene 5.1: Soroban Intro + Graydon — 213.87s to 228.13s */}
+      <Sequence from={rel(213.87)} durationInFrames={rel(228.13) - rel(213.87)}>
         <SorobanIntro />
       </Sequence>
 
-      {/* Scene 5.2: Gas Model & TTL — 226.48s to 237.93s (f7138) */}
-      <Sequence from={rel(226.48)} durationInFrames={rel(237.93) - rel(226.48)}>
+      {/* Scene 5.2: Gas Model & TTL — 228.25s to 239.70s */}
+      <Sequence from={rel(228.25)} durationInFrames={rel(239.70) - rel(228.25)}>
         <GasModelTTL />
       </Sequence>
 
-      {/* Scene 5.3: Flipper Code Full Screen — starts at 240.30s, visible from 242.7s */}
-      <Sequence from={rel(242.90)} durationInFrames={rel(254.59) - rel(243.30)}>
+      {/* Scene 5.3: Flipper Code Full Screen — starts at 244.67s, visible from 244.47s */}
+      <Sequence from={rel(244.67)} durationInFrames={rel(256.36) - rel(245.07)}>
         <FlipperCode />
       </Sequence>
 
-      {/* Scene 5.4: Protocol Updates — 256.66s to 265.57s */}
-      <Sequence from={rel(256.66)} durationInFrames={rel(265.57) - rel(256.66)}>
+      {/* Scene 5.4: Protocol Updates — 258.43s to 267.34s */}
+      <Sequence from={rel(258.43)} durationInFrames={rel(267.34) - rel(258.43)}>
         <ProtocolUpdates />
       </Sequence>
 
-      {/* Scene 5.5: zkSNARKs & Passkeys — 265.57s to 275.28s */}
-      <Sequence from={rel(265.57)} durationInFrames={rel(275.28) - rel(265.57)}>
+      {/* Scene 5.5: zkSNARKs & Passkeys — 267.34s to 277.05s */}
+      <Sequence from={rel(267.34)} durationInFrames={rel(277.05) - rel(267.34)}>
         <ZkAndPasskeys />
       </Sequence>
 
-      {/* Lower-third: Soroban & Smart Contracts — 213.0s to 244.0s */}
-      <Sequence from={rel(213.0)} durationInFrames={rel(244.0) - rel(213.0)}>
+      {/* Lower-third: Soroban & Smart Contracts — full episode */}
+      <Sequence from={rel(214.77)} durationInFrames={rel(277.05) - rel(214.77)}>
         <LowerThird title="Soroban & Smart Contracts" subtitle="Episode 05" delay={0} />
-      </Sequence>
-
-      {/* Lower-third: Code, Crypto & zk-Proofs — 244.0s to 275.28s */}
-      <Sequence from={rel(244.0)} durationInFrames={rel(275.28) - rel(244.0)}>
-        <LowerThird title="Code, Crypto & zk-Proofs" subtitle="Episode 05" delay={0} />
       </Sequence>
     </AbsoluteFill>
   );

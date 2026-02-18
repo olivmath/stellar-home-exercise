@@ -4,15 +4,17 @@ import { toFrame } from "../config/audioMarks";
 import { text, space } from "../styles/designSystem";
 
 const SEGMENTS = [
-  { label: "Intro", startSec: 0, endSec: 9 },
-  { label: "Ep 1", startSec: 9, endSec: 57 },
-  { label: "Ep 2", startSec: 57, endSec: 108 },
-  { label: "Ep 3", startSec: 108, endSec: 150 },
-  { label: "Ep 4", startSec: 150, endSec: 211 },
-  { label: "Ep 5", startSec: 211, endSec: 295 },
+  { label: "Intro", startSec: 0, endSec: 9, bonus: false },
+  { label: "Ep 1", startSec: 9, endSec: 57, bonus: false },
+  { label: "Ep 2", startSec: 57, endSec: 110, bonus: false },
+  { label: "Ep 3", startSec: 110, endSec: 151, bonus: false },
+  { label: "Ep 4", startSec: 151, endSec: 213, bonus: false },
+  { label: "Ep 5", startSec: 213, endSec: 277.05, bonus: false },
+  { label: "Recap", startSec: 277.05, endSec: 296.81, bonus: false },
+  { label: "Bonus", startSec: 296.81, endSec: 303.77, bonus: true },
 ];
 
-const TOTAL_DURATION_SEC = 295;
+const TOTAL_DURATION_SEC = 303.77;
 const BAR_HEIGHT = 5;
 const BAR_BOTTOM = 24;
 const BAR_MARGIN_X = space.xxl;
@@ -58,6 +60,12 @@ export const ProgressBar: React.FC = () => {
         const isActive = currentSec >= seg.startSec && currentSec < seg.endSec;
         const isComplete = currentSec >= seg.endSec;
 
+        const activeColor = seg.bonus ? colors.gold : colors.gold;
+        const completeColor = seg.bonus ? colors.gold : colors.info;
+        const activeFill = seg.bonus
+          ? `linear-gradient(90deg, ${colors.gold}, #FFB800)`
+          : `linear-gradient(90deg, ${colors.gold}, ${colors.info})`;
+
         return (
           <div
             key={i}
@@ -76,9 +84,9 @@ export const ProgressBar: React.FC = () => {
                 fontSize: 11,
                 letterSpacing: 1.5,
                 color: isActive
-                  ? colors.gold
+                  ? activeColor
                   : isComplete
-                    ? colors.info
+                    ? completeColor
                     : colors.textDim,
                 opacity: isActive ? 1 : isComplete ? 0.7 : 0.3,
               }}
@@ -92,7 +100,10 @@ export const ProgressBar: React.FC = () => {
                 width: "100%",
                 height: BAR_HEIGHT,
                 borderRadius: BAR_HEIGHT / 2,
-                background: "rgba(255, 255, 255, 0.06)",
+                background: seg.bonus
+                  ? `rgba(253, 218, 36, 0.08)`
+                  : "rgba(255, 255, 255, 0.06)",
+                border: seg.bonus ? `1px solid ${colors.gold}30` : "none",
                 overflow: "hidden",
               }}
             >
@@ -103,9 +114,9 @@ export const ProgressBar: React.FC = () => {
                   height: "100%",
                   borderRadius: BAR_HEIGHT / 2,
                   background: isActive
-                    ? `linear-gradient(90deg, ${colors.gold}, ${colors.info})`
+                    ? activeFill
                     : isComplete
-                      ? colors.info
+                      ? completeColor
                       : "transparent",
                   boxShadow: isActive
                     ? `0 0 10px ${colors.goldMuted}`

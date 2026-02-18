@@ -29,9 +29,9 @@ const TRANSITION_DURATION = toFrame(2);
 const transitions = [
   { episode: 1, title: "Foundation", subtitle: "Purpose & Network Economics", atSec: 9.4, durationSec: 2.5 },
   { episode: 2, title: "Wallet", subtitle: "Cryptographic Identity", atSec: 57 },
-  { episode: 3, title: "Transaction", subtitle: "Atomic Operations", atSec: 107.88 },
-  { episode: 4, title: "Consensus", subtitle: "Stellar Consensus Protocol", atSec: 150 },
-  { episode: 5, title: "Soroban", subtitle: "Smart Contracts in Rust", atSec: 211, durationSec: 2.5 },
+  { episode: 3, title: "Transaction", subtitle: "Atomic Operations", atSec: 109.65 },
+  { episode: 4, title: "Consensus", subtitle: "Stellar Consensus Protocol", atSec: 151.77 },
+  { episode: 5, title: "Soroban", subtitle: "Smart Contracts in Rust", atSec: 212.77, durationSec: 2.5 },
 ];
 
 const scenes = [
@@ -121,31 +121,18 @@ export const StellarSpeedRun: React.FC = () => {
 
       {/* ── Sound Effects ── */}
 
-      {/* Cinematic riser — each episode title transition */}
+      {/* Cinematic riser — starts 2s before each episode title transition */}
       {transitions.map(({ episode, atSec, durationSec }) => {
         const dur = toFrame(durationSec ?? 2);
         return (
-          <Sequence key={`sfx-riser-${episode}`} from={toFrame(atSec) - Math.floor(dur / 2)} durationInFrames={dur}>
+          <Sequence key={`sfx-riser-${episode}`} from={toFrame(atSec) - toFrame(2)} durationInFrames={dur}>
             <Audio src={staticFile("sounds/riser.mp3")} volume={0.4} />
           </Sequence>
         );
       })}
 
-      {/* Soft whoosh — first card of each episode */}
-      {[
-        { key: "ep1", from: toFrame(10.3) },
-        { key: "ep2", from: toFrame(60.83) },
-        { key: "ep3", from: toFrame(114.97) },
-        { key: "ep4", from: toFrame(152.0) },
-        { key: "ep5", from: toFrame(213.0) },
-      ].map(({ key, from }) => (
-        <Sequence key={`sfx-whoosh-${key}`} from={from} durationInFrames={30}>
-          <Audio src={staticFile("sounds/whoosh.mp3")} volume={0.35} />
-        </Sequence>
-      ))}
-
       {/* Applause + fanfare — certificate reveal */}
-      <Sequence from={toFrame(289.0)} durationInFrames={180}>
+      <Sequence from={toFrame(296.81)} durationInFrames={180}>
         <Audio src={staticFile("sounds/applause.mp3")} volume={0.55} />
       </Sequence>
 
