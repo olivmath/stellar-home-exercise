@@ -18,18 +18,18 @@ import { episodes, toFrame } from "../config/audioMarks";
 const EP = episodes.ep3.startSec;
 const rel = (sec: number) => toFrame(sec - EP);
 
-// ── Scene 3.2: Submission Flow (117.22s to 128.74s) — VIDEO+OVERLAY ──
-// LEFT side: Lifecycle steps appearing at specific absolute frames
-// Build: already visible | Sign: f3523 (117.43s) | Submit: f3582 (119.40s)
-// Horizon: f3667 (122.23s) | Core: f3727 (124.23s) | Settlement: f3774 (125.79s)
-const SCENE_32_START = 117.22;
+// ── Scene 3.2: Submission Flow — VIDEO+OVERLAY ──
+// Task #6: start=114.97s, end=125.73s → rel(114.97) to rel(125.73)
+// RIGHT side card: lifecycle steps
+// Build: already visible | Sign: 117.43s | Submit: 119.40s
+// Horizon: 122.23s | Core: 124.23s | Settlement: 125.79s
+const SCENE_32_START = 114.97;
 const lifecycleSteps = [
   { label: "Build", atSec: SCENE_32_START, color: colors.gold },
   { label: "Sign", atSec: 117.43, color: colors.info },
-  { label: "Submit", atSec: 119.40, color: colors.info },
-  { label: "Horizon", atSec: 122.23, color: colors.positive },
-  { label: "Stellar Core", atSec: 124.23, color: colors.positive },
-  { label: "Settlement", atSec: 125.79, color: colors.gold },
+  { label: "Submit to Horizon", atSec: 119.40, color: colors.info },
+  { label: "Stellar Core", atSec: 121.86, color: colors.info },
+  { label: "Settlement", atSec: 123.73, color: colors.positive },
 ];
 
 const SubmissionFlow: React.FC = () => {
@@ -40,11 +40,11 @@ const SubmissionFlow: React.FC = () => {
 
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
-      {/* LEFT — Submission flow */}
+      {/* RIGHT — Submission flow (Task #6: right side) */}
       <div
         style={{
           position: "absolute",
-          left: space.section,
+          right: space.section,
           top: "50%",
           transform: "translateY(-50%)",
         }}
@@ -140,49 +140,45 @@ const SubmissionFlow: React.FC = () => {
   );
 };
 
-// ── Scene 3.3: Atomicity (128.74s to 144.43s) — ANIMATION FULL ──
-// Full-screen: big "Transações" box with colored circles for operations
-// Phase 1: circles appear → get green checks one by one → TX turns green
-// Phase 2: text "100 operações" replaces content
-// Phase 3: circles return → checks one by one → last FAILS → all turn red
-const OPERATION_COLORS = [
-  colors.info,        // blue
-  colors.gold,        // gold
-  "#B7ACE8",          // lilac
-  colors.info,        // blue
-  "#E88A4C",          // orange
-  colors.gold,        // gold
-  "#B7ACE8",          // lilac
+// ── Scene 3.3: Atomicity (125.83s to 132.40s) — ANIMATION FULL ──
+// Task #7: 100 circles in a 10×10 grid
+// Phase 1: TX circle + 100 operation circles (all unchecked/grey) appear
+// Phase 2: All 100 circles turn to checkmarks SIMULTANEOUSLY, then TX gets check
+// Phase 3: 99 checked + 1 red X, then TX shows red X (fail state)
+
+// Generate 100 operation circle colors cycling through brand palette
+const OP_COLORS_CYCLE = [
+  colors.info,
+  colors.gold,
+  "#B7ACE8",
+  colors.positive,
+  "#E88A4C",
 ];
+const OPERATION_GRID_COLORS = Array.from({ length: 100 }, (_, i) =>
+  OP_COLORS_CYCLE[i % OP_COLORS_CYCLE.length]
+);
 
 const Atomicity: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const totalOps = OPERATION_COLORS.length;
+  // ── Phase timing (seconds relative to scene start at 125.83s) ──
+  // Scene duration: 132.40 - 125.83 = 6.57s
+  const circlesAppear = 0.4;       // circles fade in
+  const phase2Start = 2.0;         // all 100 ops check simultaneously
+  const txSuccessAt = phase2Start + 0.5; // TX shows check
+  const phase3Start = 4.0;         // fail phase: 99 checked + 1 X
+  const txFailAt = phase3Start + 0.8;   // TX shows X
 
-  // ── Phase timing (in seconds relative to scene start) ──
-  const circlesAppear = 0.5;       // circles fade in
-  const checkStart = 1.5;          // first check starts
-  const checkInterval = 0.6;       // seconds between checks
-  const allCheckedAt = checkStart + (totalOps - 1) * checkInterval + 0.3;
-  const txSuccessAt = allCheckedAt + 0.5;
-  const textReplaceAt = txSuccessAt + 1.2;
-  const textDuration = 2.0;
-  const failPhaseStart = textReplaceAt + textDuration;
-  const failCheckStart = failPhaseStart + 0.8;
-  const failAtIndex = totalOps - 1; // last circle fails
-  const failMoment = failCheckStart + failAtIndex * checkInterval + 0.3;
-  const allFailAt = failMoment + 0.5;
-
-  // ── Phase detection ──
   const timeSec = frame / fps;
-  const inTextPhase = timeSec >= textReplaceAt && timeSec < failPhaseStart;
-  const inFailPhase = timeSec >= failPhaseStart;
-  const txSucceeded = timeSec >= txSuccessAt && timeSec < textReplaceAt;
-  const txFailed = timeSec >= allFailAt;
 
-  // TX box border color
+  // Phase detection
+  const inPhase2 = timeSec >= phase2Start && timeSec < phase3Start;
+  const inPhase3 = timeSec >= phase3Start;
+  const txSucceeded = timeSec >= txSuccessAt && timeSec < phase3Start;
+  const txFailed = timeSec >= txFailAt;
+
+  // TX border color and glow
   const txBorderColor = txFailed
     ? colors.negative
     : txSucceeded
@@ -190,148 +186,310 @@ const Atomicity: React.FC = () => {
       : colors.borderMedium;
 
   const txGlow = txFailed
-    ? `0 0 30px ${colors.negative}25`
+    ? `0 0 30px ${colors.negative}35`
     : txSucceeded
-      ? `0 0 30px ${colors.positive}25`
+      ? `0 0 30px ${colors.positive}35`
       : "none";
 
-  // Panel opacity
-  const panelOpacity = interpolate(frame, [0, 15], [0, 1], {
+  // Panel opacity (fade in on entry)
+  const panelOpacity = interpolate(frame, [0, 12], [0, 1], {
     extrapolateRight: "clamp",
   });
+
+  // TX label
+  const txLabel = txFailed ? "Transaction: FAIL" : txSucceeded ? "Transaction: OK" : "Transaction";
+  const txLabelColor = txFailed ? colors.negative : txSucceeded ? colors.positive : colors.textPrimary;
+
+  // Circles opacity on initial appear
+  const circlesGroupOpacity = interpolate(
+    frame,
+    [circlesAppear * fps, (circlesAppear + 0.5) * fps],
+    [0, 1],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
 
   return (
     <AbsoluteFill style={{ backgroundColor: colors.bgPrimary }}>
       <AbsoluteFill style={layout.centerColumn}>
-        {/* Big "Transações" box */}
+        {/* Big TX container */}
         <div
           style={{
             opacity: panelOpacity,
             ...panel.accent,
-            padding: `${space.xxl}px ${space.xxxl}px`,
+            padding: `${space.xl}px ${space.xxl}px`,
             borderRadius: radius.lg,
             border: `2px solid ${txBorderColor}`,
             boxShadow: txGlow,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: space.xl,
-            minWidth: 600,
-            minHeight: 340,
-            justifyContent: "center",
+            gap: space.lg,
+            minWidth: 700,
             transition: "none",
           }}
         >
-          {/* Title */}
+          {/* TX Title */}
           <div
             style={{
               ...text.displayMD,
-              color: txFailed ? colors.negative : txSucceeded ? colors.positive : colors.textPrimary,
+              color: txLabelColor,
+              display: "flex",
+              alignItems: "center",
+              gap: space.md,
             }}
           >
-            {txFailed ? "TX: FAIL ✗" : txSucceeded ? "Transações ✓" : "Transações"}
+            {txLabel}
+            {txSucceeded && (
+              <span style={{ color: colors.positive, fontSize: 32 }}>✓</span>
+            )}
+            {txFailed && (
+              <span style={{ color: colors.negative, fontSize: 32 }}>✗</span>
+            )}
           </div>
 
-          {/* Text phase: "100 operações" */}
-          {inTextPhase && (
-            <div
-              style={{
-                opacity: fadeIn(frame, fps, textReplaceAt),
-                ...text.displayLG,
-                color: colors.gold,
-                textShadow: `0 0 30px ${colors.gold}30`,
-              }}
-            >
-              100 operações
-            </div>
-          )}
+          {/* 10×10 grid of 100 operation circles */}
+          <div
+            style={{
+              opacity: circlesGroupOpacity,
+              display: "grid",
+              gridTemplateColumns: "repeat(10, 1fr)",
+              gap: space.xs,
+              width: "100%",
+              maxWidth: 560,
+            }}
+          >
+            {OPERATION_GRID_COLORS.map((color, i) => {
+              // Determine state for this circle
+              let isChecked = false;
+              let isFailed = false;
 
-          {/* Circles phase (initial success OR fail phase) */}
-          {!inTextPhase && (
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                gap: space.lg,
-                justifyContent: "center",
-                maxWidth: 500,
-              }}
-            >
-              {OPERATION_COLORS.map((color, i) => {
-                const circleOpacity = interpolate(
-                  frame,
-                  [(circlesAppear + i * 0.1) * fps, (circlesAppear + i * 0.1 + 0.3) * fps],
-                  [0, 1],
-                  { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-                );
-
-                // Determine check state
-                let isChecked = false;
-                let isFailed = false;
-
-                if (inFailPhase) {
-                  // Fail phase: checks appear one by one, last one fails
-                  const failCheckTime = failCheckStart + i * checkInterval;
-                  if (timeSec >= failCheckTime + 0.3) {
-                    if (i === failAtIndex) {
-                      isFailed = true;
-                    } else {
-                      isChecked = true;
-                    }
-                  }
-                  // After allFailAt, everything turns red
-                  if (txFailed) {
-                    isFailed = true;
-                    isChecked = false;
-                  }
+              if (inPhase3 || txFailed) {
+                // Phase 3: 99 checked, last one (index 99) is X
+                if (i === 99) {
+                  isFailed = true;
                 } else {
-                  // Success phase
-                  const checkTime = checkStart + i * checkInterval;
-                  if (timeSec >= checkTime + 0.3) {
-                    isChecked = true;
-                  }
+                  isChecked = true;
                 }
+              } else if (inPhase2 || txSucceeded) {
+                // Phase 2: all 100 are checked simultaneously
+                isChecked = true;
+              }
 
-                const circleColor = isFailed ? colors.negative : isChecked ? colors.positive : color;
-                const mark = isFailed ? "✗" : isChecked ? "✓" : "";
+              const circleColor = isFailed
+                ? colors.negative
+                : isChecked
+                  ? colors.positive
+                  : color;
 
-                return (
-                  <div
-                    key={`${inFailPhase ? "fail" : "success"}-${i}`}
-                    style={{
-                      opacity: inFailPhase ? 1 : circleOpacity,
-                      width: 64,
-                      height: 64,
-                      borderRadius: radius.circle,
-                      backgroundColor: `${circleColor}20`,
-                      border: `2px solid ${circleColor}60`,
-                      boxShadow: (isChecked || isFailed) ? `0 0 16px ${circleColor}30` : "none",
-                      ...layout.centerRow,
-                    }}
-                  >
-                    {mark && (
-                      <span
-                        style={{
-                          ...text.h2,
-                          color: circleColor,
-                          lineHeight: 1,
-                        }}
-                      >
-                        {mark}
-                      </span>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          )}
+              const mark = isFailed ? "✗" : isChecked ? "✓" : "";
+
+              return (
+                <div
+                  key={i}
+                  style={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: radius.circle,
+                    backgroundColor: `${circleColor}18`,
+                    border: `1.5px solid ${circleColor}50`,
+                    boxShadow: (isChecked || isFailed)
+                      ? `0 0 8px ${circleColor}30`
+                      : "none",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  {mark && (
+                    <span
+                      style={{
+                        ...text.bodySM,
+                        color: circleColor,
+                        lineHeight: 1,
+                        fontSize: 14,
+                      }}
+                    >
+                      {mark}
+                    </span>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+
+          {/* Sub-label */}
+          <div style={{ ...text.overlineSM, color: colors.white }}>
+            100 Operations
+          </div>
         </div>
       </AbsoluteFill>
     </AbsoluteFill>
   );
 };
 
+// ── Scene 3.4: OperationTypes (132.90s to 148.43s) — VIDEO+OVERLAY ──
+// Task #8: Three operation type cards appear in sequence
+// "Payment" at 136.43s → rel offset = 136.43 - 132.90 = 3.53s
+// "Change Trust" at 138.76s → offset = 138.76 - 132.90 = 5.86s
+// "Invoke Host Function" at 140.90s → offset = 140.90 - 132.90 = 8.0s
+
+const SCENE_34_START = 132.90;
+
+interface OpTypeCardProps {
+  label: string;
+  description: string;
+  color: string;
+  delaySec: number;
+  frame: number;
+  fps: number;
+}
+
+const OpTypeCard: React.FC<OpTypeCardProps> = ({ label, description, color, delaySec, frame, fps }) => {
+  const opacity = fadeIn(frame, fps, delaySec);
+  const translateY = interpolate(
+    frame,
+    [delaySec * fps, delaySec * fps + 18],
+    [20, 0],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+
+  return (
+    <div
+      style={{
+        opacity,
+        transform: `translateY(${translateY}px)`,
+        ...panel.base,
+        padding: `${space.md}px ${space.xl}px`,
+        borderRadius: radius.md,
+        border: `1px solid ${color}30`,
+        display: "flex",
+        alignItems: "center",
+        gap: space.md,
+        minWidth: 420,
+        boxShadow: `${shadows.md}, 0 0 20px ${color}15`,
+      }}
+    >
+      {/* Color accent bar */}
+      <div
+        style={{
+          width: 4,
+          height: 40,
+          borderRadius: radius.xs,
+          backgroundColor: color,
+          boxShadow: `0 0 12px ${color}50`,
+          flexShrink: 0,
+        }}
+      />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: space.xs,
+        }}
+      >
+        <div style={{ ...text.h3, color: color }}>
+          {label}
+        </div>
+        <div style={{ ...text.bodySM, color: colors.textSecondary }}>
+          {description}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const operationTypes = [
+  {
+    label: "Payment",
+    description: "Asset transfers between accounts",
+    color: colors.gold,
+    atSec: 136.43,
+  },
+  {
+    label: "Change Trust",
+    description: "Receive and issue new tokens",
+    color: colors.info,
+    atSec: 138.76,
+  },
+  {
+    label: "Invoke Host Function",
+    description: "Interact with smart contracts",
+    color: "#B7ACE8",
+    atSec: 140.90,
+  },
+];
+
+const OperationTypes: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const { opacity: titleOpacity, translateY: titleY } = slideIn(frame, fps, 0.2);
+
+  return (
+    <AbsoluteFill style={layout.dimOverlay(0.55)}>
+      <div
+        style={{
+          position: "absolute",
+          left: space.section,
+          top: "50%",
+          transform: "translateY(-50%)",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          gap: space.xl,
+        }}
+      >
+        {/* Title */}
+        <div
+          style={{
+            opacity: titleOpacity,
+            transform: `translateY(${titleY}px)`,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            gap: space.sm,
+          }}
+        >
+          <div style={{ ...text.overlineSM, color: colors.gold }}>
+            26 Operation Types
+          </div>
+          <div style={{ ...text.displayMD, color: colors.textPrimary }}>
+            Operations
+          </div>
+        </div>
+
+        {/* Operation type cards */}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: space.md,
+            alignItems: "stretch",
+          }}
+        >
+          {operationTypes.map((op) => {
+            const delaySec = op.atSec - SCENE_34_START;
+            return (
+              <OpTypeCard
+                key={op.label}
+                label={op.label}
+                description={op.description}
+                color={op.color}
+                delaySec={delaySec}
+                frame={frame}
+                fps={fps}
+              />
+            );
+          })}
+        </div>
+      </div>
+    </AbsoluteFill>
+  );
+};
+
 // ── Scene 3.5: Closing question (144.43s to 148.78s) — fullscreen word-by-word ──
+// Task #9: Updated closing phrase:
+// "A transaction is the container. Operations are the intentions inside in the container."
 const closingWords = [
   { text: "A", atSec: 144.43 },
   { text: "transaction", atSec: 144.67 },
@@ -341,7 +499,11 @@ const closingWords = [
   { text: "Operations", atSec: 145.97 },
   { text: "are", atSec: 146.37 },
   { text: "the", atSec: 146.57 },
-  { text: "intentions.", atSec: 146.67 },
+  { text: "intentions", atSec: 146.67 },
+  { text: "inside", atSec: 147.07 },
+  { text: "in", atSec: 147.37 },
+  { text: "the", atSec: 147.57 },
+  { text: "container.", atSec: 147.77 },
 ];
 
 const CLOSING_START = 144.43;
@@ -365,13 +527,14 @@ const ClosingQuestion: React.FC = () => {
           {closingWords.map((word, i) => {
             const wordFrame = Math.round((word.atSec - CLOSING_START) * fps);
             const visible = frame >= wordFrame;
+            const isHighlighted = word.text === "container." || word.text === "intentions";
             return (
               <span
                 key={i}
                 style={{
                   opacity: visible ? 1 : 0,
                   color: visible
-                    ? word.text === "container." || word.text === "intentions."
+                    ? isHighlighted
                       ? colors.gold
                       : colors.textPrimary
                     : "transparent",
@@ -391,17 +554,22 @@ const ClosingQuestion: React.FC = () => {
 export const Episode3: React.FC = () => {
   return (
     <AbsoluteFill>
-      {/* Scene 3.2: Submission Flow — 117.22s to 128.74s */}
-      <Sequence from={rel(117.22)} durationInFrames={rel(128.74) - rel(117.22)}>
+      {/* Scene 3.2: Submission Flow — 114.97s to 125.73s (Task #6: right side, fixed timing) */}
+      <Sequence from={rel(114.97)} durationInFrames={rel(125.73) - rel(114.97)}>
         <SubmissionFlow />
       </Sequence>
 
-      {/* Scene 3.3: Atomicity — 128.74s to 144.43s (ANIMATION FULL) */}
-      <Sequence from={rel(128.74)} durationInFrames={rel(144.43) - rel(128.74)}>
+      {/* Scene 3.3: Atomicity — 125.83s to 132.40s (Task #7: 10×10 grid, 100 circles) */}
+      <Sequence from={rel(125.83)} durationInFrames={rel(132.40) - rel(125.83)}>
         <Atomicity />
       </Sequence>
 
-      {/* Scene 3.5: Closing question — 144.43s to 148.78s */}
+      {/* Scene 3.4: Operation Types — 132.90s to 144.43s (Task #8: new scene) */}
+      <Sequence from={rel(132.90)} durationInFrames={rel(144.43) - rel(132.90)}>
+        <OperationTypes />
+      </Sequence>
+
+      {/* Scene 3.5: Closing question — 144.43s to 148.78s (Task #9: updated phrase) */}
       <Sequence from={rel(144.43)} durationInFrames={rel(148.78) - rel(144.43)}>
         <ClosingQuestion />
       </Sequence>

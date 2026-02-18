@@ -18,44 +18,31 @@ import { episodes, toFrame } from "../config/audioMarks";
 const EP = episodes.ep6.startSec;
 const rel = (sec: number) => toFrame(sec - EP);
 
-// ── Scene 6.1: Flipper Contract Full Screen (243.30s to ~249.47s) — ANIMATION FULL ──
-// Code lines appear dynamically at specific frames
+// ── Scene 6.1: Flipper Contract Full Screen (243.30s to 256.66s) — ANIMATION FULL ──
+// Code lines appear dynamically at specific frames, with typing animation
 const CODE_LINES = [
+  // Imports group (atSec: 244.46)
+  {
+    atSec: 244.46,
+    tokens: [
+      { text: "#![no_std]", color: colors.info },
+    ],
+  },
   {
     atSec: 244.46,
     tokens: [
       { text: "use ", color: colors.info },
       { text: "soroban_sdk", color: colors.gold },
       { text: "::{", color: colors.textDim },
-      { text: "contract, contractimpl, Env", color: colors.textPrimary },
+      { text: "contract, contractimpl, symbol_short, Env, Symbol", color: colors.textPrimary },
       { text: "};", color: colors.textDim },
     ],
   },
+
+  // State group (atSec: 245.56)
   {
     atSec: 245.56,
-    tokens: [
-      { text: "", color: "transparent" }, // blank line
-    ],
-  },
-  {
-    atSec: 245.56,
-    tokens: [
-      { text: "#[contract]", color: colors.gold },
-    ],
-  },
-  {
-    atSec: 245.56,
-    tokens: [
-      { text: "pub struct ", color: colors.info },
-      { text: "Flipper", color: colors.gold },
-      { text: ";", color: colors.textDim },
-    ],
-  },
-  {
-    atSec: 245.56,
-    tokens: [
-      { text: "", color: "transparent" }, // blank line
-    ],
+    tokens: [{ text: "", color: "transparent" }], // blank line
   },
   {
     atSec: 245.56,
@@ -64,16 +51,35 @@ const CODE_LINES = [
       { text: "STATE", color: colors.textPrimary },
       { text: ": ", color: colors.textDim },
       { text: "Symbol", color: colors.gold },
-      { text: " = symbol!(", color: colors.textDim },
-      { text: '"state"', color: colors.positive },
-      { text: ");", color: colors.textDim },
+      { text: " = ", color: colors.textDim },
+      { text: "symbol_short!", color: colors.info },
+      { text: '("STATE")', color: colors.positive },
+      { text: ";", color: colors.textDim },
+    ],
+  },
+
+  // Contract + get function group (atSec: 246.63)
+  {
+    atSec: 246.63,
+    tokens: [{ text: "", color: "transparent" }],
+  },
+  {
+    atSec: 246.63,
+    tokens: [
+      { text: "#[contract]", color: colors.gold },
     ],
   },
   {
     atSec: 246.63,
     tokens: [
-      { text: "", color: "transparent" },
+      { text: "pub struct ", color: colors.info },
+      { text: "FlipperContract", color: colors.gold },
+      { text: ";", color: colors.textDim },
     ],
+  },
+  {
+    atSec: 246.63,
+    tokens: [{ text: "", color: "transparent" }],
   },
   {
     atSec: 246.63,
@@ -85,7 +91,7 @@ const CODE_LINES = [
     atSec: 246.63,
     tokens: [
       { text: "impl ", color: colors.info },
-      { text: "Flipper ", color: colors.gold },
+      { text: "FlipperContract ", color: colors.gold },
       { text: "{", color: colors.textDim },
     ],
   },
@@ -106,7 +112,7 @@ const CODE_LINES = [
     tokens: [
       { text: "        env.storage().instance().get(&", color: colors.textDim },
       { text: "STATE", color: colors.textPrimary },
-      { text: ").unwrap()", color: colors.textDim },
+      { text: ").unwrap_or(false)", color: colors.textDim },
     ],
   },
   {
@@ -115,14 +121,13 @@ const CODE_LINES = [
       { text: "    }", color: colors.textDim },
     ],
   },
+  // Flip function group (atSec: 249.46)
   {
-    atSec: 249.47,
-    tokens: [
-      { text: "", color: "transparent" },
-    ],
+    atSec: 249.46,
+    tokens: [{ text: "", color: "transparent" }],
   },
   {
-    atSec: 249.47,
+    atSec: 249.46,
     tokens: [
       { text: "    pub fn ", color: colors.info },
       { text: "flip", color: colors.gold },
@@ -132,31 +137,35 @@ const CODE_LINES = [
     ],
   },
   {
-    atSec: 249.47,
+    atSec: 249.46,
     tokens: [
-      { text: "        let ", color: colors.info },
-      { text: "curr ", color: colors.textPrimary },
-      { text: "= Self::get(env.clone());", color: colors.textDim },
+      { text: "        env.storage()", color: colors.textDim },
     ],
   },
   {
-    atSec: 249.47,
+    atSec: 249.46,
     tokens: [
-      { text: "        env.storage().instance().set(&", color: colors.textDim },
+      { text: "            .instance()", color: colors.textDim },
+    ],
+  },
+  {
+    atSec: 249.46,
+    tokens: [
+      { text: "            .update(&", color: colors.textDim },
       { text: "STATE", color: colors.textPrimary },
-      { text: ", &!", color: colors.textDim },
-      { text: "curr", color: colors.textPrimary },
-      { text: ");", color: colors.textDim },
+      { text: ", |current: ", color: colors.textDim },
+      { text: "Option<bool>", color: colors.gold },
+      { text: "| !current.unwrap_or(false));", color: colors.textDim },
     ],
   },
   {
-    atSec: 249.47,
+    atSec: 249.46,
     tokens: [
       { text: "    }", color: colors.textDim },
     ],
   },
   {
-    atSec: 249.47,
+    atSec: 249.46,
     tokens: [
       { text: "}", color: colors.textDim },
     ],
@@ -164,6 +173,7 @@ const CODE_LINES = [
 ];
 
 const SCENE_61_START = 243.30;
+const TYPING_DURATION_FRAMES = 12; // ~0.4s to type each line
 
 const FlipperCode: React.FC = () => {
   const frame = useCurrentFrame();
@@ -209,21 +219,35 @@ const FlipperCode: React.FC = () => {
           <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
             {CODE_LINES.map((line, i) => {
               const delaySec = line.atSec - SCENE_61_START;
-              const lineOpacity = interpolate(
-                frame,
-                [delaySec * fps, delaySec * fps + 8],
-                [0, 1],
-                { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
-              );
+              const lineStart = delaySec * fps;
+              const lineEnd = lineStart + TYPING_DURATION_FRAMES;
 
-              // Skip rendering blank lines that are invisible
               const isBlank = line.tokens.length === 1 && line.tokens[0].text === "";
+
+              // Total characters in this line
+              const totalChars = line.tokens.reduce((sum, t) => sum + t.text.length, 0);
+
+              // How many characters to show (typing animation)
+              const charsToShow = isBlank
+                ? 0
+                : Math.floor(
+                    interpolate(frame, [lineStart, lineEnd], [0, totalChars], {
+                      extrapolateLeft: "clamp",
+                      extrapolateRight: "clamp",
+                    })
+                  );
+
+              // Line visibility: show as soon as typing starts
+              const lineVisible = frame >= lineStart;
+
+              // Line number
+              const lineNumber = i + 1;
 
               return (
                 <div
                   key={i}
                   style={{
-                    opacity: lineOpacity,
+                    opacity: lineVisible ? 1 : 0,
                     display: "flex",
                     alignItems: "center",
                     minHeight: isBlank ? 12 : 28,
@@ -242,22 +266,35 @@ const FlipperCode: React.FC = () => {
                       userSelect: "none",
                     }}
                   >
-                    {isBlank ? "" : i + 1}
+                    {isBlank ? "" : lineNumber}
                   </span>
 
-                  {/* Tokens */}
-                  {line.tokens.map((token, j) => (
-                    <span
-                      key={j}
-                      style={{
-                        ...text.codeMD,
-                        color: token.color,
-                        whiteSpace: "pre",
-                      }}
-                    >
-                      {token.text}
-                    </span>
-                  ))}
+                  {/* Tokens with typing animation */}
+                  {(() => {
+                    if (isBlank) return null;
+                    let cumulative = 0;
+                    return line.tokens.map((token, j) => {
+                      const tokenStart = cumulative;
+                      cumulative += token.text.length;
+
+                      // How many chars of this token to show
+                      const visibleChars = Math.max(0, Math.min(charsToShow - tokenStart, token.text.length));
+                      const visibleText = token.text.slice(0, visibleChars);
+
+                      return (
+                        <span
+                          key={j}
+                          style={{
+                            ...text.codeMD,
+                            color: token.color,
+                            whiteSpace: "pre",
+                          }}
+                        >
+                          {visibleText}
+                        </span>
+                      );
+                    });
+                  })()}
                 </div>
               );
             })}
@@ -268,9 +305,9 @@ const FlipperCode: React.FC = () => {
   );
 };
 
-// ── Scene 6.2: Protocol Updates (249.47s to 265.57s) — VIDEO+OVERLAY ──
-// Replaces "Protocol 21" with "Protocol Updates"
-const SCENE_62_START = 249.47;
+// ── Scene 6.2: Protocol Updates (256.66s to 265.57s) — VIDEO+OVERLAY ──
+// TASK #20: start moved from 249.47 to 256.66
+const SCENE_62_START = 256.66;
 
 const ProtocolUpdates: React.FC = () => {
   const frame = useCurrentFrame();
@@ -326,7 +363,7 @@ const ProtocolUpdates: React.FC = () => {
 };
 
 // ── Scene 6.3: zkSNARKs & Passkeys (265.57s to 275.28s) — VIDEO+OVERLAY ──
-// "This enables..." + zkSNARK/Passkey cards + "Enabled in Layer 1"
+// TASK #21: Square GlassPanel cards for zk-SNARK and Passkeys
 const SCENE_63_START = 265.57;
 
 const ZkAndPasskeys: React.FC = () => {
@@ -334,21 +371,28 @@ const ZkAndPasskeys: React.FC = () => {
   const { fps } = useVideoConfig();
 
   const { opacity: panelOpacity, translateY: panelY } = slideIn(frame, fps, 0.3);
-
   const zkDelay = 0.8;
   const passkeysDelay = 1.6;
   const l1Delay = 3.0;
 
+  const squareCardStyle = (color: string): React.CSSProperties => ({
+    ...panel.base,
+    width: 220,
+    height: 220,
+    borderRadius: radius.lg,
+    border: `1px solid ${color}30`,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: space.md,
+    padding: space.xl,
+    boxShadow: `0 0 20px ${color}10`,
+  });
+
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
-      <div
-        style={{
-          position: "absolute",
-          right: space.section,
-          top: "50%",
-          transform: "translateY(-50%)",
-        }}
-      >
+      <div style={{ position: "absolute", right: space.section, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
           padding="48px 56px"
           borderColor={colors.borderAccent}
@@ -359,35 +403,32 @@ const ZkAndPasskeys: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             gap: space.xl,
-            width: 480,
+            width: 560,
           }}
         >
-          <div style={{ ...text.overlineSM, color: colors.gold }}>
-            THIS ENABLES
-          </div>
+          <div style={{ ...text.overlineSM, color: colors.gold }}>THIS ENABLES</div>
 
-          <div style={{ display: "flex", gap: space.md, flexWrap: "wrap" }}>
-            <div style={{ opacity: fadeIn(frame, fps, zkDelay) }}>
-              <Badge label="zk-SNARK Verify" delay={zkDelay} variant="accent" size="lg" />
+          {/* Two square cards side by side */}
+          <div style={{ display: "flex", gap: space.lg }}>
+            <div style={{ opacity: fadeIn(frame, fps, zkDelay), ...squareCardStyle("#00A7B5") }}>
+              <div style={{ ...text.displayMD, fontSize: 36, color: "#00A7B5" }}>zk</div>
+              <div style={{ ...text.codeSM, color: "#00A7B5", textAlign: "center" }}>zk-SNARK Verify</div>
+              <div style={{ ...text.bodySM, color: colors.warmGrey, textAlign: "center" }}>Zero-knowledge proofs</div>
             </div>
-            <div style={{ opacity: fadeIn(frame, fps, passkeysDelay) }}>
-              <Badge label="Passkeys" delay={passkeysDelay} variant="accent" size="lg" />
+
+            <div style={{ opacity: fadeIn(frame, fps, passkeysDelay), ...squareCardStyle(colors.gold) }}>
+              <div style={{ ...text.displayMD, fontSize: 36, color: colors.gold }}>PK</div>
+              <div style={{ ...text.codeSM, color: colors.gold, textAlign: "center" }}>Passkeys</div>
+              <div style={{ ...text.bodySM, color: colors.warmGrey, textAlign: "center" }}>Better UX auth</div>
             </div>
           </div>
 
           {/* Divider */}
-          <div
-            style={{
-              height: 1,
-              backgroundColor: colors.borderSubtle,
-              width: "100%",
-              opacity: fadeIn(frame, fps, l1Delay - 0.5),
-            }}
-          />
+          <div style={{ height: 1, backgroundColor: colors.borderSubtle, opacity: fadeIn(frame, fps, l1Delay - 0.5) }} />
 
           {/* Enabled in Layer 1 */}
-          <div style={{ opacity: fadeIn(frame, fps, l1Delay) }}>
-            <Badge label="Enabled in Layer 1" delay={l1Delay} variant="positive" size="lg" />
+          <div style={{ opacity: fadeIn(frame, fps, l1Delay), ...text.h2, color: colors.positive, textAlign: "center" }}>
+            ✓ Enabled in Layer 1
           </div>
         </GlassPanel>
       </div>
@@ -399,13 +440,13 @@ const ZkAndPasskeys: React.FC = () => {
 export const Episode6: React.FC = () => {
   return (
     <AbsoluteFill>
-      {/* Scene 6.1: Flipper Code Full Screen — 243.30s to 249.47s */}
-      <Sequence from={rel(243.30)} durationInFrames={rel(249.47) - rel(243.30)}>
+      {/* Scene 6.1: Flipper Code Full Screen — 243.30s to 256.66s (TASK #20: extended) */}
+      <Sequence from={rel(243.30)} durationInFrames={rel(256.66) - rel(243.30)}>
         <FlipperCode />
       </Sequence>
 
-      {/* Scene 6.2: Protocol Updates — 249.47s to 265.57s */}
-      <Sequence from={rel(249.47)} durationInFrames={rel(265.57) - rel(249.47)}>
+      {/* Scene 6.2: Protocol Updates — 256.66s to 265.57s (TASK #20: start moved to 256.66) */}
+      <Sequence from={rel(256.66)} durationInFrames={rel(265.57) - rel(256.66)}>
         <ProtocolUpdates />
       </Sequence>
 

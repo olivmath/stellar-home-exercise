@@ -21,30 +21,31 @@ const EP = episodes.closing.startSec;
 const rel = (sec: number) => toFrame(sec - EP);
 
 // ── Checklist items mapped to episodes ──
+// Format: EP{n} — {description}
 const CHECKLIST_ITEMS = [
-  { label: "Cryptographic Identity", episode: "01" },
-  { label: "Atomic Transactions", episode: "02" },
-  { label: "Federated Consensus", episode: "03" },
-  { label: "Smart Contracts", episode: "04" },
-  { label: "Efficient Storage", episode: "05" },
-  { label: "Privacy & zk-Proofs", episode: "06" },
+  { ep: "EP01", description: "Accounts & Keys" },
+  { ep: "EP02", description: "Cryptography" },
+  { ep: "EP03", description: "Transactions" },
+  { ep: "EP04", description: "Consensus" },
+  { ep: "EP05", description: "Smart Contracts" },
+  { ep: "EP06", description: "Code, Crypto & zk-Proofs" },
 ];
 
 // Items appear starting at f8392 (279.73s) = 4.45s into closing
 const CHECKLIST_START_DELAY = 279.73 - 275.28; // 4.45s
-const ITEM_STAGGER = 0.55; // seconds between items
-const ALL_ITEMS_SHOWN_AT = CHECKLIST_START_DELAY + (CHECKLIST_ITEMS.length - 1) * ITEM_STAGGER + 0.5;
-const CHECKS_APPEAR_AT = ALL_ITEMS_SHOWN_AT + 0.8; // all checks appear at once
+const ITEM_STAGGER = 0.5; // seconds between items
+// f8598 = 286.60s, relative to closing start 275.28s = 11.32s
+const CHECKS_APPEAR_AT = 11.32; // seconds into closing
 
 // ── Phase 1: Review Checklist (275.28s to 289.0s) — VIDEO+OVERLAY ──
-// Items appear WITHOUT checks, then all get checked simultaneously
+// Items appear WITHOUT checks, then all get checked simultaneously at CHECKS_APPEAR_AT
 const ReviewChecklist: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
   const titleAnim = slideIn(frame, fps, CHECKLIST_START_DELAY - 0.5);
 
-  // Check appear animation (all at once)
+  // Check appear animation (all at once at CHECKS_APPEAR_AT)
   const checkOpacity = fadeIn(frame, fps, CHECKS_APPEAR_AT);
   const checkScale = interpolate(
     frame,
@@ -78,7 +79,7 @@ const ReviewChecklist: React.FC = () => {
             display: "flex",
             flexDirection: "column",
             gap: space.lg,
-            maxWidth: 560,
+            maxWidth: 600,
           }}
         >
           <div
@@ -96,57 +97,85 @@ const ReviewChecklist: React.FC = () => {
             const itemDelay = CHECKLIST_START_DELAY + i * ITEM_STAGGER;
             const itemAnim = slideIn(frame, fps, itemDelay);
 
+            // Checkbox is checked when checkOpacity > 0
+            const isChecked = checkOpacity > 0;
+
             return (
               <div
-                key={item.label}
+                key={item.ep}
                 style={{
                   opacity: itemAnim.opacity,
                   transform: `translateY(${itemAnim.translateY}px)`,
                   display: "flex",
+                  flexDirection: "row",
                   alignItems: "center",
                   gap: space.md,
                 }}
               >
-                {/* Checkmark — appears later for ALL items at once */}
+                {/* Checkbox — 24x24 square; unchecked: border only; checked: gold fill + checkmark */}
                 <div
                   style={{
-                    width: 32,
-                    height: 32,
-                    borderRadius: radius.sm,
-                    background: checkOpacity > 0 ? `${colors.positive}12` : `${colors.textDim}08`,
-                    border: `1px solid ${checkOpacity > 0 ? colors.positive : colors.textDim}30`,
+                    width: 24,
+                    height: 24,
+                    borderRadius: radius.xs,
+                    background: isChecked
+                      ? colors.gold
+                      : "transparent",
+                    border: `2px solid ${isChecked ? colors.gold : colors.textDim}`,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
                     flexShrink: 0,
+                    transition: "background 0.2s, border-color 0.2s",
                   }}
                 >
+                  {/* Checkmark SVG — appears when checked */}
                   <span
                     style={{
-                      ...text.codeMD,
-                      color: colors.positive,
-                      fontSize: 18,
+                      color: colors.bgPrimary,
+                      fontSize: 14,
                       lineHeight: 1,
+                      fontWeight: 700,
                       opacity: checkOpacity,
                       transform: `scale(${checkScale})`,
+                      display: "block",
                     }}
                   >
                     &#10003;
                   </span>
                 </div>
 
-                <span style={{ ...text.h2, color: colors.textPrimary }}>
-                  {item.label}
-                </span>
-
+                {/* EP label */}
                 <span
                   style={{
                     ...text.overlineSM,
-                    color: colors.warmGrey,
-                    marginLeft: space.xs,
+                    color: colors.gold,
+                    letterSpacing: 2,
+                    minWidth: 48,
+                    fontSize: 13,
                   }}
                 >
-                  EP {item.episode}
+                  {item.ep}
+                </span>
+
+                {/* Separator dash */}
+                <span
+                  style={{
+                    ...text.bodyMD,
+                    color: colors.textDim,
+                  }}
+                >
+                  &mdash;
+                </span>
+
+                {/* Description */}
+                <span
+                  style={{
+                    ...text.bodyMD,
+                    color: colors.textPrimary,
+                  }}
+                >
+                  {item.description}
                 </span>
               </div>
             );
@@ -286,6 +315,7 @@ const FinalStatement: React.FC = () => {
 };
 
 // ── Phase 3: Certificate (289.0s to 295.04s) — ANIMATION FULL ──
+// Appears AFTER the main checklist content
 const Certificate: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -356,12 +386,12 @@ export const Closing: React.FC = () => {
         </AbsoluteFill>
       </Sequence>
 
-      {/* Phase 2: Certificate + Final Statement — 289.0s to 295.04s
+      {/* Phase 2: Certificate — 289.0s to 295.04s (appears AFTER checklist) */}
       <Sequence from={rel(288.0)} durationInFrames={rel(295.04) - rel(288.0)}>
         <AbsoluteFill style={{ opacity: certOpacity }}>
           <Certificate />
         </AbsoluteFill>
-      </Sequence> */}
+      </Sequence>
 
       {/* Final statement overlaid on certificate */}
       <Sequence from={rel(293.0)} durationInFrames={rel(295.04) - rel(293.0)}>

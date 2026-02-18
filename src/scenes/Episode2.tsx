@@ -103,15 +103,18 @@ const BytesAnimation: React.FC = () => {
           style={{
             width: "100%",
             display: "flex",
-            alignItems: "center",
+            alignItems: "stretch",
             gap: space.xl,
+            justifyContent: "center",
           }}
         >
         {/* Left: Random numbers grid */}
         <div
           style={{
-            flex: 1,
             opacity: numbersOpacity,
+            ...panel.base,
+            padding: `${space.lg}px ${space.xl}px`,
+            borderRadius: radius.md,
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -130,10 +133,9 @@ const BytesAnimation: React.FC = () => {
           </div>
           <div
             style={{
-              display: "flex",
-              flexWrap: "wrap",
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
               gap: space.sm,
-              justifyContent: "center",
             }}
           >
           {RANDOM_BYTES.map((byte, i) => {
@@ -168,6 +170,7 @@ const BytesAnimation: React.FC = () => {
           style={{
             display: "flex",
             alignItems: "center",
+            alignSelf: "center",
             opacity: arrowProgress,
             minWidth: 80,
           }}
@@ -192,12 +195,15 @@ const BytesAnimation: React.FC = () => {
         {/* Right: Mnemonic seed words */}
         <div
           style={{
-            flex: 1,
             opacity: seedOpacity,
+            ...panel.base,
+            padding: `${space.lg}px ${space.xl}px`,
+            borderRadius: radius.md,
             display: "flex",
             flexDirection: "column",
             gap: space.sm,
             alignItems: "stretch",
+            justifyContent: "center",
           }}
         >
           {/* Seed label */}
@@ -213,10 +219,9 @@ const BytesAnimation: React.FC = () => {
           </div>
           <div
             style={{
-              display: "flex",
-              flexWrap: "wrap",
+              display: "grid",
+              gridTemplateColumns: "repeat(4, 1fr)",
               gap: space.sm,
-              justifyContent: "center",
             }}
           >
             {MNEMONIC_WORDS.map((word, i) => {
@@ -233,6 +238,7 @@ const BytesAnimation: React.FC = () => {
                     padding: `${space.sm}px ${space.md}px`,
                     borderRadius: radius.sm,
                     opacity: itemOpacity,
+                    textAlign: "center",
                   }}
                 >
                   <span style={{ ...text.codeMD, color: colors.textDim, marginRight: space.xs }}>
@@ -404,11 +410,11 @@ const Base32Encoding: React.FC = () => {
 
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
-      {/* Right-aligned vertical layout */}
+      {/* Left-aligned vertical layout */}
       <div
         style={{
           position: "absolute",
-          right: space.section,
+          left: space.section,
           top: "50%",
           transform: "translateY(-50%)",
         }}
@@ -441,7 +447,7 @@ const Base32Encoding: React.FC = () => {
                 textAlign: "center",
               }}
             >
-              <span style={{ ...text.codeSM, color: colors.gold }}>Secret (S...)</span>
+              <span style={{ ...text.codeSM, color: colors.gold }}>Secret</span>
             </div>
             <div
               style={{
@@ -453,7 +459,7 @@ const Base32Encoding: React.FC = () => {
                 opacity: fadeIn(frame, fps, 0.5),
               }}
             >
-              <span style={{ ...text.codeSM, color: colors.info }}>Public (G...)</span>
+              <span style={{ ...text.codeSM, color: colors.info }}>Public</span>
             </div>
           </div>
 
@@ -476,7 +482,7 @@ const Signing: React.FC = () => {
   const { fps } = useVideoConfig();
 
   return (
-    <AbsoluteFill style={layout.dimOverlay(0.55)}>
+    <AbsoluteFill>
       <div style={{ position: "absolute", right: 60, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
           variant="negative"
@@ -508,7 +514,7 @@ const Verification: React.FC = () => {
   const { fps } = useVideoConfig();
 
   return (
-    <AbsoluteFill style={layout.dimOverlay(0.55)}>
+    <AbsoluteFill>
       <div style={{ position: "absolute", left: 60, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
           variant="positive"
@@ -758,7 +764,7 @@ export const Episode2: React.FC = () => {
   return (
     <AbsoluteFill>
       {/* 32 Bytes animation — 62.53s to 66.03s (starts 0.5s earlier, ends 0.2s later) */}
-      <Sequence from={rel(62.53)} durationInFrames={rel(66.03) - rel(62.53)}>
+      <Sequence from={rel(60.83)} durationInFrames={rel(66.03) - rel(60.83)}>
         <BytesAnimation />
       </Sequence>
 
@@ -770,6 +776,11 @@ export const Episode2: React.FC = () => {
       {/* Scene 2.2: Base32 Encoding — 78.3s to 83.78s */}
       <Sequence from={rel(78.3)} durationInFrames={rel(83.78) - rel(78.3)}>
         <Base32Encoding />
+      </Sequence>
+
+      {/* Shared shadow for Sign+Verify — video → shadow → content */}
+      <Sequence from={rel(84.00)} durationInFrames={rel(87.00) - rel(84.00)}>
+        <AbsoluteFill style={layout.dimOverlay(0.55)} />
       </Sequence>
 
       {/* Scene 2.3a: Signing — RIGHT */}

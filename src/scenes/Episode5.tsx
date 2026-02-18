@@ -101,14 +101,8 @@ const SorobanIntro: React.FC = () => {
           </div>
         </GlassPanel>
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: space.sm,
-            width: 280,
-          }}
-        >
+        {/* TASK #15: Harmonized stack layer cards — width 420 matching main panel */}
+        <div style={{ display: "flex", flexDirection: "column", gap: space.sm, width: 420 }}>
           {stackLayers.map((layer, i) => {
             const layerSlide = slideIn(frame, fps, layer.delay);
             return (
@@ -116,27 +110,28 @@ const SorobanIntro: React.FC = () => {
                 key={i}
                 style={{
                   ...panel.base,
-                  padding: `${space.md}px ${space.lg}px`,
-                  borderRadius: radius.sm,
+                  width: "100%",
+                  boxSizing: "border-box",
+                  padding: `${space.md}px ${space.xl}px`,
+                  borderRadius: radius.md,
                   display: "flex",
                   alignItems: "center",
-                  gap: space.sm,
+                  gap: space.md,
                   opacity: layerSlide.opacity,
                   transform: `translateY(${layerSlide.translateY}px)`,
+                  border: `1px solid ${layer.color}25`,
                 }}
               >
                 <div
                   style={{
-                    width: 3,
-                    height: 24,
+                    width: 4,
+                    height: 28,
                     borderRadius: radius.xs,
                     backgroundColor: layer.color,
                     boxShadow: `0 0 8px ${layer.color}40`,
                   }}
                 />
-                <span style={{ ...text.codeSM, color: layer.color }}>
-                  {layer.label}
-                </span>
+                <span style={{ ...text.codeMD, color: layer.color }}>{layer.label}</span>
               </div>
             );
           })}
@@ -155,6 +150,7 @@ const SorobanIntro: React.FC = () => {
           name="Graydon Hoare"
           institution="RUST CREATOR"
           caption="Shaped Soroban's architecture"
+          photo="grandon.png"
           delay={0}
         />
       </div>
@@ -162,7 +158,7 @@ const SorobanIntro: React.FC = () => {
   );
 };
 
-// ── Scene 5.2: Gas Model & TTL (226.48s to 243.30s) — VIDEO+OVERLAY ──
+// ── Scene 5.2: Gas Model & TTL (226.48s to 243.09s) — VIDEO+OVERLAY ──
 const GasModelTTL: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -172,8 +168,10 @@ const GasModelTTL: React.FC = () => {
   const ttlDelay = 5.62;
   const { opacity: ttlOpacity, translateY: ttlY } = slideIn(frame, fps, ttlDelay);
 
-  const renewDelay = 11.04;
-  const archiveDelay = 12.5;
+  // TASK #17: Renew Rent visible from the very start of the TTL section
+  const renewDelay = 0;
+  // TASK #17: No Rent card appears when bar is nearly empty (~ttlDelay + 3.8s)
+  const archiveDelay = ttlDelay + 3.8;
   const renewOpacity = fadeIn(frame, fps, renewDelay);
   const archiveOpacity = fadeIn(frame, fps, archiveDelay);
 
@@ -186,6 +184,9 @@ const GasModelTTL: React.FC = () => {
     [1, 0.1],
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
+
+  // TASK #17: Bar turns red when nearly empty (progress <= 0.15)
+  const barIsRed = ttlBarProgress <= 0.15;
 
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
@@ -268,8 +269,11 @@ const GasModelTTL: React.FC = () => {
               style={{
                 width: `${ttlBarProgress * 100}%`,
                 height: "100%",
-                background: `linear-gradient(90deg, ${colors.gold}, ${colors.positive})`,
+                background: barIsRed
+                  ? `linear-gradient(90deg, ${colors.negative}, ${colors.negative})`
+                  : `linear-gradient(90deg, ${colors.gold}, ${colors.positive})`,
                 borderRadius: radius.pill,
+                transition: "background 0.3s ease",
               }}
             />
           </div>
@@ -323,13 +327,13 @@ export const Episode5: React.FC = () => {
         <SorobanIntro />
       </Sequence>
 
-      {/* Scene 5.2: Gas Model & TTL (RIGHT side) — 226.48s to 243.30s */}
-      <Sequence from={rel(226.48)} durationInFrames={rel(243.30) - rel(226.48)}>
+      {/* Scene 5.2: Gas Model & TTL (RIGHT side) — 226.48s to 243.09s */}
+      <Sequence from={rel(226.48)} durationInFrames={rel(243.09) - rel(226.48)}>
         <GasModelTTL />
       </Sequence>
 
-      {/* Lower-third across episode */}
-      <Sequence from={rel(213.0)} durationInFrames={rel(243.30) - rel(213.0)}>
+      {/* Lower-third across episode — extended to 243.09s */}
+      <Sequence from={rel(213.0)} durationInFrames={rel(243.09) - rel(213.0)}>
         <LowerThird title="Soroban & Smart Contracts" subtitle="Episode 05" delay={0} />
       </Sequence>
     </AbsoluteFill>

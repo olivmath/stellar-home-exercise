@@ -344,7 +344,7 @@ const CAPs: React.FC = () => {
 
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
-      <div style={{ position: "absolute", right: space.section, top: "50%", transform: "translateY(-50%)" }}>
+      <div style={{ position: "absolute", left: space.section, top: "50%", transform: "translateY(-50%)" }}>
         <GlassPanel
           padding="56px 64px"
           borderColor={colors.borderMedium}

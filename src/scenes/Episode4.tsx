@@ -135,18 +135,22 @@ const LedgersVsBlocks: React.FC = () => {
 };
 
 // ── Scene 4.2: Ledger Lifecycle (159.23s to 171.03s) — VIDEO+OVERLAY ──
-// Staggered: Collect TX (already visible) → Propose (162.40s) → Consensus (165.93s)
+// Task #10: last card at 164.93s (not 165.93s), plus 2/3 quorum indicator
 const SCENE_42_START = 159.23;
 const lifecycleSteps = [
   { label: "Collect TXs", atSec: SCENE_42_START, color: colors.gold },
   { label: "Propose Ledger", atSec: 162.40, color: colors.info },
-  { label: "Consensus", atSec: 165.93, color: colors.positive },
+  { label: "Consensus", atSec: 164.93, color: colors.positive },
 ];
 
 const LedgerLifecycle: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const { opacity, translateY } = slideIn(frame, fps, 0.3);
+
+  // 2/3 quorum indicator appears with the Consensus card
+  const quorumDelaySec = 164.93 - SCENE_42_START;
+  const quorumOpacity = fadeIn(frame, fps, quorumDelaySec + 0.4);
 
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
@@ -243,6 +247,70 @@ const LedgerLifecycle: React.FC = () => {
               );
             })}
           </div>
+
+          {/* 2/3 quorum requirement indicator */}
+          <div
+            style={{
+              opacity: quorumOpacity,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: space.sm,
+              width: "100%",
+              marginTop: space.xs,
+            }}
+          >
+            <div
+              style={{
+                width: "100%",
+                height: 1,
+                background: `linear-gradient(90deg, transparent, ${colors.borderMedium}, transparent)`,
+              }}
+            />
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: space.sm,
+              }}
+            >
+              {/* Progress bar showing 2/3 threshold */}
+              <div
+                style={{
+                  position: "relative",
+                  width: 120,
+                  height: 6,
+                  borderRadius: radius.pill,
+                  background: colors.bgSurface,
+                  border: `1px solid ${colors.borderSubtle}`,
+                  overflow: "hidden",
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: "66.7%",
+                    background: `linear-gradient(90deg, ${colors.info}, ${colors.positive})`,
+                    borderRadius: radius.pill,
+                  }}
+                />
+              </div>
+              <div
+                style={{
+                  ...text.codeMD,
+                  color: colors.positive,
+                  fontSize: 13,
+                  fontWeight: 600,
+                  letterSpacing: 1,
+                }}
+              >
+                ≥ 2/3 quorum
+              </div>
+            </div>
+          </div>
         </GlassPanel>
       </div>
     </AbsoluteFill>
@@ -293,102 +361,222 @@ const NoForks: React.FC = () => {
 };
 
 // ── Scene 4.4: Consensus cards staggered (177.03s to 183.50s) — VIDEO+OVERLAY ──
-// No PoW (177.03s) → No PoS (178.09s) → SCP (179.66s)
+// Task #11: PoW LEFT, PoS RIGHT, SCP CENTER. Shared shadow starts with scene.
 const SCENE_44_START = 177.03;
-const consensusCards = [
-  { label: "No Proof of Work", atSec: 177.03, color: colors.negative },
-  { label: "No Proof of Stake", atSec: 178.09, color: colors.negative },
-  { label: "SCP", atSec: 179.66, color: colors.gold },
-];
 
 const ConsensusCards: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
+  // PoW appears at 177.03 (delay 0), SCP at 178.09, PoS at 179.66
+  const powDelaySec = 177.03 - SCENE_44_START; // 0
+  const scpDelaySec = 178.09 - SCENE_44_START; // 1.06
+  const posDelaySec = 179.66 - SCENE_44_START; // 2.63
+
+  const { opacity: powOpacity, translateY: powY } = slideIn(frame, fps, powDelaySec);
+  const { opacity: scpOpacity, translateY: scpY } = slideIn(frame, fps, scpDelaySec);
+  const { opacity: posOpacity, translateY: posY } = slideIn(frame, fps, posDelaySec);
+
   return (
+    // Layered: dim overlay first, then cards on top
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
+      {/* LEFT — No Proof of Work */}
+      <div
+        style={{
+          position: "absolute",
+          left: space.section,
+          top: "50%",
+          transform: "translateY(-50%)",
+        }}
+      >
+        <GlassPanel
+          padding="32px 48px"
+          borderColor={`${colors.negative}18`}
+          style={{
+            opacity: powOpacity,
+            transform: `translateY(${powY}px)`,
+            ...layout.centerColumn,
+            gap: space.sm,
+            minWidth: 320,
+          }}
+        >
+          <div style={{ ...text.codeMD, color: colors.negative, letterSpacing: 1 }}>
+            ✗
+          </div>
+          <div style={{ ...text.overlineSM, color: colors.negative }}>
+            PROOF OF WORK
+          </div>
+          <div style={{ ...text.h2, color: colors.negative, textAlign: "center" }}>
+            No PoW
+          </div>
+        </GlassPanel>
+      </div>
+
+      {/* CENTER — SCP */}
+      <div
+        style={{
+          position: "absolute",
+          left: "50%",
+          top: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        <GlassPanel
+          padding="40px 56px"
+          borderColor={colors.borderAccent}
+          glow={shadows.accent}
+          style={{
+            opacity: scpOpacity,
+            transform: `translateY(${scpY}px)`,
+            ...layout.centerColumn,
+            gap: space.sm,
+            minWidth: 360,
+          }}
+        >
+          <div style={{ ...text.overlineSM, color: colors.gold }}>
+            CONSENSUS
+          </div>
+          <div style={{ ...text.h1, textAlign: "center" }}>
+            Stellar Consensus Protocol
+          </div>
+          <div style={{ ...text.codeMD, color: colors.gold, textAlign: "center" }}>
+            SCP
+          </div>
+        </GlassPanel>
+      </div>
+
+      {/* RIGHT — No Proof of Stake */}
       <div
         style={{
           position: "absolute",
           right: space.section,
           top: "50%",
           transform: "translateY(-50%)",
-          display: "flex",
-          flexDirection: "column",
-          gap: space.lg,
-          alignItems: "center",
         }}
       >
-        {consensusCards.map((card, i) => {
-          const delaySec = card.atSec - SCENE_44_START;
-          const { opacity, translateY } = slideIn(frame, fps, delaySec);
-
-          return (
-            <GlassPanel
-              key={card.label}
-              padding="32px 48px"
-              borderColor={card.color === colors.gold ? colors.borderAccent : `${card.color}18`}
-              style={{
-                opacity,
-                transform: `translateY(${translateY}px)`,
-                ...layout.centerColumn,
-                gap: space.sm,
-                minWidth: 380,
-              }}
-            >
-              {card.label === "SCP" ? (
-                <>
-                  <div style={{ ...text.overlineSM, color: colors.gold }}>
-                    CONSENSUS
-                  </div>
-                  <div style={{ ...text.h1, textAlign: "center" }}>
-                    Stellar Consensus Protocol
-                  </div>
-                  <div style={{ ...text.codeMD, color: colors.gold, textAlign: "center" }}>
-                    SCP
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div style={{ ...text.codeMD, color: card.color, letterSpacing: 1 }}>
-                    ✗
-                  </div>
-                  <div style={{ ...text.h2, color: card.color, textAlign: "center" }}>
-                    {card.label}
-                  </div>
-                </>
-              )}
-            </GlassPanel>
-          );
-        })}
+        <GlassPanel
+          padding="32px 48px"
+          borderColor={`${colors.negative}18`}
+          style={{
+            opacity: posOpacity,
+            transform: `translateY(${posY}px)`,
+            ...layout.centerColumn,
+            gap: space.sm,
+            minWidth: 320,
+          }}
+        >
+          <div style={{ ...text.codeMD, color: colors.negative, letterSpacing: 1 }}>
+            ✗
+          </div>
+          <div style={{ ...text.overlineSM, color: colors.negative }}>
+            PROOF OF STAKE
+          </div>
+          <div style={{ ...text.h2, color: colors.negative, textAlign: "center" }}>
+            No PoS
+          </div>
+        </GlassPanel>
       </div>
     </AbsoluteFill>
   );
 };
 
 // ── Scene 4.5: David Mazieres (183.50s to 195.83s) — VIDEO+OVERLAY ──
+// Task #12: ScientistCard with photo on RIGHT, FBA label on LEFT at 186.90s
+const SCENE_45_START = 183.50;
+const FBA_APPEAR_SEC = 186.90;
+
 const DavidMazieres: React.FC = () => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+
+  const fbaDelaySec = FBA_APPEAR_SEC - SCENE_45_START; // 3.40s
+  const fbaOpacity = fadeIn(frame, fps, fbaDelaySec);
+  const fbaY = interpolate(
+    frame,
+    [fbaDelaySec * fps, fbaDelaySec * fps + 15],
+    [20, 0],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
-      <AbsoluteFill
+      {/* RIGHT — David Mazières ScientistCard with photo */}
+      <div
         style={{
-          justifyContent: "flex-end",
-          alignItems: "center",
-          paddingBottom: space.section,
+          position: "absolute",
+          right: space.section,
+          top: "50%",
+          transform: "translateY(-50%)",
         }}
       >
         <ScientistCard
-          name="David Mazieres"
-          institution="Stanford University"
-          caption="Creator of SCP — Federated Byzantine Agreement"
+          name="David Mazières"
+          institution="SCP CREATOR"
+          caption="Federated Byzantine Agreement inventor"
+          photo="david-mazieres.jpg"
           delay={0.3}
         />
-      </AbsoluteFill>
+      </div>
+
+      {/* LEFT — Federated Byzantine Agreement label/badge at f5607 (186.90s) */}
+      <div
+        style={{
+          position: "absolute",
+          left: space.section,
+          top: "50%",
+          transform: "translateY(-50%)",
+          opacity: fbaOpacity,
+          // translateY applied via outer wrapper
+        }}
+      >
+        <div style={{ transform: `translateY(${fbaY}px)` }}>
+          <GlassPanel
+            padding="32px 48px"
+            borderColor={colors.borderAccent}
+            glow={shadows.accent}
+            style={{
+              ...layout.centerColumn,
+              gap: space.lg,
+              maxWidth: 420,
+            }}
+          >
+            <div style={{ ...text.overlineSM, color: colors.gold }}>
+              CONSENSUS MODEL
+            </div>
+            <div style={{ ...text.h2, textAlign: "center", lineHeight: 1.4 }}>
+              Federated Byzantine Agreement
+            </div>
+            <div
+              style={{
+                ...text.codeMD,
+                color: colors.gold,
+                letterSpacing: 2,
+              }}
+            >
+              FBA
+            </div>
+            <div
+              style={{
+                ...text.bodySM,
+                textAlign: "center",
+                lineHeight: 1.7,
+                color: colors.textSecondary,
+                maxWidth: 340,
+              }}
+            >
+              Decentralized consensus without
+              <br />
+              global agreement on participants
+            </div>
+          </GlassPanel>
+        </div>
+      </div>
     </AbsoluteFill>
   );
 };
 
-// ── Scene 4.6: Quorum Slices (195.83s to 200.93s) — VIDEO+OVERLAY ──
+// ── Scene 4.6: Quorum Slices (190.30s to 200.93s) — ANIMATION FULL ──
+// Task #13: Solid background (no video), starts at rel(190.30)
 const QuorumSlices: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -437,7 +625,8 @@ const QuorumSlices: React.FC = () => {
   });
 
   return (
-    <AbsoluteFill style={layout.dimOverlay(0.55)}>
+    // ANIMATION FULL — solid background, no video
+    <AbsoluteFill style={{ backgroundColor: colors.bgPrimary }}>
       <div
         style={{
           position: "absolute",
@@ -509,100 +698,210 @@ const QuorumSlices: React.FC = () => {
   );
 };
 
-// ── Scene 4.7: Trilemma (200.93s to 208.4s) — VIDEO+OVERLAY ──
+// ── Scene 4.7: Trilemma — SVG equilateral triangle (200.93s to 208.4s) — ANIMATION FULL ──
+// Task #14: Triangle with Scalability (top), Decentralization (bottom-left), Security (bottom-right)
 const Trilemma: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const { opacity, translateY } = slideIn(frame, fps, 0.3);
+  // Vertices animate in sequentially
+  const vertex0Prog = spring({
+    frame: Math.max(0, frame - Math.round(0.4 * fps)),
+    fps,
+    config: { damping: 18, mass: 0.8, stiffness: 80 },
+  });
+  const vertex1Prog = spring({
+    frame: Math.max(0, frame - Math.round(1.1 * fps)),
+    fps,
+    config: { damping: 18, mass: 0.8, stiffness: 80 },
+  });
+  const vertex2Prog = spring({
+    frame: Math.max(0, frame - Math.round(1.8 * fps)),
+    fps,
+    config: { damping: 18, mass: 0.8, stiffness: 80 },
+  });
+  const edgesProg = spring({
+    frame: Math.max(0, frame - Math.round(0.8 * fps)),
+    fps,
+    config: { damping: 22, mass: 1.0, stiffness: 50 },
+  });
 
-  const pillars = [
-    { label: "Decentralization", color: colors.gold, delay: 0.6 },
-    { label: "Security", color: colors.info, delay: 1.2 },
-    { label: "Scalability", color: colors.positive, delay: 1.8 },
+  // Triangle geometry — equilateral, centered in a 520x480 viewBox
+  const cx = 260;
+  const cy = 230;
+  const R = 185; // circumradius
+  // Top vertex (Scalability), bottom-left (Decentralization), bottom-right (Security)
+  const vTop = { x: cx, y: cy - R };
+  const vBL = { x: cx - R * Math.sin(Math.PI / 3), y: cy + R * 0.5 };
+  const vBR = { x: cx + R * Math.sin(Math.PI / 3), y: cy + R * 0.5 };
+
+  const triPath = `M ${vTop.x} ${vTop.y} L ${vBL.x} ${vBL.y} L ${vBR.x} ${vBR.y} Z`;
+  const perimeter = R * 3 * Math.sqrt(3); // approx
+
+  const labelStyle = (prog: number, xOffset: number, yOffset: number) => ({
+    opacity: prog,
+    transform: `translate(${xOffset * (1 - prog)}px, ${yOffset * (1 - prog)}px)`,
+  });
+
+  const vertices = [
+    {
+      prog: vertex0Prog,
+      x: vTop.x,
+      y: vTop.y,
+      label: "Scalability",
+      color: colors.gold,
+      labelAnchor: "middle" as const,
+      labelDy: -24,
+      labelDx: 0,
+      entryX: 0,
+      entryY: -30,
+    },
+    {
+      prog: vertex1Prog,
+      x: vBL.x,
+      y: vBL.y,
+      label: "Decentralization",
+      color: colors.info,
+      labelAnchor: "end" as const,
+      labelDy: 18,
+      labelDx: -20,
+      entryX: -30,
+      entryY: 20,
+    },
+    {
+      prog: vertex2Prog,
+      x: vBR.x,
+      y: vBR.y,
+      label: "Security",
+      color: colors.positive,
+      labelAnchor: "start" as const,
+      labelDy: 18,
+      labelDx: 20,
+      entryX: 30,
+      entryY: 20,
+    },
   ];
 
   return (
-    <AbsoluteFill style={layout.dimOverlay(0.55)}>
-      <div
-        style={{
-          position: "absolute",
-          right: space.section,
-          top: "50%",
-          transform: "translateY(-50%)",
-        }}
-      >
-        <GlassPanel
-          padding="48px 56px"
-          borderColor={colors.borderAccent}
-          glow={shadows.accent}
+    // ANIMATION FULL — solid background
+    <AbsoluteFill style={{ backgroundColor: colors.bgPrimary }}>
+      <AbsoluteFill style={layout.centerColumn}>
+        {/* Title */}
+        <div
           style={{
-            opacity,
-            transform: `translateY(${translateY}px)`,
-            ...layout.centerColumn,
-            gap: space.xl,
-            width: 440,
+            opacity: fadeIn(frame, fps, 0.2),
+            ...text.overlineSM,
+            color: colors.gold,
+            marginBottom: space.xl,
           }}
         >
-          <div style={{ ...text.overlineSM, color: colors.gold }}>
-            BLOCKCHAIN TRILEMMA
-          </div>
-          <div style={{ ...text.h1, textAlign: "center" }}>
-            Stellar Achieves All Three
-          </div>
+          BLOCKCHAIN TRILEMMA
+        </div>
 
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: space.md,
-              width: "100%",
-            }}
-          >
-            {pillars.map((pillar) => {
-              const pillarOpacity = fadeIn(frame, fps, pillar.delay);
-              return (
-                <div
-                  key={pillar.label}
-                  style={{
-                    ...panel.base,
-                    padding: `${space.md}px ${space.xl}px`,
-                    borderRadius: radius.sm,
-                    border: `1px solid ${pillar.color}25`,
-                    opacity: pillarOpacity,
-                    display: "flex",
-                    alignItems: "center",
-                    gap: space.md,
-                  }}
+        {/* SVG Triangle */}
+        <svg
+          width={520}
+          height={480}
+          viewBox="0 0 520 480"
+          style={{ overflow: "visible" }}
+        >
+          {/* Triangle fill — subtle glow interior */}
+          <path
+            d={triPath}
+            fill={`${colors.gold}06`}
+            opacity={edgesProg}
+          />
+
+          {/* Triangle edges with animated dashoffset */}
+          <path
+            d={triPath}
+            fill="none"
+            stroke={`${colors.gold}40`}
+            strokeWidth={1.5}
+            strokeDasharray={perimeter}
+            strokeDashoffset={perimeter * (1 - edgesProg)}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          />
+
+          {/* Vertex dots and labels */}
+          {vertices.map((v, i) => {
+            const dotRadius = interpolate(v.prog, [0, 1], [0, 6]);
+            return (
+              <g key={i}>
+                {/* Glow ring */}
+                <circle
+                  cx={v.x}
+                  cy={v.y}
+                  r={interpolate(v.prog, [0, 1], [0, 14])}
+                  fill={`${v.color}18`}
+                  opacity={v.prog}
+                />
+                {/* Dot */}
+                <circle
+                  cx={v.x}
+                  cy={v.y}
+                  r={dotRadius}
+                  fill={v.color}
+                  opacity={v.prog}
+                />
+                {/* Label — rendered as foreignObject for design system fonts */}
+                <foreignObject
+                  x={v.x + v.labelDx - 140}
+                  y={v.y + v.labelDy - 20}
+                  width={280}
+                  height={48}
+                  style={{ overflow: "visible" }}
                 >
                   <div
                     style={{
-                      width: 4,
-                      height: 28,
-                      borderRadius: radius.xs,
-                      backgroundColor: pillar.color,
-                      boxShadow: `0 0 10px ${pillar.color}40`,
-                    }}
-                  />
-                  <span style={{ ...text.codeMD, color: pillar.color }}>
-                    {pillar.label}
-                  </span>
-                  <span
-                    style={{
-                      ...text.h2,
-                      color: pillar.color,
-                      marginLeft: "auto",
-                      lineHeight: 1,
+                      ...text.h3,
+                      color: v.color,
+                      textAlign: v.labelAnchor === "middle"
+                        ? "center"
+                        : v.labelAnchor === "end"
+                          ? "right"
+                          : "left",
+                      opacity: v.prog,
+                      transform: `translate(${v.entryX * (1 - v.prog)}px, ${v.entryY * (1 - v.prog)}px)`,
+                      whiteSpace: "nowrap",
                     }}
                   >
-                    ✓
-                  </span>
-                </div>
-              );
-            })}
-          </div>
-        </GlassPanel>
-      </div>
+                    {v.label}
+                  </div>
+                </foreignObject>
+              </g>
+            );
+          })}
+
+          {/* Center label */}
+          <foreignObject
+            x={cx - 130}
+            y={cy - 16}
+            width={260}
+            height={40}
+            style={{ overflow: "visible" }}
+          >
+            <div
+              style={{
+                opacity: interpolate(edgesProg, [0.6, 1], [0, 1], {
+                  extrapolateLeft: "clamp",
+                  extrapolateRight: "clamp",
+                }),
+                ...text.overlineSM,
+                color: colors.gold,
+                textAlign: "center",
+                transform: `scale(${interpolate(edgesProg, [0.6, 1], [0.8, 1], {
+                  extrapolateLeft: "clamp",
+                  extrapolateRight: "clamp",
+                })})`,
+              }}
+            >
+              STELLAR ACHIEVES ALL THREE
+            </div>
+          </foreignObject>
+        </svg>
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };
@@ -679,22 +978,22 @@ export const Episode4: React.FC = () => {
         <NoForks />
       </Sequence>
 
-      {/* Scene 4.4: Consensus cards (No PoW, No PoS, SCP) — 177.03s to 183.50s */}
+      {/* Scene 4.4: Consensus cards (PoW LEFT, SCP CENTER, PoS RIGHT) — 177.03s to 183.50s */}
       <Sequence from={rel(177.03)} durationInFrames={rel(183.50) - rel(177.03)}>
         <ConsensusCards />
       </Sequence>
 
-      {/* Scene 4.5: David Mazieres — 183.50s to 195.83s */}
+      {/* Scene 4.5: David Mazieres (ScientistCard RIGHT, FBA label LEFT) — 183.50s to 195.83s */}
       <Sequence from={rel(183.50)} durationInFrames={rel(195.83) - rel(183.50)}>
         <DavidMazieres />
       </Sequence>
 
-      {/* Scene 4.6: Quorum Slices — 195.83s to 200.93s */}
-      <Sequence from={rel(195.83)} durationInFrames={rel(200.93) - rel(195.83)}>
+      {/* Scene 4.6: Quorum Slices — ANIMATION FULL starting at 190.30s to 200.93s */}
+      <Sequence from={rel(190.30)} durationInFrames={rel(200.93) - rel(190.30)}>
         <QuorumSlices />
       </Sequence>
 
-      {/* Scene 4.7: Trilemma — 200.93s to 208.4s */}
+      {/* Scene 4.7: Trilemma SVG triangle — ANIMATION FULL — 200.93s to 208.4s */}
       <Sequence from={rel(200.93)} durationInFrames={rel(208.4) - rel(200.93)}>
         <Trilemma />
       </Sequence>

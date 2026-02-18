@@ -33,7 +33,6 @@ const transitions = [
   { episode: 3, title: "Transaction", subtitle: "Atomic Operations", atSec: 107.88 },
   { episode: 4, title: "Consensus", subtitle: "Stellar Consensus Protocol", atSec: 150 },
   { episode: 5, title: "Soroban", subtitle: "Smart Contracts in Rust", atSec: 211, durationSec: 2.5 },
-  { episode: 6, title: "Code", subtitle: "Flipper, Crypto & zk-Proofs", atSec: 242.3 },
 ];
 
 const scenes = [
