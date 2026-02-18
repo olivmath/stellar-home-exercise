@@ -161,3 +161,4 @@ const v = variants[variant]; // → { color, bg, border, glow, glowSoft }
 - Audio timing: `src/config/audioMarks.ts` (Whisper timestamps → frames)
 - Theme: `src/styles/theme.ts` (raw colors, fonts)
 - Design System: `src/styles/designSystem.ts` (presets, abstractions)
+

@@ -261,7 +261,7 @@ const TransactionFee: React.FC = () => {
 };
 
 // ── Scene 1.5: Miners vs Validators (VIDEO + OVERLAY) ──
-// Miners LEFT (appears first), Validators RIGHT (1s later)
+// Both on RIGHT — Miner at BOTTOM (appears first), Validator on TOP (1s later)
 const MinersVsValidators: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -285,27 +285,19 @@ const MinersVsValidators: React.FC = () => {
 
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
-      {/* LEFT — Miners */}
-      <div style={{ position: "absolute", left: space.section, top: "50%", transform: "translateY(-50%)" }}>
-        <div
-          style={{
-            ...panel.base,
-            padding: `${space.xxl}px ${space.xxl}px`,
-            opacity: minerOpacity,
-            transform: `translateY(${minerY}px)`,
-            ...cardStyle,
-          }}
-        >
-          <div style={{ ...text.overlineLG, color: colors.negative }}>
-            Miners
-          </div>
-          <div style={itemStyle}>High Energy Cost</div>
-          <div style={{ ...itemStyle, opacity: fadeIn(frame, fps, 0.8) }}>Inflation</div>
-        </div>
-      </div>
-
-      {/* RIGHT — Validators */}
-      <div style={{ position: "absolute", right: space.section, top: "50%", transform: "translateY(-50%)" }}>
+      {/* RIGHT column — stacked vertically */}
+      <div
+        style={{
+          position: "absolute",
+          right: space.section,
+          top: "50%",
+          transform: "translateY(-50%)",
+          display: "flex",
+          flexDirection: "column",
+          gap: space.xl,
+        }}
+      >
+        {/* TOP — Validators (appears second, 1s later) */}
         <div
           style={{
             ...panel.base,
@@ -320,6 +312,23 @@ const MinersVsValidators: React.FC = () => {
           </div>
           <div style={itemStyle}>Utility & Interoperability</div>
           <div style={{ ...itemStyle, opacity: fadeIn(frame, fps, 1.8) }}>Zero Inflation</div>
+        </div>
+
+        {/* BOTTOM — Miners (appears first) */}
+        <div
+          style={{
+            ...panel.base,
+            padding: `${space.xxl}px ${space.xxl}px`,
+            opacity: minerOpacity,
+            transform: `translateY(${minerY}px)`,
+            ...cardStyle,
+          }}
+        >
+          <div style={{ ...text.overlineLG, color: colors.negative }}>
+            Miners
+          </div>
+          <div style={itemStyle}>High Energy Cost</div>
+          <div style={{ ...itemStyle, opacity: fadeIn(frame, fps, 0.8) }}>Inflation</div>
         </div>
       </div>
     </AbsoluteFill>

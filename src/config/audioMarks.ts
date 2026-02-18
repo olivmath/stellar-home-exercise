@@ -41,8 +41,14 @@ export const episodes = {
   },
   ep5: {
     startSec: 212.1,
-    endSec: 275.28,
+    endSec: 243.30,
     startFrame: toFrame(212.1),
+    endFrame: toFrame(243.30),
+  },
+  ep6: {
+    startSec: 243.30,
+    endSec: 275.28,
+    startFrame: toFrame(243.30),
     endFrame: toFrame(275.28),
   },
   closing: {
@@ -333,6 +339,11 @@ export const sceneConfig = [
     id: "ep5" as const,
     from: episodes.ep5.startFrame,
     duration: episodes.ep5.endFrame - episodes.ep5.startFrame,
+  },
+  {
+    id: "ep6" as const,
+    from: episodes.ep6.startFrame,
+    duration: episodes.ep6.endFrame - episodes.ep6.startFrame,
   },
   {
     id: "closing" as const,

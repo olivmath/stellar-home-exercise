@@ -3,435 +3,334 @@ import {
   AbsoluteFill,
   useCurrentFrame,
   useVideoConfig,
-  spring,
   interpolate,
   Sequence,
 } from "remotion";
 import { colors } from "../styles/theme";
-import { text, space, shadows, radius, layout } from "../styles/designSystem";
 import { fadeIn, slideIn } from "../animations/springs";
-import { EpisodeTitle } from "../components/EpisodeTitle";
-import { ScientistCard } from "../components/ScientistCard";
-import { GlassPanel } from "../components/GlassPanel";
 import { Badge } from "../components/Badge";
 import { LowerThird } from "../components/LowerThird";
+import { GlassPanel } from "../components/GlassPanel";
+import { ScientistCard } from "../components/ScientistCard";
+import { text, space, layout, panel, shadows, radius } from "../styles/designSystem";
 import { episodes, toFrame } from "../config/audioMarks";
 
-// ── Timing: relative to episode start (212.1s) ──
-// ep5 narration: 212.1s → 275.28s
+// ── Timing: relative to ep5 start (212.1s) ──
 const EP = episodes.ep5.startSec;
 const rel = (sec: number) => toFrame(sec - EP);
 
-// Episode 5 — Soroban, WASM & zk-Proofs
-// ALL SHOTS ARE ANIMATION FULL — Solid bgPrimary throughout
+// ── Scene 5.1: Soroban Intro (212.1s to 226.36s) — VIDEO+OVERLAY ──
+const STACK_START = 218.53 - 212.1; // 6.43s into scene
+const GRAYDON_START = 222.53 - 212.1; // 10.43s into scene
+const CARDS_EXIT = 226.36 - 212.1; // 14.26s into scene
 
-// ── Stack Layer ─────────────────────────────────────────────────────
-const StackLayer: React.FC<{
-  label: string;
-  index: number;
-  accentColor: string;
-}> = ({ label, index, accentColor }) => {
+const SorobanIntro: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const delay = 0.6 + index * 0.6;
-  const drop = spring({
-    frame: frame - delay * fps,
-    fps,
-    config: { damping: 16, mass: 0.7, stiffness: 90 },
-  });
+  const { opacity: titleOpacity, translateY: titleY } = slideIn(frame, fps, 0.3);
+  const yearOpacity = fadeIn(frame, fps, 0.8);
 
-  const opacity = drop;
-  const translateY = (1 - drop) * -80;
-  const scale = interpolate(drop, [0, 1], [0.88, 1]);
+  const stackLayers = [
+    { label: "Soroban", color: colors.gold, delay: STACK_START },
+    { label: "WASM VM", color: colors.info, delay: STACK_START + 0.5 },
+    { label: "Rust", color: colors.positive, delay: STACK_START + 1.0 },
+  ];
+
+  const timeSec = frame / fps;
+  const exitProgress = interpolate(
+    frame,
+    [CARDS_EXIT * fps, (CARDS_EXIT + 0.5) * fps],
+    [0, 1],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
+  const exitOpacity = 1 - exitProgress;
+
+  const graydonOpacity = fadeIn(frame, fps, GRAYDON_START);
+  const graydonExitOpacity = timeSec >= CARDS_EXIT ? exitOpacity : 1;
 
   return (
-    <div
-      style={{
-        opacity,
-        transform: `translateY(${translateY}px) scale(${scale})`,
-        position: "relative" as const,
-        width: 420,
-      }}
-    >
-      <GlassPanel
-        padding={`${space.lg}px ${space.xxl}px`}
-        borderColor={colors.borderSubtle}
-        style={{ width: "100%" }}
+    <AbsoluteFill style={layout.dimOverlay(0.55)}>
+      <div
+        style={{
+          position: "absolute",
+          right: space.section,
+          top: "50%",
+          transform: "translateY(-50%)",
+          display: "flex",
+          flexDirection: "column",
+          gap: space.xl,
+          alignItems: "flex-end",
+          opacity: exitOpacity,
+        }}
       >
-        {/* Left accent bar */}
-        <div
+        <GlassPanel
+          padding="48px 56px"
+          borderColor={colors.borderAccent}
+          glow={shadows.accent}
           style={{
-            position: "absolute",
-            left: 0,
-            top: 0,
-            bottom: 0,
-            width: 3,
-            borderRadius: `${radius.xl}px 0 0 ${radius.xl}px`,
-            background: accentColor,
-            boxShadow: `0 0 12px ${accentColor}60`,
-          }}
-        />
-        <span
-          style={{
-            ...text.h2,
+            opacity: titleOpacity,
+            transform: `translateY(${titleY}px)`,
+            ...layout.centerColumn,
+            gap: space.md,
+            width: 420,
           }}
         >
-          {label}
-        </span>
-      </GlassPanel>
-    </div>
+          <div
+            style={{
+              ...text.displayMD,
+              color: colors.gold,
+              textShadow: `0 0 40px rgba(201, 168, 76, 0.3)`,
+            }}
+          >
+            Soroban
+          </div>
+          <div style={{ ...text.h2, color: colors.warmGrey, textAlign: "center" }}>
+            Smart Contract Platform
+          </div>
+          <div
+            style={{
+              opacity: yearOpacity,
+              ...text.displayLG,
+              color: colors.gold,
+              textShadow: `0 0 40px rgba(201, 168, 76, 0.4), 0 0 80px rgba(201, 168, 76, 0.15)`,
+              marginTop: space.sm,
+            }}
+          >
+            2024
+          </div>
+        </GlassPanel>
+
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            gap: space.sm,
+            width: 280,
+          }}
+        >
+          {stackLayers.map((layer, i) => {
+            const layerSlide = slideIn(frame, fps, layer.delay);
+            return (
+              <div
+                key={i}
+                style={{
+                  ...panel.base,
+                  padding: `${space.md}px ${space.lg}px`,
+                  borderRadius: radius.sm,
+                  display: "flex",
+                  alignItems: "center",
+                  gap: space.sm,
+                  opacity: layerSlide.opacity,
+                  transform: `translateY(${layerSlide.translateY}px)`,
+                }}
+              >
+                <div
+                  style={{
+                    width: 3,
+                    height: 24,
+                    borderRadius: radius.xs,
+                    backgroundColor: layer.color,
+                    boxShadow: `0 0 8px ${layer.color}40`,
+                  }}
+                />
+                <span style={{ ...text.codeSM, color: layer.color }}>
+                  {layer.label}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <div
+        style={{
+          position: "absolute",
+          left: space.section,
+          bottom: space.section + 40,
+          opacity: graydonOpacity * graydonExitOpacity,
+        }}
+      >
+        <ScientistCard
+          name="Graydon Hoare"
+          institution="RUST CREATOR"
+          caption="Shaped Soroban's architecture"
+          delay={0}
+        />
+      </div>
+    </AbsoluteFill>
   );
 };
 
-// ── TTL Concept ─────────────────────────────────────────────────────
-const TTLConcept: React.FC = () => {
+// ── Scene 5.2: Gas Model & TTL (226.48s to 243.30s) — VIDEO+OVERLAY ──
+const GasModelTTL: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const panelAppear = fadeIn(frame, fps, 0.3);
+  const { opacity: gasOpacity, translateY: gasY } = slideIn(frame, fps, 0.3);
 
-  // Progress bar depletes over ~10 seconds
-  const barProgress = interpolate(frame, [fps * 0.8, fps * 10], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
+  const ttlDelay = 5.62;
+  const { opacity: ttlOpacity, translateY: ttlY } = slideIn(frame, fps, ttlDelay);
 
-  // Color transition: success -> warning as TTL depletes
-  const warningMix = interpolate(barProgress, [0, 0.55, 1], [0, 0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const barColor = warningMix > 0.5 ? colors.negative : colors.positive;
-  const barGlow =
-    warningMix > 0.5 ? shadows.accent : shadows.accent;
+  const renewDelay = 11.04;
+  const archiveDelay = 12.5;
+  const renewOpacity = fadeIn(frame, fps, renewDelay);
+  const archiveOpacity = fadeIn(frame, fps, archiveDelay);
 
-  // Branch outcomes appear via spring
-  const branchReveal = spring({
-    frame: frame - fps * 11,
-    fps,
-    config: { damping: 18, mass: 0.6, stiffness: 80 },
-  });
+  const preventDelay = 16.26;
+  const preventOpacity = fadeIn(frame, fps, preventDelay);
+
+  const ttlBarProgress = interpolate(
+    frame,
+    [ttlDelay * fps + 15, (ttlDelay + 4) * fps],
+    [1, 0.1],
+    { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
+  );
 
   return (
-    <div
-      style={{
-        ...layout.centerColumn,
-        gap: space.xxl,
-        opacity: panelAppear,
-      }}
-    >
-      <GlassPanel
-        padding={`${space.xl}px ${space.xxl}px`}
-        borderColor={colors.borderSubtle}
-        glow={barGlow}
+    <AbsoluteFill style={layout.dimOverlay(0.55)}>
+      <div
+        style={{
+          position: "absolute",
+          right: space.section,
+          top: "50%",
+          transform: "translateY(-50%)",
+          display: "flex",
+          flexDirection: "column",
+          gap: space.xl,
+          width: 500,
+        }}
       >
-        <div
+        <GlassPanel
+          padding="40px 44px"
+          borderColor={colors.borderMedium}
           style={{
+            opacity: gasOpacity,
+            transform: `translateY(${gasY}px)`,
             ...layout.centerColumn,
-            gap: space.md,
+            gap: space.lg,
           }}
         >
-          <span
-            style={{
-              ...text.overlineSM,
-              color: colors.warmGrey,
-              letterSpacing: 3,
-            }}
-          >
-            Data Stored
-          </span>
+          <div style={{ ...text.overlineSM, color: colors.gold }}>GAS MODEL</div>
+          <div style={{ display: "flex", gap: space.lg, justifyContent: "center", width: "100%" }}>
+            <div
+              style={{
+                ...panel.surface,
+                padding: `${space.md}px ${space.xl}px`,
+                borderRadius: radius.md,
+                ...layout.centerColumn,
+                gap: space.sm,
+              }}
+            >
+              <span style={{ ...text.codeMD, color: colors.info }}>CPU</span>
+              <span style={{ ...text.bodySM, color: colors.warmGrey }}>Compute</span>
+            </div>
+            <div style={{ ...text.h1, color: colors.warmGrey, alignSelf: "center" }}>+</div>
+            <div
+              style={{
+                ...panel.surface,
+                padding: `${space.md}px ${space.xl}px`,
+                borderRadius: radius.md,
+                ...layout.centerColumn,
+                gap: space.sm,
+              }}
+            >
+              <span style={{ ...text.codeMD, color: colors.gold }}>Storage</span>
+              <span style={{ ...text.bodySM, color: colors.warmGrey }}>State</span>
+            </div>
+          </div>
+        </GlassPanel>
 
-          {/* Progress bar track */}
+        <GlassPanel
+          padding="40px 44px"
+          borderColor={`${colors.gold}20`}
+          glow={shadows.accent}
+          style={{
+            opacity: ttlOpacity,
+            transform: `translateY(${ttlY}px)`,
+            ...layout.centerColumn,
+            gap: space.lg,
+          }}
+        >
+          <div style={{ ...text.overlineSM, color: colors.gold }}>INNOVATION</div>
+          <div style={{ ...text.h1, color: colors.gold }}>TTL — Time To Live</div>
+
           <div
             style={{
-              width: 300,
-              height: 6,
-              borderRadius: radius.xs,
-              background: `${colors.textDim}30`,
+              width: "100%",
+              height: 8,
+              backgroundColor: "rgba(255,255,255,0.06)",
+              borderRadius: radius.pill,
               overflow: "hidden",
             }}
           >
             <div
               style={{
-                width: `${(1 - barProgress) * 100}%`,
+                width: `${ttlBarProgress * 100}%`,
                 height: "100%",
-                borderRadius: radius.xs,
-                background: barColor,
-                boxShadow: `0 0 8px ${barColor}80`,
-                transition: "background 0.3s ease",
+                background: `linear-gradient(90deg, ${colors.gold}, ${colors.positive})`,
+                borderRadius: radius.pill,
               }}
             />
           </div>
 
-          <span
-            style={{
-              ...text.codeSM,
-              color: colors.textDim,
-            }}
-          >
-            TTL: {Math.max(0, Math.round((1 - barProgress) * 100))}%
-          </span>
-        </div>
-      </GlassPanel>
-
-      {/* Branch outcomes */}
-      <div
-        style={{
-          display: "flex",
-          gap: space.section,
-          opacity: branchReveal,
-          transform: `translateY(${(1 - branchReveal) * 30}px)`,
-        }}
-      >
-        {/* Renew path */}
-        <div
-          style={{
-            ...layout.centerColumn,
-            gap: space.md,
-          }}
-        >
-          <div
-            style={{
-              width: 1,
-              height: 36,
-              background: `${colors.positive}40`,
-            }}
-          />
-          <GlassPanel
-            padding={`${space.md}px ${space.lg}px`}
-            borderColor={`${colors.positive}30`}
-            glow={shadows.accent}
-          >
-            <span
-              style={{
-                ...text.bodyMD,
-                color: colors.positive,
-              }}
-            >
-              Renew Rent &rarr; Keep Alive
-            </span>
-          </GlassPanel>
-        </div>
-
-        {/* Archive path */}
-        <div
-          style={{
-            ...layout.centerColumn,
-            gap: space.md,
-          }}
-        >
-          <div
-            style={{
-              width: 1,
-              height: 36,
-              background: `${colors.negative}40`,
-            }}
-          />
-          <GlassPanel
-            padding={`${space.md}px ${space.lg}px`}
-            borderColor={`${colors.negative}30`}
-            glow={shadows.accent}
-          >
-            <span
-              style={{
-                ...text.bodyMD,
-                color: colors.negative,
-              }}
-            >
-              No Rent &rarr; Archived
-            </span>
-          </GlassPanel>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// ── Crypto Primitives Burst ─────────────────────────────────────────
-const CryptoBurst: React.FC = () => {
-  const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-
-  const badges = [
-    { label: "zk-SNARK Verify", variant: "accent" as const, angle: 0 },
-    { label: "Passkeys", variant: "info" as const, angle: 1 },
-    { label: "Native L1 Crypto", variant: "positive" as const, angle: 2 },
-  ];
-
-  return (
-    <div
-      style={{
-        position: "relative",
-        ...layout.centerColumn,
-        gap: space.lg,
-      }}
-    >
-      {/* Section label */}
-      <div
-        style={{
-          ...text.overlineSM,
-          color: colors.warmGrey,
-          letterSpacing: 4,
-          opacity: fadeIn(frame, fps, 0.2),
-        }}
-      >
-        Crypto Primitives
-      </div>
-
-      {/* Fan-out badges with staggered 0.5s */}
-      <div
-        style={{
-          position: "relative",
-          width: 600,
-          height: 200,
-          ...layout.centerRow,
-        }}
-      >
-        {badges.map((b, i) => {
-          const delay = 0.5 + i * 0.5;
-          const fanProgress = spring({
-            frame: frame - delay * fps,
-            fps,
-            config: { damping: 14, mass: 0.6, stiffness: 80 },
-          });
-
-          // Fan from center outward
-          const offsetX = (i - 1) * 200 * fanProgress;
-          const offsetY = Math.abs(i - 1) * 20 * fanProgress;
-
-          return (
+          <div style={{ display: "flex", gap: space.md, width: "100%" }}>
             <div
-              key={b.label}
               style={{
-                position: "absolute",
-                transform: `translate(${offsetX}px, ${offsetY}px)`,
+                flex: 1,
+                ...panel.surface,
+                padding: `${space.md}px ${space.md}px`,
+                borderRadius: radius.md,
+                textAlign: "center",
+                opacity: renewOpacity,
+                borderLeft: `3px solid ${colors.positive}`,
               }}
             >
-              <Badge
-                label={b.label}
-                delay={delay}
-                variant={b.variant}
-                size="lg"
-              />
+              <div style={{ ...text.codeSM, color: colors.positive }}>Renew Rent</div>
+              <div style={{ ...text.bodySM, color: colors.warmGrey, marginTop: space.xs }}>Keep Alive</div>
             </div>
-          );
-        })}
+            <div
+              style={{
+                flex: 1,
+                ...panel.surface,
+                padding: `${space.md}px ${space.md}px`,
+                borderRadius: radius.md,
+                textAlign: "center",
+                opacity: archiveOpacity,
+                borderLeft: `3px solid ${colors.negative}`,
+              }}
+            >
+              <div style={{ ...text.codeSM, color: colors.negative }}>No Rent</div>
+              <div style={{ ...text.bodySM, color: colors.warmGrey, marginTop: space.xs }}>Archived</div>
+            </div>
+          </div>
+
+          <div style={{ opacity: preventOpacity }}>
+            <Badge label="Prevents indefinite growth" delay={0} variant="positive" size="md" />
+          </div>
+        </GlassPanel>
       </div>
-    </div>
+    </AbsoluteFill>
   );
 };
 
-// ── Main Scene ──────────────────────────────────────────────────────
+// ── Main Episode 5 — Soroban + Gas/TTL only ──
 export const Episode5: React.FC = () => {
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: colors.bgPrimary,
-        ...text.bodyMD,
-      }}
-    >
-      {/* ── Section 1: SorobanIntro — Title + Stack Architecture (212.1s to 225.82s) ── */}
-      <Sequence from={0} durationInFrames={rel(225.82)}>
-        <AbsoluteFill
-          style={{
-            ...layout.centerColumn,
-            gap: space.xxl,
-            padding: space.section,
-          }}
-        >
-          <EpisodeTitle number="05" title="Soroban, WASM & zk-Proofs" />
-
-          {/* Vertical stack */}
-          <div
-            style={{
-              ...layout.centerColumn,
-              gap: space.md,
-              marginTop: space.lg,
-            }}
-          >
-            <StackLayer label="Soroban" index={0} accentColor={colors.gold} />
-            <StackLayer label="WASM VM" index={1} accentColor={colors.info} />
-            <StackLayer label="Rust" index={2} accentColor={colors.positive} />
-          </div>
-        </AbsoluteFill>
+    <AbsoluteFill>
+      {/* Scene 5.1: Soroban Intro + Graydon — 212.1s to 226.36s */}
+      <Sequence from={rel(212.1)} durationInFrames={rel(226.36) - rel(212.1)}>
+        <SorobanIntro />
       </Sequence>
 
-      {/* ── Section 2: StateModel — Scientist Card + TTL (225.82s to 247.58s) ── */}
-      <Sequence from={rel(225.82)} durationInFrames={rel(247.58) - rel(225.82)}>
-        <AbsoluteFill
-          style={{
-            ...layout.centerColumn,
-            gap: space.xl,
-            padding: space.section,
-          }}
-        >
-          <div
-            style={{
-              ...text.overlineSM,
-              color: colors.warmGrey,
-              letterSpacing: 4,
-              opacity: 0.7,
-            }}
-          >
-            State Rent & TTL Model
-          </div>
-
-          <ScientistCard
-            name="Graydon Hoare"
-            institution="Rust Creator"
-            caption="Shaped Soroban's architecture philosophy"
-            delay={0.5}
-          />
-
-          <TTLConcept />
-        </AbsoluteFill>
+      {/* Scene 5.2: Gas Model & TTL (RIGHT side) — 226.48s to 243.30s */}
+      <Sequence from={rel(226.48)} durationInFrames={rel(243.30) - rel(226.48)}>
+        <GasModelTTL />
       </Sequence>
 
-      {/* ── Section 3: FlipperExample (247.58s to 256.9s) ── */}
-      <Sequence from={rel(247.58)} durationInFrames={rel(256.9) - rel(247.58)}>
-        <AbsoluteFill
-          style={{
-            ...layout.centerColumn,
-            gap: space.xl,
-            padding: space.section,
-          }}
-        >
-          <div
-            style={{
-              ...text.overlineSM,
-              color: colors.warmGrey,
-              letterSpacing: 4,
-              opacity: 0.7,
-            }}
-          >
-            Architectural Influence
-          </div>
-
-          <ScientistCard
-            name="Graydon Hoare"
-            institution="Rust Creator"
-            caption="Shaped Soroban's architecture philosophy"
-            delay={0.5}
-          />
-        </AbsoluteFill>
-      </Sequence>
-
-      {/* ── Section 4: CryptoPrimitives (256.9s to 275.28s) ── */}
-      <Sequence from={rel(256.9)} durationInFrames={rel(275.28) - rel(256.9)}>
-        <AbsoluteFill
-          style={{
-            ...layout.centerColumn,
-            padding: space.section,
-          }}
-        >
-          <CryptoBurst />
-        </AbsoluteFill>
-      </Sequence>
-
-      {/* Lower-third across full episode */}
-      <Sequence from={0} durationInFrames={rel(275.28)}>
-        <LowerThird title="Soroban, WASM & zk-Proofs" subtitle="Episode 05" delay={0} />
+      {/* Lower-third across episode */}
+      <Sequence from={rel(213.0)} durationInFrames={rel(243.30) - rel(213.0)}>
+        <LowerThird title="Soroban & Smart Contracts" subtitle="Episode 05" delay={0} />
       </Sequence>
     </AbsoluteFill>
   );

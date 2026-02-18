@@ -11,6 +11,7 @@ import { Episode2 } from "./scenes/Episode2";
 import { Episode3 } from "./scenes/Episode3";
 import { Episode4 } from "./scenes/Episode4";
 import { Episode5 } from "./scenes/Episode5";
+import { Episode6 } from "./scenes/Episode6";
 import { Closing } from "./scenes/Closing";
 import { colors } from "./styles/theme";
 import { episodes, toFrame } from "./config/audioMarks";
@@ -32,6 +33,7 @@ const transitions = [
   { episode: 3, title: "Transaction", subtitle: "Atomic Operations", atSec: 107.88 },
   { episode: 4, title: "Consensus", subtitle: "Stellar Consensus Protocol", atSec: 150 },
   { episode: 5, title: "Soroban", subtitle: "Smart Contracts in Rust", atSec: 211, durationSec: 2.5 },
+  { episode: 6, title: "Code", subtitle: "Flipper, Crypto & zk-Proofs", atSec: 242.3 },
 ];
 
 const scenes = [
@@ -55,30 +57,36 @@ const scenes = [
     from: episodes.ep2.startFrame,
     duration: episodes.ep2.endFrame - episodes.ep2.startFrame,
   },
-  // {
-  //   id: "ep3",
-  //   component: Episode3,
-  //   from: episodes.ep3.startFrame,
-  //   duration: episodes.ep3.endFrame - episodes.ep3.startFrame,
-  // },
-  // {
-  //   id: "ep4",
-  //   component: Episode4,
-  //   from: episodes.ep4.startFrame,
-  //   duration: episodes.ep4.endFrame - episodes.ep4.startFrame,
-  // },
-  // {
-  //   id: "ep5",
-  //   component: Episode5,
-  //   from: episodes.ep5.startFrame,
-  //   duration: episodes.ep5.endFrame - episodes.ep5.startFrame,
-  // },
-  // {
-  //   id: "closing",
-  //   component: Closing,
-  //   from: episodes.closing.startFrame,
-  //   duration: episodes.closing.endFrame - episodes.closing.startFrame,
-  // },
+  {
+    id: "ep3",
+    component: Episode3,
+    from: episodes.ep3.startFrame,
+    duration: episodes.ep3.endFrame - episodes.ep3.startFrame,
+  },
+  {
+    id: "ep4",
+    component: Episode4,
+    from: episodes.ep4.startFrame,
+    duration: episodes.ep4.endFrame - episodes.ep4.startFrame,
+  },
+  {
+    id: "ep5",
+    component: Episode5,
+    from: episodes.ep5.startFrame,
+    duration: episodes.ep5.endFrame - episodes.ep5.startFrame,
+  },
+  {
+    id: "ep6",
+    component: Episode6,
+    from: episodes.ep6.startFrame,
+    duration: episodes.ep6.endFrame - episodes.ep6.startFrame,
+  },
+  {
+    id: "closing",
+    component: Closing,
+    from: episodes.closing.startFrame,
+    duration: episodes.closing.endFrame - episodes.closing.startFrame,
+  },
 ];
 
 export const StellarSpeedRun: React.FC = () => {
