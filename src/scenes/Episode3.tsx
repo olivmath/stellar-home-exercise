@@ -498,14 +498,9 @@ const OperationTypes: React.FC = () => {
   );
 };
 
-// ── Scene 3.5: Closing question — overlay from 144.03s, words at 149.03s (f4471) ──
-// "But who decides this is valid?"
-// Sequence starts at 144.03s so dim overlay covers gap after OperationTypes ends.
-// Words appear starting at 149.03s (5s into the Sequence) and come in quickly.
-const CLOSING_SEQUENCE_START = 144.03; // when Sequence begins (= when OperationTypes ends)
-const CLOSING_WORDS_DELAY = 149.03 - CLOSING_SEQUENCE_START; // 5.0s before words appear
-
-const closingWords = [
+// ── Scene 3.5b: Closing question — solid black + phrase (148.90s | f4467) ──
+// "But who decides this is valid?" — words appear immediately, synchronized with black bg
+const ep3ClosingWords = [
   { text: "But",     delaySec: 0.00 },
   { text: "who",     delaySec: 0.15 },
   { text: "decides", delaySec: 0.35 },
@@ -519,7 +514,7 @@ const ClosingQuestion: React.FC = () => {
   const { fps } = useVideoConfig();
 
   return (
-    <AbsoluteFill style={layout.dimOverlay(0.6)}>
+    <AbsoluteFill style={{ backgroundColor: colors.bgPrimary }}>
       <AbsoluteFill style={layout.centerColumn}>
         <div
           style={{
@@ -530,8 +525,8 @@ const ClosingQuestion: React.FC = () => {
             maxWidth: 900,
           }}
         >
-          {closingWords.map((word, i) => {
-            const wordFrame = Math.round((CLOSING_WORDS_DELAY + word.delaySec) * fps);
+          {ep3ClosingWords.map((word, i) => {
+            const wordFrame = Math.round(word.delaySec * fps);
             const visible = frame >= wordFrame;
             const isHighlighted = word.text === "decides" || word.text === "valid?";
             return (
@@ -570,18 +565,18 @@ export const Episode3: React.FC = () => {
         <Atomicity />
       </Sequence>
 
-      {/* Scene 3.4: Operation Types — 134.67s to 144.03s (02:24.03 | f4321) */}
-      <Sequence from={rel(134.67)} durationInFrames={rel(144.03) - rel(134.67)}>
+      {/* Scene 3.4: Operation Types — 134.67s to 143.90s */}
+      <Sequence from={rel(134.67)} durationInFrames={rel(143.90) - rel(134.67)}>
         <OperationTypes />
       </Sequence>
 
-      {/* Scene 3.5: Closing question — 144.03s to 153.51s (overlay from OperationTypes end, words at 149.03s) */}
-      <Sequence from={rel(144.03)} durationInFrames={rel(153.51) - rel(144.03)}>
+      {/* Scene 3.5b: Black screen + phrase — 148.90s to 151.43s (02:28.90 | f4467 → 02:31.43 | f4543) */}
+      <Sequence from={rel(148.90)} durationInFrames={rel(151.43) - rel(148.90)}>
         <ClosingQuestion />
       </Sequence>
 
       {/* Lower-third across full episode */}
-      <Sequence from={rel(111.27)} durationInFrames={rel(153.51) - rel(111.27)}>
+      <Sequence from={rel(111.27)} durationInFrames={rel(148.90) - rel(111.27)}>
         <LowerThird title="Transactions & Operations" subtitle="Episode 03" delay={0} />
       </Sequence>
     </AbsoluteFill>

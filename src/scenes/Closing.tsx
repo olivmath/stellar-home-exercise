@@ -54,11 +54,6 @@ const ReviewChecklist: React.FC = () => {
     { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
   );
 
-  // Summary after checks
-  const summaryDelay = CHECKS_APPEAR_AT + 1.5;
-  const summaryAnim = slideIn(frame, fps, summaryDelay);
-  const summaryGlow = fadeIn(frame, fps, summaryDelay + 0.3);
-
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
       <div
@@ -119,9 +114,9 @@ const ReviewChecklist: React.FC = () => {
                     height: 24,
                     borderRadius: radius.xs,
                     background: isChecked
-                      ? colors.gold
+                      ? colors.positive
                       : "transparent",
-                    border: `2px solid ${isChecked ? colors.gold : colors.textDim}`,
+                    border: `2px solid ${isChecked ? colors.positive : colors.textDim}`,
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "center",
@@ -181,55 +176,6 @@ const ReviewChecklist: React.FC = () => {
             );
           })}
 
-          {/* Summary badge — appears after checks */}
-          <div
-            style={{
-              marginTop: space.md,
-              opacity: summaryAnim.opacity,
-              transform: `translateY(${summaryAnim.translateY}px)`,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: space.md,
-              width: "100%",
-            }}
-          >
-            <div
-              style={{
-                width: "80%",
-                height: 1,
-                background: `linear-gradient(90deg, transparent, ${colors.gold}40, transparent)`,
-              }}
-            />
-
-            <div
-              style={{
-                ...panel.accent,
-                padding: `${space.md}px ${space.xl}px`,
-                borderRadius: radius.md,
-                border: `1px solid ${colors.gold}25`,
-                boxShadow: `0 0 24px ${colors.gold}10, ${shadows.accent}`,
-                textAlign: "center",
-                opacity: summaryGlow,
-              }}
-            >
-              <div style={{ ...text.overlineSM, color: colors.warmGrey, marginBottom: space.xs }}>
-                STELLAR IS A
-              </div>
-              <div style={{ ...text.h1, color: colors.gold }}>
-                Global Settlement Protocol
-              </div>
-              <div
-                style={{
-                  ...text.bodySM,
-                  color: colors.textSecondary,
-                  marginTop: space.xs,
-                }}
-              >
-                Accessible &middot; Programmable &middot; Privacy-enabled
-              </div>
-            </div>
-          </div>
         </GlassPanel>
       </div>
     </AbsoluteFill>
