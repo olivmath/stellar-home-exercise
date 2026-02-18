@@ -356,12 +356,12 @@ export const Closing: React.FC = () => {
         </AbsoluteFill>
       </Sequence>
 
-      {/* Phase 2: Certificate + Final Statement — 289.0s to 295.04s */}
+      {/* Phase 2: Certificate + Final Statement — 289.0s to 295.04s
       <Sequence from={rel(288.0)} durationInFrames={rel(295.04) - rel(288.0)}>
         <AbsoluteFill style={{ opacity: certOpacity }}>
           <Certificate />
         </AbsoluteFill>
-      </Sequence>
+      </Sequence> */}
 
       {/* Final statement overlaid on certificate */}
       <Sequence from={rel(293.0)} durationInFrames={rel(295.04) - rel(293.0)}>

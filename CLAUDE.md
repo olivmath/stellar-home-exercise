@@ -162,3 +162,60 @@ const v = variants[variant]; // → { color, bg, border, glow, glowSoft }
 - Theme: `src/styles/theme.ts` (raw colors, fonts)
 - Design System: `src/styles/designSystem.ts` (presets, abstractions)
 
+
+geral:
+
+- tudo deve sempre estar em ingles
+- crie um card para pessoa com uma foto em circulo o nome dela embaixo e o papel dela embaixo
+- depois do video deve mostrar o certificado
+
+ep1
+
+- na parte dos bytes, Organize a lista na esquerda para ser três linhas e quatro colunas e na direita mesma coisa 
+
+
+ep2
+
+- no encoding remova o (s...) e (g...)
+- na tela do sign e verifie as camadas tem q ser: meu video -> sombra -> sign+verifie
+
+
+ep3
+
+- deveria comecar o ciclo de vida das tx aqui 01:54.96 | f3449; o card deve ficar na diretita; 02:05.73 | f3772 momento de mostrar o settlement já devia ter sido mostrado para remover o card
+- a animacao da transacao deveria comecar aqui: 02:05.83 | f3775; mostre um card BEM maior com 100 circulos; nao vamos mostrar o check uma de cada vez mas todas de uma vez só no seguinet ttempo:
+    - mostrar a tx e 100 operations 02:05.83 | f3775
+    - mostrar 100 operations checked entao a tx checked tbm terminando em 02:05.83 | f3775
+    - mostrar 99 operations checked e um fail entao a tx falhando tbm terminando em 02:12.40
+- typos de operacoes comeca aqui: 02:12.90 | f3987
+    - payments type: 02:16.43 | f4093
+    - change trust: 02:18.76 | f4163
+    - invoke host function 02:20.90 | f4227
+- frase final: A transaction is the container. Operations are the intentions inside in the container.
+
+ep4
+
+- ledger lifecycle: 02:44.93 | f4948 deve mostrar o ultimo card já; deve mostrar o 2/3 tbm na animacao
+- mostrar o Pow na left e depois o Pos na right; o SCP no meio; coloque sombra desde o comeco desse momento: video -> sombra -> pow+pos+scp
+- depois de tirar o card anteriores mostre o david na direita e coloque a foto dele : /Users/olivmath/Documents/dev/stellar/public/images/scientists/david-mazieres.jpg e em 03:06.90 | f5607 mostrar o Federated Byzant Aggrement na esquerda;
+- depois comecando em 03:10.30 | f5709, deve mostrar animacao como essa da imagem /Users/olivmath/Documents/dev/stellar/Captura de Tela 2026-02-17 às 21.43.18.png; sem o video aqui.
+- depois volta pra video como esta em 03:10.30 | f5709
+- 03:21.19 | f6036 aqui a animacao deve ser um triangulo com as as palavras: descentralizacao na esquera, segurança na direita e escalabilidade no topo; teminando aqui 03:20
+
+
+ep5 
+
+- aqui 03:39.03 | f6571 os cards de Soroban, WASMVM e RUST precisam ser mais harmonicos estao de tamanhos estrnahos
+- coloque a imagem do grandon no card: /Users/olivmath/Documents/dev/stellar/public/images/scientists/grandon.png
+- quandoo a barra de progresso do time to live chegar no fim ela fica vermelha e aparecem os cards de norent; mas o card de renew rent deve aparecer desde o comeco da barra de progresso; essa animacao esta comecando cert no tempo mas tem q durar ate 04:03.09 | f7293
+- remova o transicao de "code"
+- o contrato deve ser escrito igaul aqui: /Users/olivmath/Documents/dev/stellar/docs/flipper.rs;  na animacao assim q aparecer a javela de codigo já coloque o import; use uma animacao para ir escrevendo o código dinamicamente;
+    - imports: 04:04.46
+    - State: 04:05.56 | f7367
+    - contract, get function: 04:06.63 | f7399
+    - flip function: 04:09.46 | f7484
+- Aqui você tem que trocar protocolo 21 por protocolo Updates começando aqui 04:16.66 | f7700
+- 04:25.56 | f7967 "this enables ..." Aqui começa aparecer os quadrados das zkSNARKS e passkey; Enabled in Layer 1
+- o ultimo card deve comecara aqui 04:39.73 | f8392, deve aparecer cada item da lista sem o check; depois do ultimo aparecer deve dar o check em todos em 04:46.60 | f8598; deve seguir: checkbox, ep1, descricao;
+
+
