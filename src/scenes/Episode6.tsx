@@ -457,7 +457,7 @@ export const Episode6: React.FC = () => {
   return (
     <AbsoluteFill>
       {/* Scene 6.1: Flipper Code Full Screen — 243.30s to 251.59s (f7548) */}
-      <Sequence from={rel(240.30)} durationInFrames={rel(251.59) - rel(243.30)}>
+      <Sequence from={rel(240.30)} durationInFrames={rel(254.59) - rel(243.30)}>
         <FlipperCode />
       </Sequence>
 
