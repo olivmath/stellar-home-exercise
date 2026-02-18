@@ -236,7 +236,7 @@ const ReviewChecklist: React.FC = () => {
   );
 };
 
-// ── Phase 2: Final Statement (293.0s to 295.04s) — VIDEO+OVERLAY (light dim) ──
+// ── Phase 2: Final Statement (292.30s to 295.04s) — VIDEO+OVERLAY (light dim) ──
 const FinalStatement: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -365,13 +365,13 @@ const Certificate: React.FC = () => {
 export const Closing: React.FC = () => {
   return (
     <AbsoluteFill>
-      {/* Phase 1: Review Checklist — 275.28s to 295.04s */}
-      <Sequence from={0} durationInFrames={rel(295.04)}>
+      {/* Phase 1: Review Checklist — 275.28s to 290.04s */}
+      <Sequence from={0} durationInFrames={rel(292.0)}>
         <ReviewChecklist />
       </Sequence>
 
-      {/* Final statement overlaid on checklist — 293.0s to 295.04s */}
-      <Sequence from={rel(293.0)} durationInFrames={rel(295.04) - rel(293.0)}>
+      {/* Final statement overlaid on checklist — 292.30s to 295.04s */}
+      <Sequence from={rel(292.30)} durationInFrames={rel(295.04) - rel(292.30)}>
         <FinalStatement />
       </Sequence>
 
