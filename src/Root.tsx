@@ -1,5 +1,6 @@
 import { Composition } from "remotion";
 import { StellarSpeedRun } from "./StellarSpeedRun";
+import { Thumbnail } from "./compositions/Thumbnail";
 import { Opening } from "./scenes/Opening";
 import { Episode1 } from "./scenes/Episode1";
 import { Episode2 } from "./scenes/Episode2";
@@ -78,6 +79,15 @@ export const RemotionRoot: React.FC = () => {
         fps={FPS}
         width={1920}
         height={1080}
+      />
+      {/* YouTube Thumbnail — 1280x720 still */}
+      <Composition
+        id="Thumbnail"
+        component={Thumbnail}
+        durationInFrames={1}
+        fps={30}
+        width={1280}
+        height={720}
       />
     </>
   );
