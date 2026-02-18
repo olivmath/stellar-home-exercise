@@ -4,6 +4,8 @@ import {
   OffthreadVideo,
   Sequence,
   staticFile,
+  useCurrentFrame,
+  interpolate,
 } from "remotion";
 import { Opening } from "./scenes/Opening";
 import { Episode1 } from "./scenes/Episode1";
@@ -17,6 +19,63 @@ import { episodes, toFrame } from "./config/audioMarks";
 import { ProgressBar } from "./components/ProgressBar";
 import { EpisodeTransition } from "./components/EpisodeTransition";
 import { DebugTimer } from "./components/DebugTimer";
+
+// ─── Document censor: pixelated 16-bit, bottom-to-top reveal ─────────
+const PIXEL_SIZE = 36;
+const CENSOR_W = 700;
+const CENSOR_H = 500;
+const CENSOR_COLS = Math.ceil(CENSOR_W / PIXEL_SIZE);
+const CENSOR_ROWS = Math.ceil(CENSOR_H / PIXEL_SIZE);
+const CENSOR_COLORS = [
+  "rgba(8,20,35,0.92)",   "rgba(0,80,90,0.85)",   "rgba(12,30,55,0.90)",
+  "rgba(30,15,50,0.88)",  "rgba(0,60,70,0.82)",   "rgba(15,10,30,0.93)",
+  "rgba(50,35,0,0.80)",   "rgba(8,25,45,0.90)",   "rgba(0,50,60,0.86)",
+  "rgba(25,8,45,0.89)",   "rgba(10,40,20,0.84)",  "rgba(40,20,0,0.83)",
+  "rgba(5,15,35,0.91)",   "rgba(0,90,100,0.78)",  "rgba(35,0,60,0.87)",
+  "rgba(20,50,10,0.82)",  "rgba(60,40,0,0.80)",   "rgba(0,40,80,0.88)",
+  "rgba(15,55,40,0.83)",  "rgba(45,10,70,0.85)",
+];
+
+const DocumentCensor: React.FC = () => {
+  const frame = useCurrentFrame();
+  const revealProgress = interpolate(frame, [0, 18], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const revealedRows = Math.round(revealProgress * CENSOR_ROWS);
+
+  return (
+    <div style={{
+      position: "absolute",
+      left: 80, top: 40,
+      width: CENSOR_W, height: CENSOR_H,
+      display: "grid",
+      gridTemplateColumns: `repeat(${CENSOR_COLS}, ${PIXEL_SIZE}px)`,
+      gridTemplateRows: `repeat(${CENSOR_ROWS}, ${PIXEL_SIZE}px)`,
+      overflow: "hidden",
+      borderRadius: 4,
+      imageRendering: "pixelated",
+    }}>
+      {Array.from({ length: CENSOR_ROWS * CENSOR_COLS }, (_, i) => {
+        const row = Math.floor(i / CENSOR_COLS);
+        const col = i % CENSOR_COLS;
+        // Reveal from bottom to top: bottom rows appear first
+        const rowFromBottom = CENSOR_ROWS - 1 - row;
+        const visible = rowFromBottom < revealedRows;
+        const idx = (row * 11 + col * 7 + row * col * 3) % CENSOR_COLORS.length;
+        return (
+          <div
+            key={i}
+            style={{
+              backgroundColor: CENSOR_COLORS[idx],
+              opacity: visible ? 1 : 0,
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
 // ─── Scene definitions synced to Whisper timestamps ─────────────────
 // Opening overlaps with ep1 — it's the title card over the first 10s
@@ -134,6 +193,11 @@ export const StellarSpeedRun: React.FC = () => {
       {/* Applause + fanfare — certificate reveal */}
       <Sequence from={toFrame(296.81)} durationInFrames={180}>
         <Audio src={staticFile("sounds/applause.mp3")} volume={0.55} />
+      </Sequence>
+
+      {/* Document censor — f1770 to f1815 (00:59.00 → 01:00.50) */}
+      <Sequence from={1770} durationInFrames={1815 - 1770}>
+        <DocumentCensor />
       </Sequence>
 
       {/* Progress bar — always on top */}
