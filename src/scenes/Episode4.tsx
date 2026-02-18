@@ -368,10 +368,10 @@ const ConsensusCards: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // PoW appears at 177.03 (delay 0), SCP at 178.09, PoS at 179.66
+  // PoW appears at 177.03 (delay 0), PoS at 178.09, SCP at 179.66
   const powDelaySec = 177.03 - SCENE_44_START; // 0
-  const scpDelaySec = 178.09 - SCENE_44_START; // 1.06
-  const posDelaySec = 179.66 - SCENE_44_START; // 2.63
+  const posDelaySec = 178.09 - SCENE_44_START; // 1.06
+  const scpDelaySec = 179.66 - SCENE_44_START; // 2.63
 
   const { opacity: powOpacity, translateY: powY } = slideIn(frame, fps, powDelaySec);
   const { opacity: scpOpacity, translateY: scpY } = slideIn(frame, fps, scpDelaySec);
@@ -511,7 +511,7 @@ const DavidMazieres: React.FC = () => {
       >
         <ScientistCard
           name="David Mazières"
-          institution="SCP CREATOR"
+          institution="Professor at Stanford University"
           caption="Federated Byzantine Agreement inventor"
           photo="david-mazieres.jpg"
           delay={0.3}
@@ -576,124 +576,198 @@ const DavidMazieres: React.FC = () => {
 };
 
 // ── Scene 4.6: Quorum Slices (190.30s to 200.93s) — ANIMATION FULL ──
-// Task #13: Solid background (no video), starts at rel(190.30)
+// Phase 1 (0–5s): FBA network vote propagation
+// Phase 2 (5s+): Quorum circles centered on screen
+
+type FBANodeState = "neutral" | "vote" | "accept";
+
+const FBA_NODES = [
+  { id: "v1", x: 260, y: 50 },
+  { id: "v2", x: 130, y: 165 },
+  { id: "v3", x: 390, y: 165 },
+  { id: "v4", x: 260, y: 280 },
+  { id: "v5", x: 130, y: 395 },
+  { id: "v6", x: 390, y: 395 },
+  { id: "v7", x: 260, y: 510 },
+];
+
+const FBA_EDGES: [string, string][] = [
+  ["v1", "v2"], ["v1", "v3"],
+  ["v2", "v4"], ["v3", "v4"],
+  ["v4", "v5"], ["v4", "v6"],
+  ["v5", "v7"], ["v6", "v7"],
+];
+
+const NODE_TIMELINE: Record<string, [number, FBANodeState][]> = {
+  v1: [[10, "vote"], [60, "accept"]],
+  v2: [[22, "vote"], [72, "accept"]],
+  v3: [[22, "vote"], [72, "accept"]],
+  v4: [[45, "accept"]],
+  v5: [[65, "vote"], [100, "accept"]],
+  v6: [[65, "vote"], [100, "accept"]],
+  v7: [[88, "vote"], [120, "accept"]],
+};
+
+const STATE_COLOR: Record<FBANodeState, string> = {
+  neutral: "#444",
+  vote: "#FDDA24",
+  accept: "#5cb88a",
+};
+const STATE_FILL: Record<FBANodeState, string> = {
+  neutral: "rgba(255,255,255,0.04)",
+  vote: "rgba(253,218,36,0.14)",
+  accept: "rgba(92,184,138,0.18)",
+};
+const STATE_LABEL: Record<FBANodeState, string> = {
+  neutral: "",
+  vote: "Vote",
+  accept: "Accept",
+};
+
 const QuorumSlices: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const circleSize = 200;
+  const PHASE_SPLIT = Math.round(5 * fps); // 150 frames
 
+  const phase1Opacity = interpolate(frame, [PHASE_SPLIT - 20, PHASE_SPLIT], [1, 0], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const phase2Opacity = interpolate(frame, [PHASE_SPLIT, PHASE_SPLIT + 20], [0, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+
+  const getNodeState = (nodeId: string): FBANodeState => {
+    const events = NODE_TIMELINE[nodeId] ?? [];
+    let state: FBANodeState = "neutral";
+    for (const [f, s] of events) {
+      if (frame >= f) state = s;
+    }
+    return state;
+  };
+
+  // Phase 2: Quorum circles
+  const frameRelP2 = Math.max(0, frame - PHASE_SPLIT);
+  const circleSize = 200;
   const convergence = spring({
-    frame: Math.max(0, frame - Math.round(0.8 * fps)),
+    frame: Math.max(0, frameRelP2 - Math.round(0.8 * fps)),
     fps,
     config: { damping: 20, mass: 1.0, stiffness: 60 },
   });
-
   const spread = interpolate(convergence, [0, 1], [120, 40]);
-
-  const circles = [
-    {
-      color: colors.gold,
-      fillColor: "rgba(201, 168, 76, 0.15)",
-      borderColor: "rgba(201, 168, 76, 0.4)",
-      label: "Slice A",
-      angle: -90,
-      delay: 0.3,
-    },
-    {
-      color: colors.info,
-      fillColor: "rgba(107, 155, 210, 0.15)",
-      borderColor: "rgba(107, 155, 210, 0.4)",
-      label: "Slice B",
-      angle: 150,
-      delay: 0.6,
-    },
-    {
-      color: colors.positive,
-      fillColor: "rgba(92, 184, 138, 0.15)",
-      borderColor: "rgba(92, 184, 138, 0.4)",
-      label: "Slice C",
-      angle: 30,
-      delay: 0.9,
-    },
+  const CIRCLES = [
+    { color: colors.gold, fillColor: "rgba(201,168,76,0.15)", borderColor: "rgba(201,168,76,0.4)", label: "Slice A", angle: -90, delay: 0.3 },
+    { color: colors.info, fillColor: "rgba(107,155,210,0.15)", borderColor: "rgba(107,155,210,0.4)", label: "Slice B", angle: 150, delay: 0.6 },
+    { color: colors.positive, fillColor: "rgba(92,184,138,0.15)", borderColor: "rgba(92,184,138,0.4)", label: "Slice C", angle: 30, delay: 0.9 },
   ];
-
   const labelProg = spring({
-    frame: Math.max(0, frame - Math.round(2.5 * fps)),
+    frame: Math.max(0, frameRelP2 - Math.round(2.5 * fps)),
     fps,
     config: { damping: 16, mass: 0.6, stiffness: 100 },
   });
 
   return (
-    // ANIMATION FULL — solid background, no video
     <AbsoluteFill style={{ backgroundColor: colors.bgPrimary }}>
-      <div
-        style={{
-          position: "absolute",
-          left: space.section,
-          top: "50%",
-          transform: "translateY(-50%)",
-          ...layout.centerColumn,
-          gap: space.xl,
-        }}
-      >
-        <div
-          style={{
-            opacity: fadeIn(frame, fps, 0.2),
-            ...text.overlineSM,
-            color: colors.gold,
-          }}
-        >
-          FEDERATED BYZANTINE AGREEMENT
-        </div>
+      {/* Phase 1: FBA Network animation */}
+      <AbsoluteFill style={{ opacity: phase1Opacity }}>
+        <AbsoluteFill style={{ ...layout.centerColumn }}>
+          <div style={{ opacity: fadeIn(frame, fps, 0.2), ...text.overlineSM, color: colors.gold, marginBottom: space.lg }}>
+            FEDERATED BYZANTINE AGREEMENT
+          </div>
+          <div style={{ opacity: fadeIn(frame, fps, 0.2), ...text.h2, marginBottom: space.xl, textAlign: "center" }}>
+            Vote Propagation
+          </div>
+          <svg width={520} height={560} viewBox="0 0 520 560" style={{ overflow: "visible" }}>
+            {FBA_EDGES.map(([aId, bId], i) => {
+              const na = FBA_NODES.find(n => n.id === aId)!;
+              const nb = FBA_NODES.find(n => n.id === bId)!;
+              const sA = getNodeState(aId);
+              const sB = getNodeState(bId);
+              const bothAccept = sA === "accept" && sB === "accept";
+              const anyActive = sA !== "neutral" || sB !== "neutral";
+              return (
+                <line
+                  key={i}
+                  x1={na.x} y1={na.y} x2={nb.x} y2={nb.y}
+                  stroke={bothAccept ? "rgba(92,184,138,0.7)" : anyActive ? "rgba(253,218,36,0.3)" : "rgba(255,255,255,0.12)"}
+                  strokeWidth={bothAccept ? 2 : 1}
+                  strokeDasharray={bothAccept ? "none" : "4 4"}
+                />
+              );
+            })}
+            {FBA_NODES.map(node => {
+              const state = getNodeState(node.id);
+              const col = STATE_COLOR[state];
+              const fill = STATE_FILL[state];
+              const lbl = STATE_LABEL[state];
+              return (
+                <g key={node.id}>
+                  {state !== "neutral" && (
+                    <circle cx={node.x} cy={node.y} r={38}
+                      fill={state === "accept" ? "rgba(92,184,138,0.08)" : "rgba(253,218,36,0.08)"} />
+                  )}
+                  <circle cx={node.x} cy={node.y} r={26} fill={fill} stroke={col} strokeWidth={state !== "neutral" ? 2.5 : 1.5} />
+                  <text x={node.x} y={node.y + 5} textAnchor="middle" fill={col} fontSize={13}
+                    fontFamily="'IBM Plex Mono', monospace" fontWeight="600">
+                    {node.id}
+                  </text>
+                  {lbl && (
+                    <text x={node.x} y={node.y - 36} textAnchor="middle" fill={col} fontSize={11}
+                      fontFamily="'IBM Plex Mono', monospace">
+                      {lbl}
+                    </text>
+                  )}
+                </g>
+              );
+            })}
+          </svg>
+        </AbsoluteFill>
+      </AbsoluteFill>
 
-        <div style={{ opacity: fadeIn(frame, fps, 0.2), ...text.h1 }}>
-          Quorum Slices
-        </div>
-
-        <div style={{ position: "relative", width: 440, height: 320 }}>
-          {circles.map((circle, i) => {
-            const circleOpacity = fadeIn(frame, fps, circle.delay);
-            const rad = (circle.angle * Math.PI) / 180;
-            const cx = 440 / 2 + Math.cos(rad) * spread - circleSize / 2;
-            const cy = 320 / 2 + Math.sin(rad) * spread - circleSize / 2;
-
-            return (
-              <div
-                key={i}
-                style={{
-                  position: "absolute",
-                  left: cx,
-                  top: cy,
-                  width: circleSize,
-                  height: circleSize,
+      {/* Phase 2: Quorum Circles — CENTERED */}
+      <AbsoluteFill style={{ opacity: phase2Opacity }}>
+        <AbsoluteFill style={{ ...layout.centerColumn }}>
+          <div style={{ ...text.overlineSM, color: colors.gold, marginBottom: space.lg }}>
+            FEDERATED BYZANTINE AGREEMENT
+          </div>
+          <div style={{ ...text.h1, marginBottom: space.xxl, textAlign: "center" }}>
+            Quorum Slices
+          </div>
+          <div style={{ position: "relative", width: 440, height: 320 }}>
+            {CIRCLES.map((circle, i) => {
+              const circleOpacity = fadeIn(frameRelP2, fps, circle.delay);
+              const rad = (circle.angle * Math.PI) / 180;
+              const cx = 440 / 2 + Math.cos(rad) * spread - circleSize / 2;
+              const cy = 320 / 2 + Math.sin(rad) * spread - circleSize / 2;
+              return (
+                <div key={i} style={{
+                  position: "absolute", left: cx, top: cy,
+                  width: circleSize, height: circleSize,
                   borderRadius: radius.circle,
                   background: circle.fillColor,
                   border: `2px solid ${circle.borderColor}`,
                   backdropFilter: "blur(8px)",
                   opacity: circleOpacity,
                   ...layout.centerRow,
-                }}
-              >
-                <div style={{ ...text.overlineSM, color: circle.color }}>
-                  {circle.label}
+                }}>
+                  <div style={{ ...text.overlineSM, color: circle.color }}>{circle.label}</div>
                 </div>
-              </div>
-            );
-          })}
-        </div>
-
-        <div
-          style={{
+              );
+            })}
+          </div>
+          <div style={{
             opacity: labelProg,
             transform: `translateY(${interpolate(labelProg, [0, 1], [20, 0])}px)`,
             ...text.h3,
             textAlign: "center",
-          }}
-        >
-          Consensus when overlap {"> "}2/3
-        </div>
-      </div>
+            marginTop: space.xl,
+          }}>
+            Consensus when overlap {"> "}2/3
+          </div>
+        </AbsoluteFill>
+      </AbsoluteFill>
     </AbsoluteFill>
   );
 };
@@ -704,24 +778,24 @@ const Trilemma: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  // Vertices animate in sequentially
+  // Words appear first: Decentralization → Security → Scalability, then triangle
   const vertex0Prog = spring({
-    frame: Math.max(0, frame - Math.round(0.4 * fps)),
+    frame: Math.max(0, frame - Math.round(0.3 * fps)),
     fps,
     config: { damping: 18, mass: 0.8, stiffness: 80 },
   });
   const vertex1Prog = spring({
-    frame: Math.max(0, frame - Math.round(1.1 * fps)),
+    frame: Math.max(0, frame - Math.round(0.8 * fps)),
     fps,
     config: { damping: 18, mass: 0.8, stiffness: 80 },
   });
   const vertex2Prog = spring({
-    frame: Math.max(0, frame - Math.round(1.8 * fps)),
+    frame: Math.max(0, frame - Math.round(1.3 * fps)),
     fps,
     config: { damping: 18, mass: 0.8, stiffness: 80 },
   });
   const edgesProg = spring({
-    frame: Math.max(0, frame - Math.round(0.8 * fps)),
+    frame: Math.max(0, frame - Math.round(1.7 * fps)),
     fps,
     config: { damping: 22, mass: 1.0, stiffness: 50 },
   });
@@ -738,26 +812,11 @@ const Trilemma: React.FC = () => {
   const triPath = `M ${vTop.x} ${vTop.y} L ${vBL.x} ${vBL.y} L ${vBR.x} ${vBR.y} Z`;
   const perimeter = R * 3 * Math.sqrt(3); // approx
 
-  const labelStyle = (prog: number, xOffset: number, yOffset: number) => ({
-    opacity: prog,
-    transform: `translate(${xOffset * (1 - prog)}px, ${yOffset * (1 - prog)}px)`,
-  });
 
+  // Order: Decentralization → Security → Scalability
   const vertices = [
     {
       prog: vertex0Prog,
-      x: vTop.x,
-      y: vTop.y,
-      label: "Scalability",
-      color: colors.gold,
-      labelAnchor: "middle" as const,
-      labelDy: -24,
-      labelDx: 0,
-      entryX: 0,
-      entryY: -30,
-    },
-    {
-      prog: vertex1Prog,
       x: vBL.x,
       y: vBL.y,
       label: "Decentralization",
@@ -769,7 +828,7 @@ const Trilemma: React.FC = () => {
       entryY: 20,
     },
     {
-      prog: vertex2Prog,
+      prog: vertex1Prog,
       x: vBR.x,
       y: vBR.y,
       label: "Security",
@@ -780,23 +839,24 @@ const Trilemma: React.FC = () => {
       entryX: 30,
       entryY: 20,
     },
+    {
+      prog: vertex2Prog,
+      x: vTop.x,
+      y: vTop.y,
+      label: "Scalability",
+      color: colors.gold,
+      labelAnchor: "middle" as const,
+      labelDy: -24,
+      labelDx: 0,
+      entryX: 0,
+      entryY: -30,
+    },
   ];
 
   return (
-    // ANIMATION FULL — solid background
-    <AbsoluteFill style={{ backgroundColor: colors.bgPrimary }}>
+    // VIDEO+OVERLAY — dim overlay, talking head visible
+    <AbsoluteFill style={layout.dimOverlay(0.55)}>
       <AbsoluteFill style={layout.centerColumn}>
-        {/* Title */}
-        <div
-          style={{
-            opacity: fadeIn(frame, fps, 0.2),
-            ...text.overlineSM,
-            color: colors.gold,
-            marginBottom: space.xl,
-          }}
-        >
-          BLOCKCHAIN TRILEMMA
-        </div>
 
         {/* SVG Triangle */}
         <svg
@@ -873,33 +933,6 @@ const Trilemma: React.FC = () => {
               </g>
             );
           })}
-
-          {/* Center label */}
-          <foreignObject
-            x={cx - 130}
-            y={cy - 16}
-            width={260}
-            height={40}
-            style={{ overflow: "visible" }}
-          >
-            <div
-              style={{
-                opacity: interpolate(edgesProg, [0.6, 1], [0, 1], {
-                  extrapolateLeft: "clamp",
-                  extrapolateRight: "clamp",
-                }),
-                ...text.overlineSM,
-                color: colors.gold,
-                textAlign: "center",
-                transform: `scale(${interpolate(edgesProg, [0.6, 1], [0.8, 1], {
-                  extrapolateLeft: "clamp",
-                  extrapolateRight: "clamp",
-                })})`,
-              }}
-            >
-              STELLAR ACHIEVES ALL THREE
-            </div>
-          </foreignObject>
         </svg>
       </AbsoluteFill>
     </AbsoluteFill>
@@ -993,8 +1026,8 @@ export const Episode4: React.FC = () => {
         <QuorumSlices />
       </Sequence>
 
-      {/* Scene 4.7: Trilemma SVG triangle — ANIMATION FULL — 200.93s to 208.4s */}
-      <Sequence from={rel(200.93)} durationInFrames={rel(208.4) - rel(200.93)}>
+      {/* Scene 4.7: Trilemma — words first, then triangle — 200.93s to 204.87s (f6146) */}
+      <Sequence from={rel(200.93)} durationInFrames={rel(204.87) - rel(200.93)}>
         <Trilemma />
       </Sequence>
 

@@ -23,12 +23,12 @@ const rel = (sec: number) => toFrame(sec - EP);
 // ── Checklist items mapped to episodes ──
 // Format: EP{n} — {description}
 const CHECKLIST_ITEMS = [
-  { ep: "EP01", description: "Accounts & Keys" },
-  { ep: "EP02", description: "Cryptography" },
-  { ep: "EP03", description: "Transactions" },
-  { ep: "EP04", description: "Consensus" },
-  { ep: "EP05", description: "Smart Contracts" },
-  { ep: "EP06", description: "Code, Crypto & zk-Proofs" },
+  { ep: "EP01", description: "Cryptographic identities" },
+  { ep: "EP02", description: "Atomic transactions" },
+  { ep: "EP03", description: "Federated consensus" },
+  { ep: "EP04", description: "Secure programmability" },
+  { ep: "EP05", description: "Efficient state storage" },
+  { ep: "EP06", description: "Privacy support" },
 ];
 
 // Items appear starting at f8392 (279.73s) = 4.45s into closing

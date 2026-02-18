@@ -28,7 +28,7 @@ const SorobanIntro: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const { opacity: titleOpacity, translateY: titleY } = slideIn(frame, fps, 0.3);
+  const { opacity: panelOpacity, translateY: panelY } = slideIn(frame, fps, 0.3);
   const yearOpacity = fadeIn(frame, fps, 0.8);
 
   const stackLayers = [
@@ -51,98 +51,110 @@ const SorobanIntro: React.FC = () => {
 
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
+      {/* RIGHT — unified GlassPanel: title + year + stack layers */}
       <div
         style={{
           position: "absolute",
           right: space.section,
           top: "50%",
           transform: "translateY(-50%)",
-          display: "flex",
-          flexDirection: "column",
-          gap: space.xl,
-          alignItems: "flex-end",
           opacity: exitOpacity,
         }}
       >
         <GlassPanel
-          padding="48px 56px"
+          padding="40px 48px"
           borderColor={colors.borderAccent}
           glow={shadows.accent}
           style={{
-            opacity: titleOpacity,
-            transform: `translateY(${titleY}px)`,
+            opacity: panelOpacity,
+            transform: `translateY(${panelY}px)`,
             ...layout.centerColumn,
-            gap: space.md,
-            width: 420,
+            gap: space.lg,
+            width: 380,
           }}
         >
+          {/* Header */}
+          <div style={{ ...text.overlineSM, color: colors.gold }}>
+            SMART CONTRACT PLATFORM
+          </div>
+
+          {/* Title */}
           <div
             style={{
               ...text.displayMD,
               color: colors.gold,
               textShadow: `0 0 40px rgba(201, 168, 76, 0.3)`,
+              textAlign: "center",
             }}
           >
             Soroban
           </div>
-          <div style={{ ...text.h2, color: colors.warmGrey, textAlign: "center" }}>
-            Smart Contract Platform
-          </div>
+
+          {/* Year */}
           <div
             style={{
               opacity: yearOpacity,
               ...text.displayLG,
               color: colors.gold,
               textShadow: `0 0 40px rgba(201, 168, 76, 0.4), 0 0 80px rgba(201, 168, 76, 0.15)`,
-              marginTop: space.sm,
             }}
           >
             2024
           </div>
-        </GlassPanel>
 
-        {/* TASK #15: Harmonized stack layer cards — width 420 matching main panel */}
-        <div style={{ display: "flex", flexDirection: "column", gap: space.sm, width: 420 }}>
-          {stackLayers.map((layer, i) => {
-            const layerSlide = slideIn(frame, fps, layer.delay);
-            return (
-              <div
-                key={i}
-                style={{
-                  ...panel.base,
-                  width: "100%",
-                  boxSizing: "border-box",
-                  padding: `${space.md}px ${space.xl}px`,
-                  borderRadius: radius.md,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: space.md,
-                  opacity: layerSlide.opacity,
-                  transform: `translateY(${layerSlide.translateY}px)`,
-                  border: `1px solid ${layer.color}25`,
-                }}
-              >
+          {/* Divider */}
+          <div style={{
+            width: "100%",
+            height: 1,
+            background: `linear-gradient(90deg, transparent, ${colors.borderMedium}, transparent)`,
+          }} />
+
+          {/* Stack layers */}
+          <div style={{ display: "flex", flexDirection: "column", gap: space.sm, width: "100%" }}>
+            {stackLayers.map((layer, i) => {
+              const layerSlide = slideIn(frame, fps, layer.delay);
+              return (
                 <div
+                  key={i}
                   style={{
-                    width: 4,
-                    height: 28,
-                    borderRadius: radius.xs,
-                    backgroundColor: layer.color,
-                    boxShadow: `0 0 8px ${layer.color}40`,
+                    ...panel.base,
+                    width: "100%",
+                    boxSizing: "border-box",
+                    padding: `${space.md}px ${space.lg}px`,
+                    borderRadius: radius.md,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: space.md,
+                    opacity: layerSlide.opacity,
+                    transform: `translateY(${layerSlide.translateY}px)`,
+                    border: `1px solid ${layer.color}25`,
                   }}
-                />
-                <span style={{ ...text.codeMD, color: layer.color }}>{layer.label}</span>
-              </div>
-            );
-          })}
-        </div>
+                >
+                  <div
+                    style={{
+                      width: 4,
+                      height: 24,
+                      borderRadius: radius.xs,
+                      backgroundColor: layer.color,
+                      boxShadow: `0 0 8px ${layer.color}40`,
+                      flexShrink: 0,
+                    }}
+                  />
+                  <span style={{ ...text.codeMD, color: layer.color }}>{layer.label}</span>
+                </div>
+              );
+            })}
+          </div>
+        </GlassPanel>
       </div>
 
+      {/* LEFT — Graydon vertically centered */}
       <div
         style={{
           position: "absolute",
           left: space.section,
-          bottom: space.section + 40,
+          top: "50%",
+          transform: "translateY(-50%)",
           opacity: graydonOpacity * graydonExitOpacity,
         }}
       >
@@ -158,7 +170,7 @@ const SorobanIntro: React.FC = () => {
   );
 };
 
-// ── Scene 5.2: Gas Model & TTL (226.48s to 243.09s) — VIDEO+OVERLAY ──
+// ── Scene 5.2: Gas Model & TTL (226.48s to 237.93s / f7138) — VIDEO+OVERLAY ──
 const GasModelTTL: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -168,9 +180,9 @@ const GasModelTTL: React.FC = () => {
   const ttlDelay = 5.62;
   const { opacity: ttlOpacity, translateY: ttlY } = slideIn(frame, fps, ttlDelay);
 
-  // TASK #17: Renew Rent visible from the very start of the TTL section
+  // Renew Rent visible from the very start of the TTL section
   const renewDelay = 0;
-  // TASK #17: No Rent card appears when bar is nearly empty (~ttlDelay + 3.8s)
+  // No Rent card appears when bar is nearly empty
   const archiveDelay = ttlDelay + 3.8;
   const renewOpacity = fadeIn(frame, fps, renewDelay);
   const archiveOpacity = fadeIn(frame, fps, archiveDelay);
@@ -327,8 +339,8 @@ export const Episode5: React.FC = () => {
         <SorobanIntro />
       </Sequence>
 
-      {/* Scene 5.2: Gas Model & TTL (RIGHT side) — 226.48s to 243.09s */}
-      <Sequence from={rel(226.48)} durationInFrames={rel(243.09) - rel(226.48)}>
+      {/* Scene 5.2: Gas Model & TTL — 226.48s to 237.93s (f7138) */}
+      <Sequence from={rel(226.48)} durationInFrames={rel(237.93) - rel(226.48)}>
         <GasModelTTL />
       </Sequence>
 

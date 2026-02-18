@@ -41,14 +41,14 @@ export const episodes = {
   },
   ep5: {
     startSec: 212.1,
-    endSec: 243.30,
+    endSec: 242.7,
     startFrame: toFrame(212.1),
-    endFrame: toFrame(243.30),
+    endFrame: toFrame(242.7),
   },
   ep6: {
-    startSec: 243.30,
+    startSec: 242.7,
     endSec: 275.28,
-    startFrame: toFrame(243.30),
+    startFrame: toFrame(242.7),
     endFrame: toFrame(275.28),
   },
   closing: {

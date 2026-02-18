@@ -5,6 +5,8 @@ import {
   useVideoConfig,
   interpolate,
   Sequence,
+  Img,
+  staticFile,
 } from "remotion";
 import { colors } from "../styles/theme";
 import { fadeIn, slideIn } from "../animations/springs";
@@ -172,7 +174,7 @@ const CODE_LINES = [
   },
 ];
 
-const SCENE_61_START = 243.30;
+const SCENE_61_START = 242.7; // f7281
 const TYPING_DURATION_FRAMES = 12; // ~0.4s to type each line
 
 const FlipperCode: React.FC = () => {
@@ -192,8 +194,8 @@ const FlipperCode: React.FC = () => {
             ...panel.accent,
             padding: `${space.xl}px ${space.xxl}px`,
             borderRadius: radius.lg,
-            width: 820,
-            minHeight: 500,
+            width: 1040,
+            minHeight: 520,
           }}
         >
           {/* Title bar */}
@@ -411,13 +413,27 @@ const ZkAndPasskeys: React.FC = () => {
           {/* Two square cards side by side */}
           <div style={{ display: "flex", gap: space.lg }}>
             <div style={{ opacity: fadeIn(frame, fps, zkDelay), ...squareCardStyle("#00A7B5") }}>
-              <div style={{ ...text.displayMD, fontSize: 36, color: "#00A7B5" }}>zk</div>
+              <div style={{
+                fontFamily: "'Georgia', serif",
+                fontSize: 32,
+                color: "#00A7B5",
+                letterSpacing: 1,
+                lineHeight: 1,
+              }}>∮<sub style={{ fontSize: 14 }}>L</sub> f(z)dz</div>
               <div style={{ ...text.codeSM, color: "#00A7B5", textAlign: "center" }}>zk-SNARK Verify</div>
               <div style={{ ...text.bodySM, color: colors.warmGrey, textAlign: "center" }}>Zero-knowledge proofs</div>
             </div>
 
             <div style={{ opacity: fadeIn(frame, fps, passkeysDelay), ...squareCardStyle(colors.gold) }}>
-              <div style={{ ...text.displayMD, fontSize: 36, color: colors.gold }}>PK</div>
+              <Img
+                src={staticFile("images/fingerprint.png")}
+                style={{
+                  width: 64,
+                  height: 64,
+                  filter: `invert(1) sepia(1) saturate(5) hue-rotate(5deg) brightness(1.1)`,
+                  opacity: 0.9,
+                }}
+              />
               <div style={{ ...text.codeSM, color: colors.gold, textAlign: "center" }}>Passkeys</div>
               <div style={{ ...text.bodySM, color: colors.warmGrey, textAlign: "center" }}>Better UX auth</div>
             </div>
@@ -440,8 +456,8 @@ const ZkAndPasskeys: React.FC = () => {
 export const Episode6: React.FC = () => {
   return (
     <AbsoluteFill>
-      {/* Scene 6.1: Flipper Code Full Screen — 243.30s to 256.66s (TASK #20: extended) */}
-      <Sequence from={rel(243.30)} durationInFrames={rel(256.66) - rel(243.30)}>
+      {/* Scene 6.1: Flipper Code Full Screen — 243.30s to 251.59s (f7548) */}
+      <Sequence from={rel(240.30)} durationInFrames={rel(251.59) - rel(243.30)}>
         <FlipperCode />
       </Sequence>
 

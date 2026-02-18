@@ -186,3 +186,7 @@ Stellar is a global settlement protocol — accessible, programmable, and privac
 I am Lucas Bispo de Oliveira.
 
 See you on-chain.
+
+
+antes 04:55:09
+agora 04:57:02
