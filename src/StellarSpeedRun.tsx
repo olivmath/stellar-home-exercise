@@ -178,23 +178,6 @@ export const StellarSpeedRun: React.FC = () => {
         );
       })}
 
-      {/* ── Sound Effects ── */}
-
-      {/* Cinematic riser — starts 2s before each episode title transition */}
-      {transitions.map(({ episode, atSec, durationSec }) => {
-        const dur = toFrame(durationSec ?? 2);
-        return (
-          <Sequence key={`sfx-riser-${episode}`} from={toFrame(atSec) - toFrame(2)} durationInFrames={dur}>
-            <Audio src={staticFile("sounds/riser.mp3")} volume={0.4} />
-          </Sequence>
-        );
-      })}
-
-      {/* Applause + fanfare — certificate reveal */}
-      <Sequence from={toFrame(296.81)} durationInFrames={180}>
-        <Audio src={staticFile("sounds/applause.mp3")} volume={0.55} />
-      </Sequence>
-
       {/* Document censor — f1770 to f1815 (00:59.00 → 01:00.50) */}
       <Sequence from={1770} durationInFrames={1815 - 1770}>
         <DocumentCensor />

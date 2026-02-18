@@ -1,13 +1,10 @@
 import React from "react";
 import {
   AbsoluteFill,
-  Audio,
   useCurrentFrame,
   useVideoConfig,
   interpolate,
   Sequence,
-  spring,
-  staticFile,
 } from "remotion";
 import { colors } from "../styles/theme";
 import { fadeIn, slideIn } from "../animations/springs";
@@ -212,15 +209,6 @@ const Atomicity: React.FC = () => {
 
   return (
     <AbsoluteFill style={{ backgroundColor: colors.bgPrimary }}>
-      {/* Chime — all operations succeed */}
-      <Sequence from={Math.round(phase2Start * fps)} durationInFrames={60}>
-        <Audio src={staticFile("sounds/chime.mp3")} volume={0.5} />
-      </Sequence>
-      {/* Error tone — TX fails */}
-      <Sequence from={Math.round(phase3Start * fps)} durationInFrames={60}>
-        <Audio src={staticFile("sounds/error.mp3")} volume={0.5} />
-      </Sequence>
-
       <AbsoluteFill style={layout.centerColumn}>
         {/* Big TX container */}
         <div
