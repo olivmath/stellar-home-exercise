@@ -698,31 +698,26 @@ const CurveComparison: React.FC = () => {
   );
 };
 
-// ── Scene 2.5: Closing question — ANIMATION FULL (solid bg, no video) — 102.16s to 110.0s ──
-const CLOSING_ANIM_START = 102.16; // animation scene starts here
+// ── Scene 2.5: Closing question — VIDEO+OVERLAY — 104.73s to 110.0s (01:44.73 | f3142) ──
+const CLOSING_ANIM_START = 104.73;
 const closingWords = [
-  { text: "But", atSec: 106.38 },
-  { text: "what", atSec: 106.62 },
-  { text: "exactly", atSec: 106.94 },
-  { text: "do", atSec: 107.28 },
-  { text: "you", atSec: 107.52 },
-  { text: "send", atSec: 107.62 },
-  { text: "to", atSec: 107.90 },
-  { text: "the", atSec: 108.10 },
-  { text: "network?", atSec: 108.20 },
+  { text: "But",      atSec: 104.73 },
+  { text: "what",     atSec: 104.97 },
+  { text: "exactly",  atSec: 105.29 },
+  { text: "do",       atSec: 105.63 },
+  { text: "you",      atSec: 105.87 },
+  { text: "send",     atSec: 105.97 },
+  { text: "to",       atSec: 106.25 },
+  { text: "the",      atSec: 106.45 },
+  { text: "network?", atSec: 106.55 },
 ];
 
 const ClosingQuestion: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
 
-  const bgOpacity = interpolate(frame, [0, Math.round(fps * 0.4)], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-
   return (
-    <AbsoluteFill style={{ backgroundColor: colors.bgPrimary, opacity: bgOpacity }}>
+    <AbsoluteFill style={layout.dimOverlay(0.6)}>
       <AbsoluteFill style={layout.centerColumn}>
         <div
           style={{
@@ -797,8 +792,8 @@ export const Episode2: React.FC = () => {
         <CurveComparison />
       </Sequence>
 
-      {/* Scene 2.5: Closing question — ANIMATION FULL — 102.16s to 110.0s */}
-      <Sequence from={rel(102.16)} durationInFrames={rel(110.0) - rel(102.16)}>
+      {/* Scene 2.5: Closing question — 104.73s to 110.0s (01:44.73 | f3142) */}
+      <Sequence from={rel(104.73)} durationInFrames={rel(110.0) - rel(104.73)}>
         <ClosingQuestion />
       </Sequence>
 
