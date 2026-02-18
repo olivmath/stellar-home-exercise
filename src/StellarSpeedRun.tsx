@@ -126,6 +126,37 @@ export const StellarSpeedRun: React.FC = () => {
         );
       })}
 
+      {/* ── Sound Effects ── */}
+
+      {/* Cinematic riser — each episode title transition */}
+      {transitions.map(({ episode, atSec, durationSec }) => {
+        const dur = toFrame(durationSec ?? 2);
+        return (
+          <Sequence key={`sfx-riser-${episode}`} from={toFrame(atSec) - Math.floor(dur / 2)} durationInFrames={dur}>
+            <Audio src={staticFile("sounds/riser.mp3")} volume={0.4} />
+          </Sequence>
+        );
+      })}
+
+      {/* Soft whoosh — first card of each episode */}
+      {[
+        { key: "ep1", from: toFrame(10.3) },
+        { key: "ep2", from: toFrame(60.83) },
+        { key: "ep3", from: toFrame(114.97) },
+        { key: "ep4", from: toFrame(152.0) },
+        { key: "ep5", from: toFrame(213.0) },
+        { key: "ep6", from: toFrame(243.30) },
+      ].map(({ key, from }) => (
+        <Sequence key={`sfx-whoosh-${key}`} from={from} durationInFrames={30}>
+          <Audio src={staticFile("sounds/whoosh.mp3")} volume={0.35} />
+        </Sequence>
+      ))}
+
+      {/* Applause + fanfare — certificate reveal */}
+      <Sequence from={toFrame(289.0)} durationInFrames={180}>
+        <Audio src={staticFile("sounds/applause.mp3")} volume={0.55} />
+      </Sequence>
+
       {/* Progress bar — always on top */}
       <ProgressBar />
 
