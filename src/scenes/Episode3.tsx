@@ -498,18 +498,21 @@ const OperationTypes: React.FC = () => {
   );
 };
 
-// ── Scene 3.5: Closing question (149.03s to 152.50s) — fullscreen word-by-word ──
-// "But who decides this is valid?" at 02:29.03 | f4471
-const closingWords = [
-  { text: "But", atSec: 149.03 },
-  { text: "who", atSec: 149.33 },
-  { text: "decides", atSec: 149.63 },
-  { text: "this", atSec: 150.13 },
-  { text: "is", atSec: 150.43 },
-  { text: "valid?", atSec: 150.73 },
-];
+// ── Scene 3.5: Closing question — overlay from 144.03s, words at 149.03s (f4471) ──
+// "But who decides this is valid?"
+// Sequence starts at 144.03s so dim overlay covers gap after OperationTypes ends.
+// Words appear starting at 149.03s (5s into the Sequence) and come in quickly.
+const CLOSING_SEQUENCE_START = 144.03; // when Sequence begins (= when OperationTypes ends)
+const CLOSING_WORDS_DELAY = 149.03 - CLOSING_SEQUENCE_START; // 5.0s before words appear
 
-const CLOSING_START = 149.03;
+const closingWords = [
+  { text: "But",     delaySec: 0.00 },
+  { text: "who",     delaySec: 0.15 },
+  { text: "decides", delaySec: 0.35 },
+  { text: "this",    delaySec: 0.60 },
+  { text: "is",      delaySec: 0.80 },
+  { text: "valid?",  delaySec: 1.00 },
+];
 
 const ClosingQuestion: React.FC = () => {
   const frame = useCurrentFrame();
@@ -528,7 +531,7 @@ const ClosingQuestion: React.FC = () => {
           }}
         >
           {closingWords.map((word, i) => {
-            const wordFrame = Math.round((word.atSec - CLOSING_START) * fps);
+            const wordFrame = Math.round((CLOSING_WORDS_DELAY + word.delaySec) * fps);
             const visible = frame >= wordFrame;
             const isHighlighted = word.text === "decides" || word.text === "valid?";
             return (
@@ -572,8 +575,8 @@ export const Episode3: React.FC = () => {
         <OperationTypes />
       </Sequence>
 
-      {/* Scene 3.5: Closing question — 149.03s to 153.51s (holds until ep4 transition) */}
-      <Sequence from={rel(149.03)} durationInFrames={rel(153.51) - rel(149.03)}>
+      {/* Scene 3.5: Closing question — 144.03s to 153.51s (overlay from OperationTypes end, words at 149.03s) */}
+      <Sequence from={rel(144.03)} durationInFrames={rel(153.51) - rel(144.03)}>
         <ClosingQuestion />
       </Sequence>
 
