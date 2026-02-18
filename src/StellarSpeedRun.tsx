@@ -11,7 +11,6 @@ import { Episode2 } from "./scenes/Episode2";
 import { Episode3 } from "./scenes/Episode3";
 import { Episode4 } from "./scenes/Episode4";
 import { Episode5 } from "./scenes/Episode5";
-import { Episode6 } from "./scenes/Episode6";
 import { Closing } from "./scenes/Closing";
 import { colors } from "./styles/theme";
 import { episodes, toFrame } from "./config/audioMarks";
@@ -73,12 +72,6 @@ const scenes = [
     component: Episode5,
     from: episodes.ep5.startFrame,
     duration: episodes.ep5.endFrame - episodes.ep5.startFrame,
-  },
-  {
-    id: "ep6",
-    component: Episode6,
-    from: episodes.ep6.startFrame,
-    duration: episodes.ep6.endFrame - episodes.ep6.startFrame,
   },
   {
     id: "closing",
@@ -145,7 +138,6 @@ export const StellarSpeedRun: React.FC = () => {
         { key: "ep3", from: toFrame(114.97) },
         { key: "ep4", from: toFrame(152.0) },
         { key: "ep5", from: toFrame(213.0) },
-        { key: "ep6", from: toFrame(243.30) },
       ].map(({ key, from }) => (
         <Sequence key={`sfx-whoosh-${key}`} from={from} durationInFrames={30}>
           <Audio src={staticFile("sounds/whoosh.mp3")} volume={0.35} />

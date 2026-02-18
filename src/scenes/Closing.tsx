@@ -333,30 +333,19 @@ const Certificate: React.FC = () => {
   const scale = interpolate(scaleProgress, [0, 1], [0.85, 1]);
 
   return (
-    <AbsoluteFill
-      style={{
-        backgroundColor: colors.bgPrimary,
-        ...layout.centerColumn,
-      }}
-    >
-      <div
+    <AbsoluteFill style={{ backgroundColor: colors.bgPrimary }}>
+      <Img
+        src={staticFile("images/certificate.png")}
         style={{
+          width: "100%",
+          height: "100%",
+          display: "block",
+          objectFit: "cover",
           opacity,
           transform: `scale(${scale})`,
-          boxShadow: `0 8px 60px rgba(0, 0, 0, 0.6), ${shadows.accent}`,
-          borderRadius: radius.lg,
-          overflow: "hidden",
+          transformOrigin: "center center",
         }}
-      >
-        <Img
-          src={staticFile("images/certificate.png")}
-          style={{
-            width: 1200,
-            height: "auto",
-            display: "block",
-          }}
-        />
-      </div>
+      />
     </AbsoluteFill>
   );
 };

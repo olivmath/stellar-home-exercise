@@ -800,10 +800,10 @@ const Trilemma: React.FC = () => {
     config: { damping: 22, mass: 1.0, stiffness: 50 },
   });
 
-  // Triangle geometry — equilateral, centered in a 520x480 viewBox
-  const cx = 260;
-  const cy = 230;
-  const R = 185; // circumradius
+  // Triangle geometry — equilateral, centered in a 1040x960 viewBox (2x)
+  const cx = 520;
+  const cy = 460;
+  const R = 370; // circumradius (2x)
   // Top vertex (Scalability), bottom-left (Decentralization), bottom-right (Security)
   const vTop = { x: cx, y: cy - R };
   const vBL = { x: cx - R * Math.sin(Math.PI / 3), y: cy + R * 0.5 };
@@ -822,10 +822,10 @@ const Trilemma: React.FC = () => {
       label: "Decentralization",
       color: colors.info,
       labelAnchor: "end" as const,
-      labelDy: 18,
-      labelDx: -20,
-      entryX: -30,
-      entryY: 20,
+      labelDy: 36,
+      labelDx: -40,
+      entryX: -60,
+      entryY: 40,
     },
     {
       prog: vertex1Prog,
@@ -834,10 +834,10 @@ const Trilemma: React.FC = () => {
       label: "Security",
       color: colors.positive,
       labelAnchor: "start" as const,
-      labelDy: 18,
-      labelDx: 20,
-      entryX: 30,
-      entryY: 20,
+      labelDy: 36,
+      labelDx: 40,
+      entryX: 60,
+      entryY: 40,
     },
     {
       prog: vertex2Prog,
@@ -846,10 +846,10 @@ const Trilemma: React.FC = () => {
       label: "Scalability",
       color: colors.gold,
       labelAnchor: "middle" as const,
-      labelDy: -24,
+      labelDy: -48,
       labelDx: 0,
       entryX: 0,
-      entryY: -30,
+      entryY: -60,
     },
   ];
 
@@ -858,11 +858,11 @@ const Trilemma: React.FC = () => {
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
       <AbsoluteFill style={layout.centerColumn}>
 
-        {/* SVG Triangle */}
+        {/* SVG Triangle — 2x size */}
         <svg
-          width={520}
-          height={480}
-          viewBox="0 0 520 480"
+          width={1040}
+          height={960}
+          viewBox="0 0 1040 960"
           style={{ overflow: "visible" }}
         >
           {/* Triangle fill — subtle glow interior */}
@@ -877,7 +877,7 @@ const Trilemma: React.FC = () => {
             d={triPath}
             fill="none"
             stroke={`${colors.gold}40`}
-            strokeWidth={1.5}
+            strokeWidth={3}
             strokeDasharray={perimeter}
             strokeDashoffset={perimeter * (1 - edgesProg)}
             strokeLinecap="round"
@@ -886,14 +886,14 @@ const Trilemma: React.FC = () => {
 
           {/* Vertex dots and labels */}
           {vertices.map((v, i) => {
-            const dotRadius = interpolate(v.prog, [0, 1], [0, 6]);
+            const dotRadius = interpolate(v.prog, [0, 1], [0, 12]);
             return (
               <g key={i}>
                 {/* Glow ring */}
                 <circle
                   cx={v.x}
                   cy={v.y}
-                  r={interpolate(v.prog, [0, 1], [0, 14])}
+                  r={interpolate(v.prog, [0, 1], [0, 28])}
                   fill={`${v.color}18`}
                   opacity={v.prog}
                 />
@@ -907,15 +907,16 @@ const Trilemma: React.FC = () => {
                 />
                 {/* Label — rendered as foreignObject for design system fonts */}
                 <foreignObject
-                  x={v.x + v.labelDx - 140}
-                  y={v.y + v.labelDy - 20}
-                  width={280}
-                  height={48}
+                  x={v.x + v.labelDx - 280}
+                  y={v.y + v.labelDy - 40}
+                  width={560}
+                  height={96}
                   style={{ overflow: "visible" }}
                 >
                   <div
                     style={{
                       ...text.h3,
+                      fontSize: 44,
                       color: v.color,
                       textAlign: v.labelAnchor === "middle"
                         ? "center"
