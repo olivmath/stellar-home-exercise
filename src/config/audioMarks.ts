@@ -53,9 +53,9 @@ export const episodes = {
   },
   closing: {
     startSec: 275.28,
-    endSec: 295.04,
+    endSec: 302.0,
     startFrame: toFrame(275.28),
-    endFrame: toFrame(295.04),
+    endFrame: toFrame(302.0),
   },
 } as const;
 

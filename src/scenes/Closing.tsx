@@ -363,39 +363,21 @@ const Certificate: React.FC = () => {
 
 // ── Main Closing — Sequences synced to audioMarks ──
 export const Closing: React.FC = () => {
-  const frame = useCurrentFrame();
-
-  // Cross-fade: Phase 1 fades out as Phase 2 (certificate) fades in
-  const crossfadeStart = rel(288.0);
-  const crossfadeEnd = rel(289.0);
-  const phase1Opacity = interpolate(frame, [crossfadeStart, crossfadeEnd], [1, 0], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-  const certOpacity = interpolate(frame, [crossfadeStart, crossfadeEnd], [0, 1], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-  });
-
   return (
     <AbsoluteFill>
-      {/* Phase 1: Review Checklist — 275.28s to 289.0s */}
-      <Sequence from={0} durationInFrames={rel(289.0)}>
-        <AbsoluteFill style={{ opacity: phase1Opacity }}>
-          <ReviewChecklist />
-        </AbsoluteFill>
+      {/* Phase 1: Review Checklist — 275.28s to 295.04s */}
+      <Sequence from={0} durationInFrames={rel(295.04)}>
+        <ReviewChecklist />
       </Sequence>
 
-      {/* Phase 2: Certificate — 289.0s to 295.04s (appears AFTER checklist) */}
-      <Sequence from={rel(288.0)} durationInFrames={rel(295.04) - rel(288.0)}>
-        <AbsoluteFill style={{ opacity: certOpacity }}>
-          <Certificate />
-        </AbsoluteFill>
-      </Sequence>
-
-      {/* Final statement overlaid on certificate */}
+      {/* Final statement overlaid on checklist — 293.0s to 295.04s */}
       <Sequence from={rel(293.0)} durationInFrames={rel(295.04) - rel(293.0)}>
         <FinalStatement />
+      </Sequence>
+
+      {/* Certificate — AFTER everything, 295.04s to 302.0s */}
+      <Sequence from={rel(295.04)} durationInFrames={rel(302.0) - rel(295.04)}>
+        <Certificate />
       </Sequence>
 
       {/* Lower-third across checklist phase */}

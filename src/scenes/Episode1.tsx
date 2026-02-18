@@ -212,16 +212,12 @@ const TransactionFee: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const { opacity, translateY } = slideIn(frame, fps, 0.3);
-  const feeOpacity = fadeIn(frame, fps, 0.8);
+  const xlmOpacity = fadeIn(frame, fps, 0.8);
+  const usdSlide = slideIn(frame, fps, 1.4);
 
   return (
     <AbsoluteFill style={layout.dimOverlay(0.55)}>
-      <AbsoluteFill
-        style={{
-          ...layout.centerColumn,
-          gap: space.xl,
-        }}
-      >
+      <AbsoluteFill style={{ ...layout.centerColumn, gap: space.xl }}>
         <div
           style={{
             opacity,
@@ -233,22 +229,68 @@ const TransactionFee: React.FC = () => {
           User pays per transaction
         </div>
 
+        {/* Fee display: XLM primary, USD secondary */}
         <div
           style={{
-            ...text.overlineLG,
-            opacity: feeOpacity,
-            fontSize: 64,
-            color: colors.gold,
-            letterSpacing: 4,
-            textShadow: shadows.accent,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: space.sm,
           }}
         >
-          $0.00000167 USD
+          {/* XLM — primary */}
+          <div
+            style={{
+              opacity: xlmOpacity,
+              ...text.overlineLG,
+              fontSize: 64,
+              color: colors.gold,
+              letterSpacing: 4,
+              textShadow: shadows.accent,
+            }}
+          >
+            0.00001 XLM
+          </div>
+
+          {/* Divider + USD — secondary */}
+          <div
+            style={{
+              opacity: usdSlide.opacity,
+              transform: `translateY(${usdSlide.translateY}px)`,
+              display: "flex",
+              alignItems: "center",
+              gap: space.md,
+            }}
+          >
+            <div
+              style={{
+                width: 32,
+                height: 1,
+                background: `linear-gradient(90deg, transparent, ${colors.textDim})`,
+              }}
+            />
+            <span
+              style={{
+                ...text.bodyLG,
+                color: colors.white,
+                letterSpacing: 1,
+              }}
+            >
+              ≈ $0.00000167 USD
+            </span>
+            <div
+              style={{
+                width: 32,
+                height: 1,
+                background: `linear-gradient(90deg, ${colors.textDim}, transparent)`,
+              }}
+            />
+          </div>
         </div>
 
         <div
           style={{
-            opacity: feeOpacity,
+            opacity: xlmOpacity,
             ...text.bodyMD,
             color: colors.warmGrey,
           }}
