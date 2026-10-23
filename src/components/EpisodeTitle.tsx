@@ -46,7 +46,7 @@ export const EpisodeTitle: React.FC<Props> = ({
       <div
         style={{
           ...text.overlineSM,
-          color: colors.gold,
+          color: colors.accent,
           textShadow: "0 0 24px rgba(253, 218, 36, 0.25)",
         }}
       >
@@ -55,7 +55,7 @@ export const EpisodeTitle: React.FC<Props> = ({
 
       {/* Title */}
       <div style={{ position: "relative", display: "inline-block" }}>
-        {/* Gold highlight mark — brand signature */}
+        {/* Blue highlight mark — brand signature */}
         <div
           style={{
             position: "absolute",
@@ -63,7 +63,7 @@ export const EpisodeTitle: React.FC<Props> = ({
             left: -8,
             right: -8,
             height: 16,
-            background: colors.gold,
+            background: colors.accent,
             opacity: highlightWidth * 0.12,
             borderRadius: 2,
             transform: `scaleX(${highlightWidth})`,
@@ -81,8 +81,8 @@ export const EpisodeTitle: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* Gold underline */}
-      <div style={divider.gold(lineWidth)} />
+      {/* Blue underline */}
+      <div style={divider.accent(lineWidth)} />
     </div>
   );
 };

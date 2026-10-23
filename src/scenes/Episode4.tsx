@@ -138,7 +138,7 @@ const LedgersVsBlocks: React.FC = () => {
 // Task #10: last card at 166.70s (not 165.93s), plus 2/3 quorum indicator
 const SCENE_42_START = 161.00;
 const lifecycleSteps = [
-  { label: "Collect TXs", atSec: SCENE_42_START, color: colors.gold },
+  { label: "Collect TXs", atSec: SCENE_42_START, color: colors.accent },
   { label: "Propose Ledger", atSec: 164.17, color: colors.info },
   { label: "Consensus", atSec: 166.70, color: colors.positive },
 ];
@@ -174,7 +174,7 @@ const LedgerLifecycle: React.FC = () => {
             maxWidth: 420,
           }}
         >
-          <div style={{ ...text.overlineSM, color: colors.gold }}>
+          <div style={{ ...text.overlineSM, color: colors.accent }}>
             LEDGER LIFECYCLE
           </div>
 
@@ -433,13 +433,13 @@ const ConsensusCards: React.FC = () => {
             minWidth: 360,
           }}
         >
-          <div style={{ ...text.overlineSM, color: colors.gold }}>
+          <div style={{ ...text.overlineSM, color: colors.accent }}>
             CONSENSUS
           </div>
           <div style={{ ...text.h1, textAlign: "center" }}>
             Stellar Consensus Protocol
           </div>
-          <div style={{ ...text.codeMD, color: colors.gold, textAlign: "center" }}>
+          <div style={{ ...text.codeMD, color: colors.accent, textAlign: "center" }}>
             SCP
           </div>
         </GlassPanel>
@@ -540,7 +540,7 @@ const DavidMazieres: React.FC = () => {
               maxWidth: 420,
             }}
           >
-            <div style={{ ...text.overlineSM, color: colors.gold }}>
+            <div style={{ ...text.overlineSM, color: colors.accent }}>
               CONSENSUS MODEL
             </div>
             <div style={{ ...text.h2, textAlign: "center", lineHeight: 1.4 }}>
@@ -549,7 +549,7 @@ const DavidMazieres: React.FC = () => {
             <div
               style={{
                 ...text.codeMD,
-                color: colors.gold,
+                color: colors.accent,
                 letterSpacing: 2,
               }}
             >
@@ -658,7 +658,7 @@ const QuorumSlices: React.FC = () => {
   });
   const spread = interpolate(convergence, [0, 1], [120, 40]);
   const CIRCLES = [
-    { color: colors.gold, fillColor: "rgba(201,168,76,0.15)", borderColor: "rgba(201,168,76,0.4)", label: "Slice A", angle: -90, delay: 0.3 },
+    { color: colors.accent, fillColor: "rgba(24,60,255,0.15)", borderColor: "rgba(24,60,255,0.4)", label: "Slice A", angle: -90, delay: 0.3 },
     { color: colors.info, fillColor: "rgba(107,155,210,0.15)", borderColor: "rgba(107,155,210,0.4)", label: "Slice B", angle: 150, delay: 0.6 },
     { color: colors.positive, fillColor: "rgba(92,184,138,0.15)", borderColor: "rgba(92,184,138,0.4)", label: "Slice C", angle: 30, delay: 0.9 },
   ];
@@ -673,7 +673,7 @@ const QuorumSlices: React.FC = () => {
       {/* Phase 1: FBA Network animation */}
       <AbsoluteFill style={{ opacity: phase1Opacity }}>
         <AbsoluteFill style={{ ...layout.centerColumn }}>
-          <div style={{ opacity: fadeIn(frame, fps, 0.2), ...text.overlineSM, color: colors.gold, marginBottom: space.lg }}>
+          <div style={{ opacity: fadeIn(frame, fps, 0.2), ...text.overlineSM, color: colors.accent, marginBottom: space.lg }}>
             FEDERATED BYZANTINE AGREEMENT
           </div>
           <div style={{ opacity: fadeIn(frame, fps, 0.2), ...text.h2, marginBottom: space.xl, textAlign: "center" }}>
@@ -729,7 +729,7 @@ const QuorumSlices: React.FC = () => {
       {/* Phase 2: Quorum Circles — CENTERED */}
       <AbsoluteFill style={{ opacity: phase2Opacity }}>
         <AbsoluteFill style={{ ...layout.centerColumn }}>
-          <div style={{ ...text.overlineSM, color: colors.gold, marginBottom: space.lg }}>
+          <div style={{ ...text.overlineSM, color: colors.accent, marginBottom: space.lg }}>
             FEDERATED BYZANTINE AGREEMENT
           </div>
           <div style={{ ...text.h1, marginBottom: space.xxl, textAlign: "center" }}>
@@ -844,7 +844,7 @@ const Trilemma: React.FC = () => {
       x: vTop.x,
       y: vTop.y,
       label: "Scalability",
-      color: colors.gold,
+      color: colors.accent,
       labelAnchor: "middle" as const,
       labelDy: -48,
       labelDx: 0,
@@ -868,7 +868,7 @@ const Trilemma: React.FC = () => {
           {/* Triangle fill — subtle glow interior */}
           <path
             d={triPath}
-            fill={`${colors.gold}06`}
+            fill={`${colors.accent}06`}
             opacity={edgesProg}
           />
 
@@ -876,7 +876,7 @@ const Trilemma: React.FC = () => {
           <path
             d={triPath}
             fill="none"
-            stroke={`${colors.gold}40`}
+            stroke={`${colors.accent}40`}
             strokeWidth={3}
             strokeDasharray={perimeter}
             strokeDashoffset={perimeter * (1 - edgesProg)}
@@ -978,7 +978,7 @@ const ClosingQuestion: React.FC = () => {
                   opacity: visible ? 1 : 0,
                   color: visible
                     ? word.text === "programmability"
-                      ? colors.gold
+                      ? colors.accent
                       : colors.textPrimary
                     : "transparent",
                 }}

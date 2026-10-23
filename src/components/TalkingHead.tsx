@@ -7,6 +7,10 @@ import {
 } from "remotion";
 import { colors } from "../styles/theme";
 
+const handleVideoError = (error: Error) => {
+  console.warn("Unable to load the talking-head video; continuing without it.", error);
+};
+
 type VideoMode =
   | "full"           // Video fills entire screen, no overlay
   | "overlay"        // Video as background with darkened overlay for graphics on top
@@ -77,6 +81,7 @@ export const TalkingHead: React.FC<Props> = ({
       <div style={{ position: "absolute", inset: 0, opacity }}>
         <OffthreadVideo
           src={staticFile("STELLAR-SPEEDRUN.mp4")}
+          onError={handleVideoError}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
           transparent={false}
         />
@@ -89,6 +94,7 @@ export const TalkingHead: React.FC<Props> = ({
       <div style={{ position: "absolute", inset: 0, opacity }}>
         <OffthreadVideo
           src={staticFile("STELLAR-SPEEDRUN.mp4")}
+          onError={handleVideoError}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
           transparent={false}
         />
@@ -126,6 +132,7 @@ export const TalkingHead: React.FC<Props> = ({
       >
         <OffthreadVideo
           src={staticFile("STELLAR-SPEEDRUN.mp4")}
+          onError={handleVideoError}
           style={{ width: "100%", height: "100%", objectFit: "cover" }}
           transparent={false}
         />

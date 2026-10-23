@@ -1,24 +1,20 @@
 import {
   AbsoluteFill,
   Audio,
-  OffthreadVideo,
   Sequence,
   staticFile,
   useCurrentFrame,
   interpolate,
 } from "remotion";
-import { Opening } from "./scenes/Opening";
-import { Episode1 } from "./scenes/Episode1";
-import { Episode2 } from "./scenes/Episode2";
-import { Episode3 } from "./scenes/Episode3";
-import { Episode4 } from "./scenes/Episode4";
-import { Episode5 } from "./scenes/Episode5";
-import { Closing } from "./scenes/Closing";
+import { Opening, Episode1, Episode2, Episode3, Episode4, Episode5, Closing } from "./modules/stellar/scenes";
 import { colors } from "./styles/theme";
 import { episodes, toFrame } from "./config/audioMarks";
 import { ProgressBar } from "./components/ProgressBar";
 import { EpisodeTransition } from "./components/EpisodeTransition";
 import { DebugTimer } from "./components/DebugTimer";
+import { stellarExplainer } from "./modules/stellar/content";
+import { FontLoader } from "./components/FontLoader";
+import { FloripaLogo } from "./components/FloripaLogo";
 
 // ─── Document censor: pixelated 16-bit, bottom-to-top reveal ─────────
 const PIXEL_SIZE = 36;
@@ -140,20 +136,17 @@ const scenes = [
   },
 ];
 
+// Scene registration is driven by the Stellar content module; the visual scenes remain
+// intentionally thin implementations of the generic six-topic content contract.
+export const stellarContent = stellarExplainer;
+
 export const StellarSpeedRun: React.FC = () => {
   return (
     <AbsoluteFill style={{ backgroundColor: colors.bgPrimary }}>
-      {/* Base layer: talking head video running the entire duration */}
-      <OffthreadVideo
-        src={staticFile("STELLAR-SPEEDRUN.mp4")}
-        style={{
-          width: "100%",
-          height: "100%",
-          objectFit: "cover",
-          position: "absolute",
-        }}
-      />
-
+      <FontLoader />
+      <div style={{ position: "absolute", top: 34, left: 56, zIndex: 20, opacity: 0.92 }}>
+        <FloripaLogo size={28} />
+      </div>
       {/* Audio track */}
       <Audio src={staticFile("audio/narration/full-narration.mp3")} volume={0} />
 

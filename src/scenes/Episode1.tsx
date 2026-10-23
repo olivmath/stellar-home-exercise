@@ -47,7 +47,7 @@ const Year2014: React.FC = () => {
           style={{
             ...text.overlineLG,
             fontSize: 140,
-            color: colors.gold,
+            color: colors.accent,
             opacity: yearOpacity,
             transform: `scale(${yearScale})`,
             letterSpacing: 8,
@@ -68,7 +68,7 @@ const Year2014: React.FC = () => {
         >
           Stellar was created to make
           <br />
-          <span style={{ color: colors.gold }}>financial systems more open</span>
+          <span style={{ color: colors.accent }}>financial systems more open</span>
         </h3>
       </AbsoluteFill>
     </AbsoluteFill>
@@ -191,7 +191,7 @@ const SDF: React.FC = () => {
           <div
             style={{
               ...text.h2,
-              color: colors.gold,
+              color: colors.accent,
               letterSpacing: 2,
             }}
           >
@@ -244,7 +244,7 @@ const TransactionFee: React.FC = () => {
               opacity: xlmOpacity,
               ...text.overlineLG,
               fontSize: 64,
-              color: colors.gold,
+              color: colors.accent,
               letterSpacing: 4,
               textShadow: shadows.accent,
             }}
@@ -421,7 +421,7 @@ const CAPs: React.FC = () => {
           <div
             style={{
               ...text.h2,
-              color: colors.gold,
+              color: colors.accent,
               textAlign: "center",
             }}
           >
@@ -479,7 +479,7 @@ const ClosingQuestion: React.FC = () => {
                 key={i}
                 style={{
                   opacity: visible ? 1 : 0,
-                  color: visible ? (word.text === "network?" ? colors.gold : colors.textPrimary) : "transparent",
+                  color: visible ? (word.text === "network?" ? colors.accent : colors.textPrimary) : "transparent",
                 }}
               >
                 {word.text}{" "}

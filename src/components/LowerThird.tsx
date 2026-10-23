@@ -37,12 +37,12 @@ export const LowerThird: React.FC<Props> = ({
         gap: space.sm + 2,
       }}
     >
-      {/* Gold accent line */}
+      {/* Blue accent line */}
       <div
         style={{
           height: 2.5,
           width: lineWidth,
-          background: colors.gold,
+          background: colors.accent,
           borderRadius: 2,
           boxShadow: "0 0 16px rgba(253, 218, 36, 0.25)",
         }}

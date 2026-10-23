@@ -4,6 +4,9 @@
   "private": true,
   "scripts": {
     "studio": "remotion studio",
+    "studio:index": "remotion studio --composition FloripaWeb3Index",
+    "render:composition": "remotion render",
+    "render:index": "remotion render FloripaWeb3Index out/floripa-web3-index.mp4 --crf=18",
     "preview": "remotion render StellarSpeedRun out/preview.mp4 --crf=28",
     "render": "remotion render StellarSpeedRun out/stellar-speedrun.mp4 --crf=18 --concurrency=75%",
     "render:hq": "remotion render StellarSpeedRun out/stellar-speedrun-hq.mp4 --crf=10"

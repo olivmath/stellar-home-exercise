@@ -62,7 +62,7 @@ export const NetworkBackground: React.FC<Props> = ({
         overflow: "hidden",
       }}
     >
-      {/* Ambient gold orb — simplified */}
+      {/* Ambient blue orb — simplified */}
       <div
         style={{
           position: "absolute",
@@ -71,7 +71,7 @@ export const NetworkBackground: React.FC<Props> = ({
           width: 600,
           height: 600,
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${colors.goldDim}, transparent)`,
+          background: `radial-gradient(circle, ${colors.accentDim}, transparent)`,
         }}
       />
       {/* Ambient info orb — simplified */}
@@ -111,7 +111,7 @@ export const NetworkBackground: React.FC<Props> = ({
               y1={p1.y}
               x2={p2.x}
               y2={p2.y}
-              stroke={colors.gold}
+              stroke={colors.accent}
               strokeWidth={0.6}
               opacity={lineOpacity}
             />
@@ -128,8 +128,8 @@ export const NetworkBackground: React.FC<Props> = ({
           [0, 0.4 + p.size * 0.15],
           { extrapolateLeft: "clamp", extrapolateRight: "clamp" }
         );
-        const isGold = i % 3 === 0;
-        const color = isGold ? colors.gold : colors.info;
+        const isBlue = i % 3 === 0;
+        const color = isBlue ? colors.accent : colors.info;
 
         return (
           <div
