@@ -5,13 +5,12 @@ import {
   useVideoConfig,
   interpolate,
   Sequence,
-  Img,
-  staticFile,
 } from "remotion";
 import { colors } from "../styles/theme";
 import { text, space, divider } from "../styles/designSystem";
 
 import { LowerThird } from "../components/LowerThird";
+import { FloripaLogo } from "../components/FloripaLogo";
 
 export const Opening: React.FC = () => {
   const frame = useCurrentFrame();
@@ -51,7 +50,7 @@ export const Opening: React.FC = () => {
         }}
       />
 
-      {/* Central gold glow */}
+      {/* Central Floripa blue glow */}
       <div
         style={{
           position: "absolute",
@@ -61,7 +60,7 @@ export const Opening: React.FC = () => {
           width: 900,
           height: 500,
           borderRadius: "50%",
-          background: `radial-gradient(ellipse, rgba(253, 218, 36, 0.06) 0%, rgba(0, 167, 181, 0.02) 40%, transparent 70%)`,
+          background: `radial-gradient(ellipse, rgba(24, 60, 255, 0.12) 0%, rgba(167, 195, 255, 0.04) 40%, transparent 70%)`,
           opacity: titleProgress * fadeOut,
           pointerEvents: "none",
         }}
@@ -81,21 +80,18 @@ export const Opening: React.FC = () => {
             gap: space.xl,
           }}
         >
-          {/* Stellar logo */}
+          {/* Floripa Web3 lockup */}
           <div style={{ opacity: logoOpacity }}>
-            <Img
-              src={staticFile("images/branding/stellar-logo.svg")}
-              style={{ width: 110, height: 110, opacity: 0.9 }}
-            />
+            <FloripaLogo size={74} />
           </div>
 
-          {/* Main title — Lora serif with gold gradient */}
+          {/* Main title — Floripa blue gradient */}
           <h1
             style={{
               ...text.displayXL,
               letterSpacing: -2,
               lineHeight: 1,
-              background: `linear-gradient(135deg, ${colors.gold}, ${colors.white})`,
+              background: `linear-gradient(135deg, ${colors.accent}, ${colors.lightBlue}, ${colors.white})`,
               backgroundClip: "text",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
@@ -118,10 +114,10 @@ export const Opening: React.FC = () => {
             End-to-End in 5 Minutes
           </div>
 
-          {/* Gold gradient underline — brand signature */}
+          {/* Blue underline — brand signature */}
           <div
             style={{
-              ...divider.gold(
+              ...divider.accent(
                 interpolate(frame, [75, 125], [0, 240], {
                   extrapolateLeft: "clamp",
                   extrapolateRight: "clamp",

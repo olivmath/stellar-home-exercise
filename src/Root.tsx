@@ -1,18 +1,22 @@
 import { Composition } from "remotion";
 import { StellarSpeedRun } from "./StellarSpeedRun";
 import { Thumbnail } from "./compositions/Thumbnail";
-import { Opening } from "./scenes/Opening";
-import { Episode1 } from "./scenes/Episode1";
-import { Episode2 } from "./scenes/Episode2";
-import { Episode3 } from "./scenes/Episode3";
-import { Episode4 } from "./scenes/Episode4";
-import { Episode5 } from "./scenes/Episode5";
-import { Closing } from "./scenes/Closing";
+import { FloripaWeb3Index } from "./compositions/FloripaWeb3Index";
+import { Opening, Episode1, Episode2, Episode3, Episode4, Episode5, Closing } from "./modules/stellar/scenes";
 import { FPS, episodes, toFrame } from "./config/audioMarks";
 
 export const RemotionRoot: React.FC = () => {
   return (
     <>
+      {/* Production index — open this first when choosing among videos/scenes. */}
+      <Composition
+        id="FloripaWeb3Index"
+        component={FloripaWeb3Index}
+        durationInFrames={1}
+        fps={30}
+        width={1920}
+        height={1080}
+      />
       {/* Video completo — synced to audioMarks */}
       <Composition
         id="StellarSpeedRun"

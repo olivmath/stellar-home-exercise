@@ -88,7 +88,7 @@ const BytesAnimation: React.FC = () => {
           style={{
             ...text.displayXL,
             fontSize: 120,
-            color: colors.gold,
+            color: colors.accent,
             opacity: titleOpacity,
             transform: `scale(${titleScale})`,
             textShadow: `0 0 80px rgba(253, 218, 36, 0.4), 0 0 160px rgba(253, 218, 36, 0.15)`,
@@ -149,7 +149,7 @@ const BytesAnimation: React.FC = () => {
                 key={i}
                 style={{
                   ...text.codeLG,
-                  color: i % 3 === 0 ? colors.gold : colors.info,
+                  color: i % 3 === 0 ? colors.accent : colors.info,
                   opacity: itemOpacity,
                   background: "rgba(255, 255, 255, 0.04)",
                   padding: `${space.xs}px ${space.sm}px`,
@@ -179,7 +179,7 @@ const BytesAnimation: React.FC = () => {
             style={{
               height: 2,
               width: 60,
-              background: `linear-gradient(90deg, ${colors.info}40, ${colors.gold})`,
+              background: `linear-gradient(90deg, ${colors.info}40, ${colors.accent})`,
               borderRadius: 1,
             }}
           />
@@ -187,7 +187,7 @@ const BytesAnimation: React.FC = () => {
             style={{
               borderTop: "6px solid transparent",
               borderBottom: "6px solid transparent",
-              borderLeft: `10px solid ${colors.gold}`,
+              borderLeft: `10px solid ${colors.accent}`,
             }}
           />
         </div>
@@ -210,7 +210,7 @@ const BytesAnimation: React.FC = () => {
           <div
             style={{
               ...text.overlineSM,
-              color: colors.gold,
+              color: colors.accent,
               textAlign: "center",
               marginBottom: space.sm,
             }}
@@ -244,7 +244,7 @@ const BytesAnimation: React.FC = () => {
                   <span style={{ ...text.codeMD, color: colors.textDim, marginRight: space.xs }}>
                     {i + 1}.
                   </span>
-                  <span style={{ ...text.codeMD, color: colors.gold }}>
+                  <span style={{ ...text.codeMD, color: colors.accent }}>
                     {word}
                   </span>
                 </div>
@@ -334,29 +334,29 @@ const KeyFlow: React.FC = () => {
             gap: 0,
           }}
         >
-          <div style={{ ...text.overlineSM, color: colors.gold, opacity: fadeIn(frame, fps, 0.2), marginBottom: space.lg }}>
+          <div style={{ ...text.overlineSM, color: colors.accent, opacity: fadeIn(frame, fps, 0.2), marginBottom: space.lg }}>
             Key Derivation
           </div>
 
           {/* Seed */}
-          <div style={{ ...nodeStyle(colors.gold), opacity: seedOpacity }}>
-            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: colors.gold }} />
-            <span style={{ ...text.codeMD, color: colors.gold }}>Seed</span>
+          <div style={{ ...nodeStyle(colors.accent), opacity: seedOpacity }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", backgroundColor: colors.accent }} />
+            <span style={{ ...text.codeMD, color: colors.accent }}>Seed</span>
             <span style={{ ...text.codeSM, color: colors.textDim }}>(32 bytes)</span>
           </div>
 
           {/* Arrow 1 ↓ */}
-          <div style={verticalArrow(arrow1Progress, colors.gold)}>
+          <div style={verticalArrow(arrow1Progress, colors.accent)}>
             <div style={{
               width: 1.5,
               flex: 1,
-              background: `linear-gradient(180deg, ${colors.gold}35, ${colors.gold})`,
+              background: `linear-gradient(180deg, ${colors.accent}35, ${colors.accent})`,
               borderRadius: 1,
             }} />
             <div style={{
               borderLeft: "4px solid transparent",
               borderRight: "4px solid transparent",
-              borderTop: `7px solid ${colors.gold}`,
+              borderTop: `7px solid ${colors.accent}`,
             }} />
           </div>
 
@@ -447,7 +447,7 @@ const Base32Encoding: React.FC = () => {
                 textAlign: "center",
               }}
             >
-              <span style={{ ...text.codeSM, color: colors.gold }}>Secret</span>
+              <span style={{ ...text.codeSM, color: colors.accent }}>Secret</span>
             </div>
             <div
               style={{
@@ -656,7 +656,7 @@ const CurveComparison: React.FC = () => {
             style={{
               ...text.displayMD,
               fontSize: 44,
-              color: colors.gold,
+              color: colors.accent,
               textShadow: "0 0 30px rgba(253, 218, 36, 0.2)",
             }}
           >
@@ -667,7 +667,7 @@ const CurveComparison: React.FC = () => {
           <div
             style={{
               ...text.codeLG,
-              color: colors.gold,
+              color: colors.accent,
               minHeight: 32,
               textShadow: `0 0 20px rgba(253, 218, 36, 0.3)`,
             }}
@@ -675,7 +675,7 @@ const CurveComparison: React.FC = () => {
             {edChars > 0 && (
               <>
                 {ed25519Name.slice(0, edChars)}
-                <span style={{ opacity: frame % 16 < 8 ? 1 : 0, color: colors.gold }}>|</span>
+                <span style={{ opacity: frame % 16 < 8 ? 1 : 0, color: colors.accent }}>|</span>
               </>
             )}
           </div>
@@ -738,7 +738,7 @@ const ClosingQuestion: React.FC = () => {
                   opacity: visible ? 1 : 0,
                   color: visible
                     ? word.text === "network?"
-                      ? colors.gold
+                      ? colors.accent
                       : colors.textPrimary
                     : "transparent",
                 }}

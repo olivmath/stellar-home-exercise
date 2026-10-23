@@ -51,7 +51,7 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
     extrapolateRight: "clamp",
   });
 
-  // Gold underline expand
+  // Blue underline expand
   const lineWidth = interpolate(frame, [28, 44], [0, 200], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
@@ -66,7 +66,7 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
         alignItems: "center",
       }}
     >
-      {/* Ambient gold orb — simplified */}
+      {/* Ambient blue orb — simplified */}
       <div
         style={{
           position: "absolute",
@@ -76,7 +76,7 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
           width: 500,
           height: 500,
           borderRadius: "50%",
-          background: `radial-gradient(circle, ${colors.goldDim}, transparent)`,
+          background: `radial-gradient(circle, ${colors.accentDim}, transparent)`,
           opacity: 0.6,
         }}
       />
@@ -98,7 +98,7 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
         <div
           style={{
             ...text.overlineLG,
-            color: colors.gold,
+            color: colors.accent,
             transform: `scale(${numberScale})`,
             opacity: numberOpacity,
           }}
@@ -129,8 +129,8 @@ export const EpisodeTransition: React.FC<Props> = ({ episode, title, subtitle })
           {subtitle}
         </div>
 
-        {/* Gold underline */}
-        <div style={divider.gold(lineWidth)} />
+        {/* Blue underline */}
+        <div style={divider.accent(lineWidth)} />
       </div>
     </AbsoluteFill>
   );

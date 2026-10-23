@@ -1,9 +1,12 @@
-// ─── Stellar Design Tokens ──────────────────────────────────────────
+// ─── Floripa Web3 Design Tokens ────────────────────────────────────
 // Unified abstraction layer for Remotion compositions.
-// Institutional. Restrained. Every token earns its place.
+// Technical, high-contrast, and generous with blue signal.
 
 import { CSSProperties } from "react";
 import { colors, fonts } from "./theme";
+import { floripaTokens } from "../design/tokens";
+
+export { floripaTokens };
 
 // ── Spacing (8px base grid) ────────────────────────────────────────
 export const space = {
@@ -17,6 +20,13 @@ export const space = {
   xxxl: 64,
   section: 80,
   edge: 80,
+} as const;
+
+export const safeArea = {
+  top: floripaTokens.spacing.safeTop,
+  right: floripaTokens.spacing.safeX,
+  bottom: floripaTokens.spacing.safeBottom,
+  left: floripaTokens.spacing.safeX,
 } as const;
 
 // ── Border Radius ──────────────────────────────────────────────────
@@ -200,7 +210,7 @@ export const shadows = {
 } as const;
 
 // ── Dividers ───────────────────────────────────────────────────────
-// Clean lines. The gold rule is the only brand signature element.
+// Clean lines. The blue rule is the brand signature element.
 export const divider = {
   subtle: (width: number | string = "100%"): CSSProperties => ({
     height: 1,
@@ -208,17 +218,17 @@ export const divider = {
     background: colors.borderSubtle,
   }),
 
-  accent: (width: number | string = "100%"): CSSProperties => ({
+  border: (width: number | string = "100%"): CSSProperties => ({
     height: 1,
     width,
     background: colors.borderAccent,
   }),
 
-  /** Thin gold rule — the Stellar signature. Use sparingly. */
-  gold: (width: number | string = 48): CSSProperties => ({
+  /** Thin Floripa blue rule. */
+  accent: (width: number | string = 48): CSSProperties => ({
     height: 1,
     width,
-    background: colors.gold,
+    background: colors.accent,
     opacity: 0.5,
   }),
 } as const;
@@ -294,8 +304,8 @@ export const variants: Record<
   { color: string; bg: string; border: string }
 > = {
   accent: {
-    color: colors.gold,
-    bg: colors.goldDim,
+    color: colors.accent,
+    bg: colors.accentDim,
     border: colors.borderAccent,
   },
   positive: {

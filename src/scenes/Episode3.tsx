@@ -24,7 +24,7 @@ const rel = (sec: number) => toFrame(sec - EP);
 // Horizon: 122.23s | Core: 124.23s | Settlement: 125.79s
 const SCENE_32_START = 116.74;
 const lifecycleSteps = [
-  { label: "Build", atSec: SCENE_32_START, color: colors.gold },
+  { label: "Build", atSec: SCENE_32_START, color: colors.accent },
   { label: "Sign", atSec: 119.20, color: colors.info },
   { label: "Submit to Horizon", atSec: 121.17, color: colors.info },
   { label: "Stellar Core", atSec: 123.63, color: colors.info },
@@ -60,7 +60,7 @@ const SubmissionFlow: React.FC = () => {
             gap: space.lg,
           }}
         >
-          <div style={{ ...text.overlineSM, color: colors.gold }}>
+          <div style={{ ...text.overlineSM, color: colors.accent }}>
             Transaction Lifecycle
           </div>
 
@@ -148,7 +148,7 @@ const SubmissionFlow: React.FC = () => {
 // Generate 100 operation circle colors cycling through brand palette
 const OP_COLORS_CYCLE = [
   colors.info,
-  colors.gold,
+  colors.accent,
   "#B7ACE8",
   colors.positive,
   "#E88A4C",
@@ -401,7 +401,7 @@ const operationTypes = [
   {
     label: "Payment",
     description: "Asset transfers between accounts",
-    color: colors.gold,
+    color: colors.accent,
     atSec: 136.83,
   },
   {
@@ -449,7 +449,7 @@ const OperationTypes: React.FC = () => {
             gap: space.sm,
           }}
         >
-          <div style={{ ...text.overlineSM, color: colors.gold, fontSize: 20 }}>
+          <div style={{ ...text.overlineSM, color: colors.accent, fontSize: 20 }}>
             26 Operation Types
           </div>
           <div style={{ ...text.displayMD, color: colors.textPrimary }}>
@@ -524,7 +524,7 @@ const ClosingQuestion: React.FC = () => {
                   opacity: visible ? 1 : 0,
                   color: visible
                     ? isHighlighted
-                      ? colors.gold
+                      ? colors.accent
                       : colors.textPrimary
                     : "transparent",
                 }}

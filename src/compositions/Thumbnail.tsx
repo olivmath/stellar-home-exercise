@@ -16,7 +16,7 @@ export const Thumbnail: React.FC = () => {
   return (
     <AbsoluteFill
       style={{
-        backgroundColor: colors.gold,
+        backgroundColor: colors.accent,
         padding: space.xxl,
         flexDirection: "column",
         justifyContent: "space-between",
@@ -104,7 +104,7 @@ export const Thumbnail: React.FC = () => {
             style={{
               backgroundColor: colors.black,
               borderRadius: radius.lg,
-              border: `2px solid ${colors.gold}`,
+              border: `2px solid ${colors.accent}`,
               padding: `${space.md}px ${space.lg}px`,
               display: "flex",
               flexDirection: "column",
@@ -114,7 +114,7 @@ export const Thumbnail: React.FC = () => {
             <span
               style={{
                 ...text.overlineLG,
-                color: colors.gold,
+                color: colors.accent,
                 letterSpacing: 2,
               }}
             >

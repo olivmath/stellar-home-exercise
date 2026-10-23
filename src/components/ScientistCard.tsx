@@ -44,7 +44,7 @@ export const ScientistCard: React.FC<Props> = ({
             height: 120,
             borderRadius: "50%",
             overflow: "hidden",
-            border: `2.5px solid ${colors.gold}`,
+            border: `2.5px solid ${colors.accent}`,
             flexShrink: 0,
           }}
         >
@@ -68,7 +68,7 @@ export const ScientistCard: React.FC<Props> = ({
       <div
         style={{
           ...text.label,
-          color: colors.gold,
+          color: colors.accent,
           letterSpacing: 2.5,
         }}
       >
@@ -77,7 +77,7 @@ export const ScientistCard: React.FC<Props> = ({
 
       <div
         style={{
-          ...divider.gold(44),
+          ...divider.accent(44),
           marginTop: space.xs,
           marginBottom: space.xs,
         }}

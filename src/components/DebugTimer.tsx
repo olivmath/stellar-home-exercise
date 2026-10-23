@@ -18,7 +18,7 @@ export const DebugTimer: React.FC = () => {
         right: 16,
         fontFamily: fonts.code,
         fontSize: 16,
-        color: "rgba(253, 218, 36, 0.7)",
+        color: "rgba(167, 195, 255, 0.9)",
         background: "rgba(0, 0, 0, 0.6)",
         padding: "6px 14px",
         borderRadius: 8,

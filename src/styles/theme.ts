@@ -1,22 +1,25 @@
-// ─── Stellar Design System · Theme ──────────────────────────────────
-// Corporate institutional tone. Clean, restrained, authoritative.
-// References: Bloomberg, McKinsey, Deloitte editorial standards.
+// ─── Floripa Web3 Design System · Theme ─────────────────────────────
+// Crisp, technical, and optimistic. Floripa blue carries the brand;
+// graphite keeps the dense protocol visuals legible.
 
 export const colors = {
   // ── Backgrounds ──
-  bgPrimary: "#0B0B0F",
-  bgDeep: "#070709",
+  bgPrimary: "#08090B",
+  bgDeep: "#08090B",
   bgElevated: "#131318",
   bgSurface: "#18181E",
   bgGlass: "rgba(11, 11, 15, 0.82)",
 
   // ── Brand ──
-  gold: "#C9A84C",               // Muted institutional gold
-  goldDim: "rgba(201, 168, 76, 0.08)",
-  goldMuted: "rgba(201, 168, 76, 0.18)",
+  blue: "#183CFF",
+  supportBlue: "#3C6DD3",
+  lightBlue: "#A7C3FF",
+  accent: "#183CFF",
+  accentDim: "rgba(24, 60, 255, 0.08)",
+  accentMuted: "rgba(24, 60, 255, 0.18)",
 
-  black: "#0B0B0F",
-  white: "#ECEDEF",
+  black: "#000000",
+  white: "#FFFFFF",
   offWhite: "#C8C9CC",
 
   // ── Accents ──
@@ -35,33 +38,29 @@ export const colors = {
   textPrimary: "#ECEDEF",
   textSecondary: "#9DA0A7",
   textDim: "#5C5F66",
-  textAccent: "#C9A84C",
+  textAccent: "#183CFF",
 
   // ── Borders ──
   borderSubtle: "rgba(255, 255, 255, 0.06)",
   borderMedium: "rgba(255, 255, 255, 0.10)",
-  borderAccent: "rgba(201, 168, 76, 0.15)",
+  borderAccent: "rgba(24, 60, 255, 0.35)",
 
   // ── Shadows ──
   shadowSm: "0 1px 4px rgba(0, 0, 0, 0.4)",
   shadowMd: "0 4px 16px rgba(0, 0, 0, 0.5)",
   shadowLg: "0 8px 32px rgba(0, 0, 0, 0.55)",
-  shadowAccent: "0 0 24px rgba(201, 168, 76, 0.06)",
+  shadowAccent: "0 0 24px rgba(24, 60, 255, 0.12)",
 } as const;
 
 // ── Typography ──────────────────────────────────────────────────────
-// Source Serif 4: editorial credibility without decoration
-// Inter: neutral workhorse — Bloomberg/Stripe standard
-// IBM Plex Mono: institutional code/data font
 export const fonts = {
-  display: "'Source Serif 4', Georgia, serif",
+  display: "'Inter', 'Helvetica Neue', sans-serif",
   body: "'Inter', 'Helvetica Neue', sans-serif",
   accent: "'Inter', 'Helvetica Neue', sans-serif",
   code: "'IBM Plex Mono', 'Courier New', monospace",
 } as const;
 
 export const fontUrls = [
-  "https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,300;400;500;600;700&display=swap",
   "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap",
   "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap",
 ];

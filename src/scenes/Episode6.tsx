@@ -34,7 +34,7 @@ const CODE_LINES = [
     atSec: 244.46,
     tokens: [
       { text: "use ", color: colors.info },
-      { text: "soroban_sdk", color: colors.gold },
+      { text: "soroban_sdk", color: colors.accent },
       { text: "::{", color: colors.textDim },
       { text: "contract, contractimpl, symbol_short, Env, Symbol", color: colors.textPrimary },
       { text: "};", color: colors.textDim },
@@ -52,7 +52,7 @@ const CODE_LINES = [
       { text: "const ", color: colors.info },
       { text: "STATE", color: colors.textPrimary },
       { text: ": ", color: colors.textDim },
-      { text: "Symbol", color: colors.gold },
+      { text: "Symbol", color: colors.accent },
       { text: " = ", color: colors.textDim },
       { text: "symbol_short!", color: colors.info },
       { text: '("STATE")', color: colors.positive },
@@ -68,14 +68,14 @@ const CODE_LINES = [
   {
     atSec: 246.63,
     tokens: [
-      { text: "#[contract]", color: colors.gold },
+      { text: "#[contract]", color: colors.accent },
     ],
   },
   {
     atSec: 246.63,
     tokens: [
       { text: "pub struct ", color: colors.info },
-      { text: "FlipperContract", color: colors.gold },
+      { text: "FlipperContract", color: colors.accent },
       { text: ";", color: colors.textDim },
     ],
   },
@@ -86,14 +86,14 @@ const CODE_LINES = [
   {
     atSec: 246.63,
     tokens: [
-      { text: "#[contractimpl]", color: colors.gold },
+      { text: "#[contractimpl]", color: colors.accent },
     ],
   },
   {
     atSec: 246.63,
     tokens: [
       { text: "impl ", color: colors.info },
-      { text: "FlipperContract ", color: colors.gold },
+      { text: "FlipperContract ", color: colors.accent },
       { text: "{", color: colors.textDim },
     ],
   },
@@ -103,7 +103,7 @@ const CODE_LINES = [
       { text: "    pub fn ", color: colors.info },
       { text: "get", color: colors.textPrimary },
       { text: "(env: ", color: colors.textDim },
-      { text: "Env", color: colors.gold },
+      { text: "Env", color: colors.accent },
       { text: ") -> ", color: colors.textDim },
       { text: "bool", color: colors.info },
       { text: " {", color: colors.textDim },
@@ -132,9 +132,9 @@ const CODE_LINES = [
     atSec: 249.46,
     tokens: [
       { text: "    pub fn ", color: colors.info },
-      { text: "flip", color: colors.gold },
+      { text: "flip", color: colors.accent },
       { text: "(env: ", color: colors.textDim },
-      { text: "Env", color: colors.gold },
+      { text: "Env", color: colors.accent },
       { text: ") {", color: colors.textDim },
     ],
   },
@@ -156,7 +156,7 @@ const CODE_LINES = [
       { text: "            .update(&", color: colors.textDim },
       { text: "STATE", color: colors.textPrimary },
       { text: ", |current: ", color: colors.textDim },
-      { text: "Option<bool>", color: colors.gold },
+      { text: "Option<bool>", color: colors.accent },
       { text: "| !current.unwrap_or(false));", color: colors.textDim },
     ],
   },
@@ -210,7 +210,7 @@ const FlipperCode: React.FC = () => {
             }}
           >
             <div style={{ width: 12, height: 12, borderRadius: radius.circle, backgroundColor: colors.negative, opacity: 0.6 }} />
-            <div style={{ width: 12, height: 12, borderRadius: radius.circle, backgroundColor: colors.gold, opacity: 0.6 }} />
+            <div style={{ width: 12, height: 12, borderRadius: radius.circle, backgroundColor: colors.accent, opacity: 0.6 }} />
             <div style={{ width: 12, height: 12, borderRadius: radius.circle, backgroundColor: colors.positive, opacity: 0.6 }} />
             <span style={{ ...text.codeSM, color: colors.textDim, marginLeft: space.md }}>
               flipper.rs
@@ -408,7 +408,7 @@ const ZkAndPasskeys: React.FC = () => {
             width: 560,
           }}
         >
-          <div style={{ ...text.overlineSM, color: colors.gold }}>THIS ENABLES</div>
+          <div style={{ ...text.overlineSM, color: colors.accent }}>THIS ENABLES</div>
 
           {/* Two square cards side by side */}
           <div style={{ display: "flex", gap: space.lg }}>
@@ -424,7 +424,7 @@ const ZkAndPasskeys: React.FC = () => {
               <div style={{ ...text.bodySM, color: colors.warmGrey, textAlign: "center" }}>Zero-knowledge proofs</div>
             </div>
 
-            <div style={{ opacity: fadeIn(frame, fps, passkeysDelay), ...squareCardStyle(colors.gold) }}>
+            <div style={{ opacity: fadeIn(frame, fps, passkeysDelay), ...squareCardStyle(colors.accent) }}>
               <Img
                 src={staticFile("images/fingerprint.png")}
                 style={{
@@ -434,7 +434,7 @@ const ZkAndPasskeys: React.FC = () => {
                   opacity: 0.9,
                 }}
               />
-              <div style={{ ...text.codeSM, color: colors.gold, textAlign: "center" }}>Passkeys</div>
+              <div style={{ ...text.codeSM, color: colors.accent, textAlign: "center" }}>Passkeys</div>
               <div style={{ ...text.bodySM, color: colors.warmGrey, textAlign: "center" }}>Better UX auth</div>
             </div>
           </div>

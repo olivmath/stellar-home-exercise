@@ -43,9 +43,9 @@ Everything in this video was built from primary sources. Here's what was studied
 
 | Resource | Used For |
 |----------|----------|
-| `docs/brand-manual-stellar-2025.pdf` | Color palette, typography, logo usage rules — the entire design system derives from this |
-| `docs/sdf-press-kit-2024.pdf` | Stellar Development Foundation positioning, mission, key messaging |
-| `docs/logo-press-kit-2026/` | Official SVG/PNG logos for Stellar, SDF, Stellar Core, Stellar Network, Stellar Anchors |
+| `docs/references/stellar/brand-manual-stellar-2025.pdf` | Color palette, typography, logo usage rules — the entire design system derives from this |
+| `docs/references/stellar/sdf-press-kit-2024.pdf` | Stellar Development Foundation positioning, mission, key messaging |
+| `docs/references/stellar/logo-press-kit-2026/` | Official SVG/PNG logos for Stellar, SDF, Stellar Core, Stellar Network, Stellar Anchors |
 
 ### Academic & Technical Papers
 
@@ -69,7 +69,7 @@ Everything in this video was built from primary sources. Here's what was studied
 
 | Resource | Used For |
 |----------|----------|
-| `docs/flipper.rs` | The canonical Soroban Flipper contract — `get()` and `flip()` functions animated live in EP05 |
+| `docs/projects/stellar/flipper.rs` | The canonical Soroban Flipper contract — `get()` and `flip()` functions animated live in EP05 |
 
 ### People & Assets
 
@@ -84,25 +84,50 @@ Everything in this video was built from primary sources. Here's what was studied
 
 | Resource | Used For |
 |----------|----------|
-| `docs/SCRIPT.md` | Final narration script, synced word-by-word to audio |
-| `docs/BRAINSTORM.md` | Video direction, shot list, storyboard, teaching pattern design |
-| `docs/full-narration-timestamps.json` | Whisper word-level timestamps → `src/config/audioMarks.ts` |
+| `docs/projects/stellar/SCRIPT.md` | Final narration script, synced word-by-word to audio |
+| `docs/projects/stellar/BRAINSTORM.md` | Video direction, shot list, storyboard, teaching pattern design |
+| `docs/projects/stellar/full-narration-timestamps.json` | Whisper word-level timestamps → `src/config/audioMarks.ts` |
 
 ---
 
 ## Running Locally
 
 ```bash
-npm install
-npm start          # Remotion Studio at localhost:3000 (preview + scrubbing)
-npx tsc --noEmit   # type-check
+pnpm install
+pnpm studio        # Remotion Studio at localhost:3000 (preview + scrubbing)
+pnpm studio:index  # Opens the visual FloripaWeb3Index selector
+pnpm exec tsc --noEmit   # type-check
 ```
 
 ## Rendering
 
 ```bash
-npm run build      # renders full 1920×1080 MP4
+pnpm render        # renders the full 1920×1080 MP4
+pnpm preview       # quick lower-quality render for review
+pnpm render:index  # renders the composition index
+pnpm render:composition -- <COMPOSITION_ID> <OUTPUT_PATH>  # renders any registered composition
 ```
+
+### Composition selection
+
+Open `FloripaWeb3Index` in Remotion Studio to see the complete list of renderable
+videos, scene previews, and the thumbnail. The exact IDs are also visible in the
+index and can be used directly from the CLI:
+
+```bash
+pnpm studio:index
+pnpm render:composition -- StellarSpeedRun out/stellar-speedrun.mp4
+pnpm render:composition -- Episode3-Transactions out/episode-3.mp4
+pnpm render:composition -- Thumbnail out/thumbnail.mp4
+```
+
+When adding another blockchain video, register its composition in `src/Root.tsx`
+and add a matching entry to `floripaWeb3Compositions` in
+`src/compositions/FloripaWeb3Index.tsx` so Studio and CLI selection stay discoverable.
+
+For the complete pre-delivery review, use [the quality checklist](docs/framework/QUALITY_CHECKLIST.md).
+
+For humans and agents creating future blockchain videos, use the [production manual](docs/framework/AGENT_MANUAL.md).
 
 ---
 
@@ -122,6 +147,9 @@ src/
 └── styles/
     ├── theme.ts             # raw brand colors & fonts
     └── designSystem.ts      # text.*, space.*, glass.*, shadows.*, layout.*
+├── framework/               # reusable timing, audio, safe-area, and transition primitives
+├── modules/stellar/          # Stellar-specific content, assets, narration, and scene exports
+└── template/                 # reusable blockchain explainer contracts and renderer
 ```
 
 ---

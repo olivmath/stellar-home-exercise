@@ -80,7 +80,7 @@ const ReviewChecklist: React.FC = () => {
           <div
             style={{
               ...text.overlineSM,
-              color: colors.gold,
+              color: colors.accent,
               marginBottom: space.xs,
             }}
           >
@@ -107,7 +107,7 @@ const ReviewChecklist: React.FC = () => {
                   gap: space.md,
                 }}
               >
-                {/* Checkbox — 24x24 square; unchecked: border only; checked: gold fill + checkmark */}
+                {/* Checkbox — 24x24 square; unchecked: border only; checked: blue fill + checkmark */}
                 <div
                   style={{
                     width: 24,
@@ -144,7 +144,7 @@ const ReviewChecklist: React.FC = () => {
                 <span
                   style={{
                     ...text.overlineSM,
-                    color: colors.gold,
+                    color: colors.accent,
                     letterSpacing: 2,
                     minWidth: 48,
                     fontSize: 13,
@@ -237,8 +237,8 @@ const FinalStatement: React.FC = () => {
             width: lineWidth,
             height: 2,
             borderRadius: 2,
-            background: `linear-gradient(90deg, ${colors.gold}, ${colors.info})`,
-            boxShadow: `0 0 16px ${colors.gold}40, 0 0 32px ${colors.info}20`,
+            background: `linear-gradient(90deg, ${colors.accent}, ${colors.info})`,
+            boxShadow: `0 0 16px ${colors.accent}40, 0 0 32px ${colors.info}20`,
           }}
         />
 

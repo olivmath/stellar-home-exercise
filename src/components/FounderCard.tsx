@@ -39,21 +39,21 @@ export const FounderCard: React.FC<Props> = ({
       {/* Top accent divider */}
       <div style={divider.subtle()} />
 
-      {/* Avatar with gold ring */}
+      {/* Avatar with blue ring */}
       <div
         style={{
           width: 240,
           height: 240,
           borderRadius: radius.circle,
           overflow: "hidden",
-          border: `2.5px solid ${colors.gold}`,
+          border: `2.5px solid ${colors.accent}`,
           boxShadow: `${shadows.accent}, ${shadows.lg}`,
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
           background: photo
             ? "transparent"
-            : colors.goldDim,
+            : colors.accentDim,
         }}
       >
         {photo ? (

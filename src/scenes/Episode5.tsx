@@ -34,7 +34,7 @@ const SorobanIntro: React.FC = () => {
   const yearOpacity = fadeIn(frame, fps, 0.8);
 
   const stackLayers = [
-    { label: "Soroban", color: colors.gold, delay: STACK_START },
+    { label: "Soroban", color: colors.accent, delay: STACK_START },
     { label: "WASM VM", color: colors.info, delay: STACK_START + 0.5 },
     { label: "Rust", color: colors.positive, delay: STACK_START + 1.0 },
   ];
@@ -76,7 +76,7 @@ const SorobanIntro: React.FC = () => {
           }}
         >
           {/* Header */}
-          <div style={{ ...text.overlineSM, color: colors.gold }}>
+          <div style={{ ...text.overlineSM, color: colors.accent }}>
             SMART CONTRACT PLATFORM
           </div>
 
@@ -84,7 +84,7 @@ const SorobanIntro: React.FC = () => {
           <div
             style={{
               ...text.displayMD,
-              color: colors.gold,
+              color: colors.accent,
               textShadow: `0 0 40px rgba(201, 168, 76, 0.3)`,
               textAlign: "center",
             }}
@@ -97,7 +97,7 @@ const SorobanIntro: React.FC = () => {
             style={{
               opacity: yearOpacity,
               ...text.displayLG,
-              color: colors.gold,
+              color: colors.accent,
               textShadow: `0 0 40px rgba(201, 168, 76, 0.4), 0 0 80px rgba(201, 168, 76, 0.15)`,
             }}
           >
@@ -226,7 +226,7 @@ const GasModelTTL: React.FC = () => {
             gap: space.lg,
           }}
         >
-          <div style={{ ...text.overlineSM, color: colors.gold }}>GAS MODEL</div>
+          <div style={{ ...text.overlineSM, color: colors.accent }}>GAS MODEL</div>
           <div style={{ display: "flex", gap: space.lg, justifyContent: "center", width: "100%" }}>
             <div
               style={{
@@ -250,7 +250,7 @@ const GasModelTTL: React.FC = () => {
                 gap: space.sm,
               }}
             >
-              <span style={{ ...text.codeMD, color: colors.gold }}>Storage</span>
+              <span style={{ ...text.codeMD, color: colors.accent }}>Storage</span>
               <span style={{ ...text.bodySM, color: colors.warmGrey }}>State</span>
             </div>
           </div>
@@ -258,7 +258,7 @@ const GasModelTTL: React.FC = () => {
 
         <GlassPanel
           padding="40px 44px"
-          borderColor={`${colors.gold}20`}
+          borderColor={`${colors.accent}20`}
           glow={shadows.accent}
           style={{
             opacity: ttlOpacity,
@@ -267,8 +267,8 @@ const GasModelTTL: React.FC = () => {
             gap: space.lg,
           }}
         >
-          <div style={{ ...text.overlineSM, color: colors.gold }}>INNOVATION</div>
-          <div style={{ ...text.h1, color: colors.gold }}>TTL — Time To Live</div>
+          <div style={{ ...text.overlineSM, color: colors.accent }}>INNOVATION</div>
+          <div style={{ ...text.h1, color: colors.accent }}>TTL — Time To Live</div>
 
           <div
             style={{
@@ -285,7 +285,7 @@ const GasModelTTL: React.FC = () => {
                 height: "100%",
                 background: barIsRed
                   ? `linear-gradient(90deg, ${colors.negative}, ${colors.negative})`
-                  : `linear-gradient(90deg, ${colors.gold}, ${colors.positive})`,
+                  : `linear-gradient(90deg, ${colors.accent}, ${colors.positive})`,
                 borderRadius: radius.pill,
                 transition: "background 0.3s ease",
               }}
@@ -345,7 +345,7 @@ const CODE_LINES = [
     atSec: 246.23,
     tokens: [
       { text: "use ", color: colors.info },
-      { text: "soroban_sdk", color: colors.gold },
+      { text: "soroban_sdk", color: colors.accent },
       { text: "::{", color: colors.textDim },
       { text: "contract, contractimpl, symbol_short, Env, Symbol", color: colors.textPrimary },
       { text: "};", color: colors.textDim },
@@ -363,7 +363,7 @@ const CODE_LINES = [
       { text: "const ", color: colors.info },
       { text: "STATE", color: colors.textPrimary },
       { text: ": ", color: colors.textDim },
-      { text: "Symbol", color: colors.gold },
+      { text: "Symbol", color: colors.accent },
       { text: " = ", color: colors.textDim },
       { text: "symbol_short!", color: colors.info },
       { text: '("STATE")', color: colors.positive },
@@ -379,14 +379,14 @@ const CODE_LINES = [
   {
     atSec: 248.40,
     tokens: [
-      { text: "#[contract]", color: colors.gold },
+      { text: "#[contract]", color: colors.accent },
     ],
   },
   {
     atSec: 248.40,
     tokens: [
       { text: "pub struct ", color: colors.info },
-      { text: "FlipperContract", color: colors.gold },
+      { text: "FlipperContract", color: colors.accent },
       { text: ";", color: colors.textDim },
     ],
   },
@@ -397,14 +397,14 @@ const CODE_LINES = [
   {
     atSec: 248.40,
     tokens: [
-      { text: "#[contractimpl]", color: colors.gold },
+      { text: "#[contractimpl]", color: colors.accent },
     ],
   },
   {
     atSec: 248.40,
     tokens: [
       { text: "impl ", color: colors.info },
-      { text: "FlipperContract ", color: colors.gold },
+      { text: "FlipperContract ", color: colors.accent },
       { text: "{", color: colors.textDim },
     ],
   },
@@ -414,7 +414,7 @@ const CODE_LINES = [
       { text: "    pub fn ", color: colors.info },
       { text: "get", color: colors.textPrimary },
       { text: "(env: ", color: colors.textDim },
-      { text: "Env", color: colors.gold },
+      { text: "Env", color: colors.accent },
       { text: ") -> ", color: colors.textDim },
       { text: "bool", color: colors.info },
       { text: " {", color: colors.textDim },
@@ -443,9 +443,9 @@ const CODE_LINES = [
     atSec: 251.23,
     tokens: [
       { text: "    pub fn ", color: colors.info },
-      { text: "flip", color: colors.gold },
+      { text: "flip", color: colors.accent },
       { text: "(env: ", color: colors.textDim },
-      { text: "Env", color: colors.gold },
+      { text: "Env", color: colors.accent },
       { text: ") {", color: colors.textDim },
     ],
   },
@@ -467,7 +467,7 @@ const CODE_LINES = [
       { text: "            .update(&", color: colors.textDim },
       { text: "STATE", color: colors.textPrimary },
       { text: ", |current: ", color: colors.textDim },
-      { text: "Option<bool>", color: colors.gold },
+      { text: "Option<bool>", color: colors.accent },
       { text: "| !current.unwrap_or(false));", color: colors.textDim },
     ],
   },
@@ -521,7 +521,7 @@ const FlipperCode: React.FC = () => {
             }}
           >
             <div style={{ width: 16, height: 16, borderRadius: radius.circle, backgroundColor: colors.negative, opacity: 0.6 }} />
-            <div style={{ width: 16, height: 16, borderRadius: radius.circle, backgroundColor: colors.gold, opacity: 0.6 }} />
+            <div style={{ width: 16, height: 16, borderRadius: radius.circle, backgroundColor: colors.accent, opacity: 0.6 }} />
             <div style={{ width: 16, height: 16, borderRadius: radius.circle, backgroundColor: colors.positive, opacity: 0.6 }} />
             <span style={{ ...text.codeMD, color: colors.textDim, marginLeft: space.md }}>
               flipper.rs
@@ -709,7 +709,7 @@ const ZkAndPasskeys: React.FC = () => {
             width: 560,
           }}
         >
-          <div style={{ ...text.overlineSM, color: colors.gold }}>THIS ENABLES</div>
+          <div style={{ ...text.overlineSM, color: colors.accent }}>THIS ENABLES</div>
 
           {/* Two square cards side by side */}
           <div style={{ display: "flex", gap: space.lg }}>
@@ -725,7 +725,7 @@ const ZkAndPasskeys: React.FC = () => {
               <div style={{ ...text.bodySM, color: colors.warmGrey, textAlign: "center" }}>Zero-knowledge proofs</div>
             </div>
 
-            <div style={{ opacity: fadeIn(frame, fps, passkeysDelay), ...squareCardStyle(colors.gold) }}>
+            <div style={{ opacity: fadeIn(frame, fps, passkeysDelay), ...squareCardStyle(colors.accent) }}>
               <Img
                 src={staticFile("images/fingerprint.png")}
                 style={{
@@ -735,7 +735,7 @@ const ZkAndPasskeys: React.FC = () => {
                   opacity: 0.9,
                 }}
               />
-              <div style={{ ...text.codeSM, color: colors.gold, textAlign: "center" }}>Passkeys</div>
+              <div style={{ ...text.codeSM, color: colors.accent, textAlign: "center" }}>Passkeys</div>
               <div style={{ ...text.bodySM, color: colors.warmGrey, textAlign: "center" }}>Better UX auth</div>
             </div>
           </div>

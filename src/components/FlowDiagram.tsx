@@ -13,7 +13,7 @@ type Props = {
 export const FlowDiagram: React.FC<Props> = ({
   steps,
   delay = 0,
-  accentColor = colors.gold,
+  accentColor = colors.accent,
   direction = "vertical",
 }) => {
   const frame = useCurrentFrame();
