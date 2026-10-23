@@ -9,6 +9,8 @@ Use this checklist before sharing a render or adding a second blockchain module.
 - [ ] Every composition registered in `src/Root.tsx` has a component, finite duration, and expected dimensions.
 - [ ] Every `staticFile()` path resolves to a file under `public/`.
 - [ ] Module-specific content stays under `src/modules/<module>/`; shared components do not contain chain-specific facts or assets.
+- [ ] Links in root documentation point to current root-level manuals.
+- [ ] No required asset points to a machine-specific absolute path.
 
 ## Rendering
 
@@ -40,3 +42,9 @@ Use this checklist before sharing a render or adding a second blockchain module.
 3. Provide a module theme or theme override without changing shared Stellar content.
 4. Export the module’s scenes from its module entrypoint and register compositions in `src/Root.tsx`.
 5. Run the integration and rendering checks above before publishing.
+
+## Agent handoff
+
+- [ ] `git status --short` was checked before and after the change.
+- [ ] The final summary names modified files and verification commands.
+- [ ] Any known limitation is documented instead of silently ignored.

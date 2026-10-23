@@ -1,9 +1,11 @@
 import { Composition } from "remotion";
 import { StellarSpeedRun } from "./StellarSpeedRun";
+import { EthereumSpeedRun } from "./EthereumSpeedRun";
 import { Thumbnail } from "./compositions/Thumbnail";
 import { FloripaWeb3Index } from "./compositions/FloripaWeb3Index";
 import { Opening, Episode1, Episode2, Episode3, Episode4, Episode5, Closing } from "./modules/stellar/scenes";
 import { FPS, episodes, toFrame } from "./config/audioMarks";
+import { ethereumCompositionDurationInFrames } from "./EthereumSpeedRun";
 
 export const RemotionRoot: React.FC = () => {
   return (
@@ -22,6 +24,14 @@ export const RemotionRoot: React.FC = () => {
         id="StellarSpeedRun"
         component={StellarSpeedRun}
         durationInFrames={toFrame(303.77)}
+        fps={FPS}
+        width={1920}
+        height={1080}
+      />
+      <Composition
+        id="EthereumSpeedRun"
+        component={EthereumSpeedRun}
+        durationInFrames={ethereumCompositionDurationInFrames}
         fps={FPS}
         width={1920}
         height={1080}
