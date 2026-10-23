@@ -4,7 +4,9 @@
   "private": true,
   "scripts": {
     "studio": "remotion studio",
-    "studio:index": "remotion studio --composition FloripaWeb3Index",
+    "stellar": "remotion studio src/stellar.tsx --force-new",
+    "ethereum": "remotion studio src/ethereum.tsx --force-new",
+    "studio:index": "remotion studio --composition FloripaWeb3Index --force-new",
     "render:composition": "remotion render",
     "render:index": "remotion render FloripaWeb3Index out/floripa-web3-index.mp4 --crf=18",
     "preview": "remotion render StellarSpeedRun out/preview.mp4 --crf=28",

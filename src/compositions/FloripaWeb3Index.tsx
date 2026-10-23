@@ -9,6 +9,7 @@ export type CompositionEntry = {
 
 export const floripaWeb3Compositions: CompositionEntry[] = [
   { id: "StellarSpeedRun", label: "Stellar Speed Run", description: "Complete narrated blockchain explainer", kind: "video" },
+  { id: "EthereumSpeedRun", label: "Ethereum Speed Run", description: "Ethereum module explainer preview", kind: "video" },
   { id: "Opening", label: "Opening", description: "Floripa Web3 title sequence", kind: "scene" },
   { id: "Episode1-Foundation", label: "Episode 01 · Foundation", description: "Blockchain foundations preview", kind: "scene" },
   { id: "Episode2-Wallet", label: "Episode 02 · Wallet", description: "Wallet and key ownership preview", kind: "scene" },

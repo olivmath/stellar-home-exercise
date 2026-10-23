@@ -96,6 +96,8 @@ Everything in this video was built from primary sources. Here's what was studied
 pnpm install
 pnpm studio        # Remotion Studio at localhost:3000 (preview + scrubbing)
 pnpm studio:index  # Opens the visual FloripaWeb3Index selector
+pnpm stellar       # Opens the Stellar production directly
+pnpm ethereum      # Opens the framework index (Ethereum has no renderable composition yet)
 pnpm exec tsc --noEmit   # type-check
 ```
 
@@ -125,9 +127,11 @@ When adding another blockchain video, register its composition in `src/Root.tsx`
 and add a matching entry to `floripaWeb3Compositions` in
 `src/compositions/FloripaWeb3Index.tsx` so Studio and CLI selection stay discoverable.
 
-For the complete pre-delivery review, use [the quality checklist](docs/framework/QUALITY_CHECKLIST.md).
+For the complete pre-delivery review, use [the quality checklist](QUALITY_CHECKLIST.md).
 
-For humans and agents creating future blockchain videos, use the [production manual](docs/framework/AGENT_MANUAL.md).
+For humans and agents creating future blockchain videos, use the [production manual](AGENT_MANUAL.md).
+
+Before changing code, read [AGENT_MANUAL.md](AGENT_MANUAL.md), then inspect `git status --short`.
 
 ---
 
